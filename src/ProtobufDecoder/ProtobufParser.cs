@@ -162,21 +162,10 @@ namespace ProtobufDecoder
                 varintBytes[i] = input[index + i];
             }
 
-            var varintValue = 0;
-            var shift = 0;
-
-            foreach (var b in varintBytes)
-            {
-                var tmp = b & 0x7f;
-                varintValue |= tmp << shift;
-
-                shift += 7;
-            }
-
             return new ParseResult<ProtobufValue<int>>
             {
                 Length = varintBytes.Length,
-                Value = new VarintValue(varintValue)
+                Value = new VarintValue(varintBytes)
             };
         }
     }

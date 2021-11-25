@@ -34,7 +34,7 @@ namespace ProtobufDecoder
             {
                 var emp = _collection[_index];
 
-                return emp.GetType().Name);
+                return emp.GetType().Name;
             }
         }
 
