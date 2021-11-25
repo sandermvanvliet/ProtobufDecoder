@@ -30,7 +30,8 @@ namespace ProtobufDecoder
                     var tag = new ProtobufTag
                     {
                         Index = WireFormat.GetTagFieldNumber(input[index]),
-                        WireType = WireFormat.GetTagWireType(input[index])
+                        WireType = WireFormat.GetTagWireType(input[index]),
+                        StartOffset = index
                     };
 
                     protobufMessage.Tags.Add(tag);
@@ -68,6 +69,8 @@ namespace ProtobufDecoder
                         default:
                             throw new InvalidOperationException($"Invalid wire type {input[index]}");
                     }
+
+                    tag.EndOffset = index;
                 }
             }
             catch (InvalidOperationException e)
@@ -78,19 +81,25 @@ namespace ProtobufDecoder
             // Do some special magic to handle repeated fields.
             // These are length-delimited fields where we have more than
             // one occurrence for the same tag.
+            // Note: Non-packed repeated tags can appear anywhere in the byte
+            //       stream so this grouping destroys the offsets....
             var groupedTags = protobufMessage
                 .Tags
                 .GroupBy(tag => tag.Index,
                     tag => tag,
                     (key, values) =>
                     {
+                        var firstTag = values.First();
+
                         return new ProtobufTag
                         {
                             Index = key,
-                            WireType = values.First().WireType,
+                            WireType = firstTag.WireType,
                             Value = values.Count() > 1
                                 ? new RepeatedValue(values.Select(v => v.Value))
-                                : values.First().Value
+                                : firstTag.Value,
+                            StartOffset = firstTag.StartOffset,
+                            EndOffset = firstTag.EndOffset
                         };
                     })
                 .ToList();

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
@@ -36,12 +37,12 @@ namespace ProtobufDecoder.Application.WinForms
         private void buttonDecode_Click(object sender, EventArgs e)
         {
             var inputFilePath = textBoxFilePath.Text;
-            
+
             if (string.IsNullOrEmpty(inputFilePath))
             {
                 MessageBox.Show(
                     "Please select a file to decode",
-                    "No input file selected", 
+                    "No input file selected",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
 
@@ -52,7 +53,7 @@ namespace ProtobufDecoder.Application.WinForms
             {
                 MessageBox.Show(
                     "Please check the path to the input file",
-                    "Input file does not exist", 
+                    "Input file does not exist",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
 
@@ -60,7 +61,7 @@ namespace ProtobufDecoder.Application.WinForms
             }
 
             byte[] input;
-            
+
             try
             {
                 input = File.ReadAllBytes(inputFilePath);
@@ -69,12 +70,14 @@ namespace ProtobufDecoder.Application.WinForms
             {
                 MessageBox.Show(
                     $"Reading the input file failed because: {ioException.Message}",
-                    "Failed to read input file", 
+                    "Failed to read input file",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
 
                 return;
             }
+
+            PopulateByteViewer(input);
 
             ProtobufMessage protobufMessage;
 
@@ -86,7 +89,7 @@ namespace ProtobufDecoder.Application.WinForms
             {
                 MessageBox.Show(
                     $"Parsing the input file failed because: {exception.Message}",
-                    "Failed to parse input file", 
+                    "Failed to parse input file",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
 
@@ -106,6 +109,7 @@ namespace ProtobufDecoder.Application.WinForms
             propertyGridTag.SelectedObject = null;
             propertyGridTag.Update();
             treeView1.Nodes.Clear();
+            dataGridViewBytes.DataSource = new List<ByteViewerRow>();
         }
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
@@ -119,6 +123,87 @@ namespace ProtobufDecoder.Application.WinForms
 
             propertyGridTag.SelectedObject = tag;
             propertyGridTag.Update();
+
+            var startRow = tag.StartOffset / 16;
+            var endRow = tag.EndOffset / 16;
+            var startColumn = tag.StartOffset % 16; // n-th byte of a row
+            var endColumn = tag.EndOffset % 16; // n-th byte of a row
+
+            dataGridViewBytes.ClearSelection();
+
+            for (var rowIndex = startRow; rowIndex <= endRow; rowIndex++)
+            {
+                if (rowIndex == startRow)
+                {
+                    // Start row
+                    var end = startRow == endRow ? endColumn : 16;
+                    for (var columnIndex = startColumn; columnIndex < end; columnIndex++)
+                    {
+                        dataGridViewBytes[columnIndex + 1, rowIndex].Selected = true;
+                    }
+                }
+                else if (rowIndex == endRow && startRow != endRow) // When the tag fits on a single row this is already handled by the previous if-branch
+                {
+                    // End row
+                    for (var columnIndex = 0; columnIndex < endColumn; columnIndex++)
+                    {
+                        dataGridViewBytes[columnIndex + 1, rowIndex].Selected = true;
+                    }
+                }
+                else
+                {
+                    // Middle row
+                    for (var columnIndex = 0; columnIndex < 16; columnIndex++)
+                    {
+                        dataGridViewBytes[columnIndex + 1, rowIndex].Selected = true;
+                    }
+                }
+            }
+
+            // Bring selection into view
+            dataGridViewBytes.FirstDisplayedScrollingRowIndex = startRow;
+        }
+
+        private void PopulateByteViewer(byte[] input)
+        {
+            var line = 0;
+            var offset = 0;
+            var rows = new List<ByteViewerRow>();
+            
+            var lineBytes = new byte[16];
+
+            while (offset < input.Length)
+            {
+                var width = input.Length - offset;
+                if (width >= 16)
+                {
+                    width = 16;
+                }
+
+                if(width >= 1) lineBytes[0] = input[offset + 0];
+                if(width >= 2) lineBytes[1] = input[offset + 1];
+                if(width >= 3) lineBytes[2] = input[offset + 2];
+                if(width >= 4) lineBytes[3] = input[offset + 3];
+                if(width >= 5) lineBytes[4] = input[offset + 4];
+                if(width >= 6) lineBytes[5] = input[offset + 5];
+                if(width >= 7) lineBytes[6] = input[offset + 6];
+                if(width >= 8) lineBytes[7] = input[offset + 7];
+                if(width >= 9) lineBytes[8] = input[offset + 8];
+                if(width >= 10) lineBytes[9] = input[offset + 9];
+                if(width >= 11) lineBytes[10] = input[offset + 10];
+                if(width >= 12) lineBytes[11] = input[offset + 11];
+                if(width >= 13) lineBytes[12] = input[offset + 12];
+                if(width >= 14) lineBytes[13] = input[offset + 13];
+                if(width >= 15) lineBytes[14] = input[offset + 14];
+                if(width >= 16) lineBytes[15] = input[offset + 15];
+
+                rows.Add(new ByteViewerRow(lineBytes, line));
+
+                line++;
+                offset += 16; // bytes per line
+            }
+
+            dataGridViewBytes.DataSource = rows;
         }
     }
 }

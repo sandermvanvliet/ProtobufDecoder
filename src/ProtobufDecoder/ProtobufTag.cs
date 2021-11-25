@@ -21,5 +21,15 @@ namespace ProtobufDecoder
         [ReadOnly(true)]
         [TypeConverter(typeof(ExpandableObjectConverter))]
         public ProtobufValue Value { get; set; }
+
+        [Browsable(true)]
+        [Description("Position in the byte stream where this tag starts")]
+        [ReadOnly(true)]
+        public int StartOffset { get; set; }
+
+        [Browsable(true)]
+        [Description("Position in the byte stream where this tag ends")]
+        [ReadOnly(true)]
+        public int EndOffset { get; set; }
     }
 }
