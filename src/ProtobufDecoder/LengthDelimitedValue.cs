@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Text;
 
 namespace ProtobufDecoder
@@ -9,6 +10,8 @@ namespace ProtobufDecoder
         }
 
         // Fun fact: you can't tell a string and a repeated packed varint value apart....
+        [Browsable(true)]
+        [Description("The underlying value decoded as a UTF-8 string")]
         public string StringRepresentation
         {
             get

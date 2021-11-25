@@ -19,7 +19,7 @@ namespace ProtobufDecoder
         [Browsable(true)]
         [Description("The value of this tag")]
         [ReadOnly(true)]
-        [TypeConverter(typeof(ProtobufValueTypeConverter))]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
         public ProtobufValue Value { get; set; }
     }
 }
