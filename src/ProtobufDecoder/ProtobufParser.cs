@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using Google.Protobuf;
 
@@ -20,50 +21,58 @@ namespace ProtobufDecoder
                 return protobufMessage;
             }
 
-            var index = 0;
-            while (index < input.Length)
+            try
             {
-                var tag = new ProtobufTag
+                var index = 0;
+
+                while (index < input.Length)
                 {
-                    Index = WireFormat.GetTagFieldNumber(input[index]),
-                    WireType = WireFormat.GetTagWireType(input[index])
-                };
-
-                protobufMessage.Tags.Add(tag);
-
-                index += 1; // This is the tag + wire type byte
-
-                switch (tag.WireType)
-                {
-                    case WireFormat.WireType.Varint:
+                    var tag = new ProtobufTag
                     {
-                        var parseResult = ParseVarint(input, index);
-                        index += parseResult.Length;
-                        tag.Value = parseResult.Value;
-                        break;
+                        Index = WireFormat.GetTagFieldNumber(input[index]),
+                        WireType = WireFormat.GetTagWireType(input[index])
+                    };
+
+                    protobufMessage.Tags.Add(tag);
+
+                    index += 1; // This is the tag + wire type byte
+
+                    switch (tag.WireType)
+                    {
+                        case WireFormat.WireType.Varint:
+                        {
+                            var parseResult = ParseVarint(input, index);
+                            index += parseResult.Length;
+                            tag.Value = parseResult.Value;
+                            break;
+                        }
+                        case WireFormat.WireType.Fixed64:
+                            var parseResultF = ParseFixed64(input, index);
+                            index += parseResultF.Length;
+                            tag.Value = parseResultF.Value;
+                            break;
+                        case WireFormat.WireType.LengthDelimited:
+                            var parseResultL = ParseLengthDelimited(input, index);
+                            index += parseResultL.Length;
+                            tag.Value = parseResultL.Value;
+                            break;
+                        case WireFormat.WireType.StartGroup:
+                            break;
+                        case WireFormat.WireType.EndGroup:
+                            break;
+                        case WireFormat.WireType.Fixed32:
+                            var parseResultF32 = ParseFixed32(input, index);
+                            index += parseResultF32.Length;
+                            tag.Value = parseResultF32.Value;
+                            break;
+                        default:
+                            throw new InvalidOperationException($"Invalid wire type {input[index]}");
                     }
-                    case WireFormat.WireType.Fixed64:
-                        var parseResultF = ParseFixed64(input, index);
-                        index += parseResultF.Length;
-                        tag.Value = parseResultF.Value;
-                        break;
-                    case WireFormat.WireType.LengthDelimited:
-                        var parseResultL = ParseLengthDelimited(input, index);
-                        index += parseResultL.Length;
-                        tag.Value = parseResultL.Value;
-                        break;
-                    case WireFormat.WireType.StartGroup:
-                        break;
-                    case WireFormat.WireType.EndGroup:
-                        break;
-                    case WireFormat.WireType.Fixed32:
-                        var parseResultF32 = ParseFixed32(input, index);
-                        index += parseResultF32.Length;
-                        tag.Value = parseResultF32.Value;
-                        break;
-                    default:
-                        throw new InvalidOperationException($"Invalid wire type {input[index]}");
                 }
+            }
+            catch (InvalidOperationException e)
+            {
+                //Debugger.Break();
             }
 
             // Do some special magic to handle repeated fields.
@@ -110,22 +119,32 @@ namespace ProtobufDecoder
 
         private static ParseResult<Fixed32Value> ParseFixed32(byte[] input, int index)
         {
-            var fixedBytes = input.Skip(index).Take(2).ToArray();
+            var fixedBytes = input.Skip(index).Take(4).ToArray();
+
+            if (fixedBytes.Length != 4)
+            {
+                throw new InvalidOperationException($"Expected 4 bytes but got {fixedBytes.Length}");
+            }
 
             return new ParseResult<Fixed32Value>
             {
-                Length = 2,
+                Length = 4,
                 Value = new Fixed32Value(fixedBytes)
             };
         }
 
         private static ParseResult<Fixed64Value> ParseFixed64(byte[] input, int index)
         {
-            var fixedBytes = input.Skip(index).Take(4).ToArray();
+            var fixedBytes = input.Skip(index).Take(8).ToArray();
+
+            if (fixedBytes.Length != 8)
+            {
+                throw new InvalidOperationException($"Expected 8 bytes but got {fixedBytes.Length}");
+            }
 
             return new ParseResult<Fixed64Value>
             {
-                Length = 4,
+                Length = 8,
                 Value = new Fixed64Value(fixedBytes)
             };
         }

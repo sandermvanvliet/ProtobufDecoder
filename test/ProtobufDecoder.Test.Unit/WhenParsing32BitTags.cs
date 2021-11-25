@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using FluentAssertions;
 using Google.Protobuf;
@@ -11,7 +12,7 @@ namespace ProtobufDecoder.Test.Unit
         [Fact]
         public void SingleFixed32_TagNumberIsOne()
         {
-            var input = new byte[] { 0x0d, 0x49, 0x94 };
+            var input = new byte[] { 0x0d, 0x4B, 0x06, 0x9E, 0x3F };
 
             var message = ProtobufParser.Parse(input);
 
@@ -24,7 +25,7 @@ namespace ProtobufDecoder.Test.Unit
         [Fact]
         public void SingleFixed32_WireTypeIsFixed32()
         {
-            var input = new byte[] { 0x0d, 0x49, 0x94 };
+            var input = new byte[] { 0x0d, 0x4B, 0x06, 0x9E, 0x3F };
 
             var message = ProtobufParser.Parse(input);
 
@@ -37,7 +38,7 @@ namespace ProtobufDecoder.Test.Unit
         [Fact]
         public void SingleFixed32_ValueIsOfTypeFixed32()
         {
-            var input = new byte[] { 0x0d, 0x49, 0x94 };
+            var input = new byte[] { 0x0d, 0x4B, 0x06, 0x9E, 0x3F };
 
             var message = ProtobufParser.Parse(input);
 
@@ -50,7 +51,7 @@ namespace ProtobufDecoder.Test.Unit
         [Fact]
         public void SingleFixed32_ValueIsOfTypeFixed32WithValue()
         {
-            var input = new byte[] { 0x0d, 0x49, 0x94 };
+            var input = new byte[] { 0x0d, 0x4B, 0x06, 0x9E, 0x3F };
 
             var message = ProtobufParser.Parse(input);
 
@@ -61,13 +62,13 @@ namespace ProtobufDecoder.Test.Unit
                 .As<Fixed32Value>()
                 .Value
                 .Should()
-                .BeEquivalentTo(new[] { 0x49, 0x94 });
+                .Be((float)1.234567);
         }
 
         [Fact]
         public void TwoVarintTags_TwoTagsAreFound()
         {
-            var input = new byte[] { 0x0d, 0x49, 0x94, 0x15, 0x49, 0x94 };
+            var input = new byte[] { 0x0d, 0x4B, 0x06, 0x9E, 0x3F, 0x15, 0x4B, 0x06, 0x9E, 0x3F };
 
             var message = ProtobufParser.Parse(input);
 
@@ -82,7 +83,7 @@ namespace ProtobufDecoder.Test.Unit
         [Fact]
         public void TwoVarintTags_TagTwoIsFixed32WithValue()
         {
-            var input = new byte[] { 0x0d, 0x49, 0x94, 0x15, 0x49, 0x94 };
+            var input = new byte[] { 0x0d, 0x4B, 0x06, 0x9E, 0x3F, 0x15, 0x4B, 0x06, 0x9E, 0x3F };
 
             var message = ProtobufParser.Parse(input);
 
@@ -93,7 +94,7 @@ namespace ProtobufDecoder.Test.Unit
                 .As<Fixed32Value>()
                 .Value
                 .Should()
-                .BeEquivalentTo(new[] { 0x49, 0x94 });
+                .Be((float)1.234567);
         }
     }
 }

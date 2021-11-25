@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Globalization;
 
 namespace ProtobufDecoder
 {
@@ -28,21 +29,6 @@ namespace ProtobufDecoder
             return varintValue;
         }
 
-        [Description("The raw bytes that represent this Varint")]
-        [ReadOnly(true)]
-        [Browsable(true)]
-        public byte[] RawBytes => _varintBytes;
-
-        [Description("The unsigned 32-bit integer representation")]
-        [ReadOnly(true)]
-        [Browsable(true)]
-        public uint UInt32 => (uint)ToTarget(_varintBytes, 32);
-        
-        [Description("The unsigned 16-bit integer representation")]
-        [ReadOnly(true)]
-        [Browsable(true)]
-        public ushort UInt16 => (ushort)ToTarget(_varintBytes, 32);
-
         [Description("The boolean representation")]
         [ReadOnly(true)]
         [Browsable(true)]
@@ -64,15 +50,41 @@ namespace ProtobufDecoder
             }
         }
 
-        [Description("The signed 32-bit integer representation")]
+        [Description("The raw bytes that represent this Varint")]
         [ReadOnly(true)]
         [Browsable(true)]
-        public int Int32 => (int)DecodeZigZag(ToTarget(_varintBytes, 32));
+        public byte[] RawBytes => _varintBytes;
+        
+        [Description("The unsigned 16-bit integer representation")]
+        [ReadOnly(true)]
+        [Browsable(true)]
+        public string UInt16 => SafeConvert(() => ((ushort)ToTarget(_varintBytes, 16)).ToString(CultureInfo.InvariantCulture));
+
+        [Description("The unsigned 32-bit integer representation")]
+        [ReadOnly(true)]
+        [Browsable(true)]
+        public string UInt32 => SafeConvert(() => ((uint)ToTarget(_varintBytes, 32)).ToString(CultureInfo.InvariantCulture));
+
+        [Description("The signed 64-bit integer representation")]
+        [ReadOnly(true)]
+        [Browsable(true)]
+        public string UInt64 => SafeConvert(() => ((ulong)ToTarget(_varintBytes, 64)).ToString(CultureInfo.InvariantCulture));
 
         [Description("The signed 16-bit integer representation")]
         [ReadOnly(true)]
         [Browsable(true)]
-        public short Int16 => (short)DecodeZigZag(ToTarget(_varintBytes, 16));
+        public string Int16 => SafeConvert(() => ((short)DecodeZigZag(ToTarget(_varintBytes, 16))).ToString(CultureInfo.InvariantCulture));
+
+        [Description("The signed 32-bit integer representation")]
+        [ReadOnly(true)]
+        [Browsable(true)]
+        public string Int32 => SafeConvert(() => ((int)DecodeZigZag(ToTarget(_varintBytes, 32))).ToString(CultureInfo.InvariantCulture));
+
+        
+        [Description("The signed 64-bit integer representation")]
+        [ReadOnly(true)]
+        [Browsable(true)]
+        public string Int64 => SafeConvert(() => ((long)DecodeZigZag(ToTarget(_varintBytes, 64))).ToString(CultureInfo.InvariantCulture));
 
         // Decoding code from here https://github.com/topas/VarintBitConverter/blob/b84ee7c953ff98b2043a2e58aa32624ff949bd43/src/VarintBitConverter/VarintBitConverter.cs#L185
         private static long DecodeZigZag(ulong value)
@@ -85,23 +97,29 @@ namespace ProtobufDecoder
             return (long)(value >> 1);
         }
         
-        private static ulong ToTarget(byte[] bytes, int sizeBites)
+        private static ulong ToTarget(byte[] bytes, int sizeBits)
         {
             var shift = 0;
             ulong result = 0;
 
-            foreach (ulong byteValue in bytes)
+            for (var index = 0; index < bytes.Length; index++)
             {
+                ulong byteValue = bytes[index];
                 ulong tmp = byteValue & 0x7f;
                 result |= tmp << shift;
 
-                if (shift > sizeBites)
+                if (shift > sizeBits)
                 {
-                    throw new ArgumentOutOfRangeException(nameof(bytes), "Byte array is too large.");
+                    throw new ArgumentOutOfRangeException(nameof(bytes),  "Got too many bytes to represent this value");
                 }
 
                 if ((byteValue & 0x80) != 0x80)
                 {
+                    if ((index * 2) < (sizeBits / 8))
+                    {
+                        throw new ArgumentException("More bits were specified than there are bytes");
+                    }
+
                     return result;
                 }
 
@@ -109,6 +127,22 @@ namespace ProtobufDecoder
             }
 
             throw new ArgumentException("Cannot decode varint from byte array.", nameof(bytes));
+        }
+
+        private static string SafeConvert(Func<string> getValueFunc)
+        {
+            try
+            {
+                return getValueFunc();
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                return e.Message;
+            }
+            catch (ArgumentException e)
+            {
+                return e.Message;
+            }
         }
     }
 }
