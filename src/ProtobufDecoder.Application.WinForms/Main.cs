@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace ProtobufDecoder.Application.WinForms
 {
     public partial class Main : Form
     {
+        private ProtobufMessage _protobufMessage;
+        private bool _isSelectingFromTreeView;
+
         public Main()
         {
             InitializeComponent();
@@ -79,11 +84,9 @@ namespace ProtobufDecoder.Application.WinForms
 
             PopulateByteViewer(input);
 
-            ProtobufMessage protobufMessage;
-
             try
             {
-                protobufMessage = ProtobufParser.Parse(input);
+                _protobufMessage = ProtobufParser.Parse(input);
             }
             catch (Exception exception)
             {
@@ -96,9 +99,9 @@ namespace ProtobufDecoder.Application.WinForms
                 return;
             }
 
-            foreach (var tag in protobufMessage.Tags)
+            foreach (var tag in _protobufMessage.Tags)
             {
-                var node = new TreeNode($"Tag {tag.Index}") { Tag = tag };
+                var node = new TreeNode($"Tag {tag.Index}") { Tag = tag, Name = tag.Index.ToString() };
 
                 treeView1.Nodes.Add(node);
             }
@@ -114,54 +117,66 @@ namespace ProtobufDecoder.Application.WinForms
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            ProtobufTag tag = null;
+            _isSelectingFromTreeView = true;
 
-            if (treeView1.SelectedNode != null)
+            try
             {
-                tag = treeView1.SelectedNode.Tag as ProtobufTag;
+                ProtobufTag tag = null;
+
+                if (treeView1.SelectedNode != null)
+                {
+                    tag = treeView1.SelectedNode.Tag as ProtobufTag;
+                }
+
+                propertyGridTag.SelectedObject = tag;
+                propertyGridTag.Update();
+
+                var startRow = tag.StartOffset / 16;
+                var endRow = tag.EndOffset / 16;
+                var startColumn = tag.StartOffset % 16; // n-th byte of a row
+                var endColumn = tag.EndOffset % 16; // n-th byte of a row
+
+                dataGridViewBytes.ClearSelection();
+
+                for (var rowIndex = startRow; rowIndex <= endRow; rowIndex++)
+                {
+                    if (rowIndex == startRow)
+                    {
+                        // Start row
+                        var end = startRow == endRow ? endColumn : 16;
+                        for (var columnIndex = startColumn; columnIndex <= end; columnIndex++)
+                        {
+                            dataGridViewBytes[columnIndex + 1, rowIndex].Selected = true;
+                        }
+                    }
+                    else if (
+                        rowIndex == endRow &&
+                        startRow !=
+                        endRow) // When the tag fits on a single row this is already handled by the previous if-branch
+                    {
+                        // End row
+                        for (var columnIndex = 0; columnIndex <= endColumn; columnIndex++)
+                        {
+                            dataGridViewBytes[columnIndex + 1, rowIndex].Selected = true;
+                        }
+                    }
+                    else
+                    {
+                        // Middle row
+                        for (var columnIndex = 0; columnIndex <= 16; columnIndex++)
+                        {
+                            dataGridViewBytes[columnIndex + 1, rowIndex].Selected = true;
+                        }
+                    }
+                }
+
+                // Bring selection into view
+                dataGridViewBytes.FirstDisplayedScrollingRowIndex = startRow;
             }
-
-            propertyGridTag.SelectedObject = tag;
-            propertyGridTag.Update();
-
-            var startRow = tag.StartOffset / 16;
-            var endRow = tag.EndOffset / 16;
-            var startColumn = tag.StartOffset % 16; // n-th byte of a row
-            var endColumn = tag.EndOffset % 16; // n-th byte of a row
-
-            dataGridViewBytes.ClearSelection();
-
-            for (var rowIndex = startRow; rowIndex <= endRow; rowIndex++)
+            finally
             {
-                if (rowIndex == startRow)
-                {
-                    // Start row
-                    var end = startRow == endRow ? endColumn : 16;
-                    for (var columnIndex = startColumn; columnIndex < end; columnIndex++)
-                    {
-                        dataGridViewBytes[columnIndex + 1, rowIndex].Selected = true;
-                    }
-                }
-                else if (rowIndex == endRow && startRow != endRow) // When the tag fits on a single row this is already handled by the previous if-branch
-                {
-                    // End row
-                    for (var columnIndex = 0; columnIndex < endColumn; columnIndex++)
-                    {
-                        dataGridViewBytes[columnIndex + 1, rowIndex].Selected = true;
-                    }
-                }
-                else
-                {
-                    // Middle row
-                    for (var columnIndex = 0; columnIndex < 16; columnIndex++)
-                    {
-                        dataGridViewBytes[columnIndex + 1, rowIndex].Selected = true;
-                    }
-                }
+                _isSelectingFromTreeView = false;
             }
-
-            // Bring selection into view
-            dataGridViewBytes.FirstDisplayedScrollingRowIndex = startRow;
         }
 
         private void PopulateByteViewer(byte[] input)
@@ -204,6 +219,44 @@ namespace ProtobufDecoder.Application.WinForms
             }
 
             dataGridViewBytes.DataSource = rows;
+        }
+
+        private void dataGridViewBytes_SelectionChanged(object sender, EventArgs e)
+        {
+            if (_isSelectingFromTreeView)
+            {
+                return;
+            }
+
+            // Find the tag for the selected cell
+            if (dataGridViewBytes.SelectedCells.Count == 0)
+            {
+                return;
+            }
+
+            var selectedCell = dataGridViewBytes.SelectedCells[0];
+
+            if (selectedCell.ColumnIndex == 0)
+            {
+                return;
+            }
+
+            var startColumn = selectedCell.ColumnIndex - 1; // Take care of the row number column
+            var startRow = selectedCell.RowIndex * 16;
+            var selectedOffset = startRow + startColumn;
+
+            var tag = _protobufMessage
+                .Tags
+                .FirstOrDefault(tag =>
+                    tag.StartOffset <= selectedOffset &&
+                    tag.EndOffset >= selectedOffset);
+
+            if (tag == null)
+            {
+                return;
+            }
+
+            treeView1.SelectedNode = treeView1.Nodes.Find(tag.Index.ToString(), false).First();
         }
     }
 }

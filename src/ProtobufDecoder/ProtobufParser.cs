@@ -70,7 +70,7 @@ namespace ProtobufDecoder
                             throw new InvalidOperationException($"Invalid wire type {input[index]}");
                     }
 
-                    tag.EndOffset = index;
+                    tag.EndOffset = index - 1; // Subtract 1 because index is pointing at the start byte of the tag after the current one
                 }
             }
             catch (InvalidOperationException e)

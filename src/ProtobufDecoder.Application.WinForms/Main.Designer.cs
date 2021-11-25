@@ -117,6 +117,7 @@ namespace ProtobufDecoder.Application.WinForms
             this.treeView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.treeView1.HideSelection = false;
             this.treeView1.Location = new System.Drawing.Point(12, 155);
             this.treeView1.Name = "treeView1";
             this.treeView1.Size = new System.Drawing.Size(512, 1122);
@@ -240,6 +241,7 @@ namespace ProtobufDecoder.Application.WinForms
             this.dataGridViewBytes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dataGridViewBytes.Size = new System.Drawing.Size(806, 1122);
             this.dataGridViewBytes.TabIndex = 9;
+            this.dataGridViewBytes.SelectionChanged += new System.EventHandler(this.dataGridViewBytes_SelectionChanged);
             // 
             // columnLine
             // 
