@@ -40,6 +40,9 @@ namespace ProtobufDecoder.Application.WinForms
 
         private void buttonDecode_Click(object sender, EventArgs e)
         {
+            // Ensure everything is cleared before we add something new.
+            buttonClear.PerformClick();
+
             var inputFilePath = textBoxFilePath.Text;
 
             if (string.IsNullOrEmpty(inputFilePath))
@@ -81,8 +84,6 @@ namespace ProtobufDecoder.Application.WinForms
                 return;
             }
 
-            PopulateByteViewer(input);
-
             try
             {
                 _protobufMessage = ProtobufParser.Parse(input);
@@ -100,10 +101,35 @@ namespace ProtobufDecoder.Application.WinForms
 
             foreach (var tag in _protobufMessage.Tags)
             {
-                var node = new TreeNode($"Tag {tag.Index}") { Tag = tag, Name = tag.Index.ToString() };
+                TreeNode node = null;
 
-                treeView1.Nodes.Add(node);
+                if (tag is ProtobufTagSingle)
+                {
+                    node = new TreeNode($"Tag {tag.Index}") { Tag = tag, Name = tag.Index.ToString() };
+                }
+                else if (tag is ProtobufTagRepeated repeatedTag)
+                {
+                    node = new TreeNode($"Tag {tag.Index} (repeated)") { Tag = tag, Name = tag.Index.ToString() };
+
+                    for (var index = 0; index < repeatedTag.Items.Length; index++)
+                    {
+                        var subTag = repeatedTag.Items[index];
+                        node.Nodes.Add(
+                            new TreeNode($"Instance {index + 1}")
+                            {
+                                Tag = subTag,
+                                Name = subTag.Index+"-"+index
+                            });
+                    }
+                }
+
+                if (node != null)
+                {
+                    treeView1.Nodes.Add(node);
+                }
             }
+
+            PopulateByteViewer(input);
         }
 
         private void buttonClear_Click(object sender, EventArgs e)
@@ -200,7 +226,7 @@ namespace ProtobufDecoder.Application.WinForms
             var line = 0;
             var offset = 0;
             var rows = new List<ByteViewerRow>();
-            
+
             var lineBytes = new byte[16];
 
             while (offset < input.Length)
@@ -211,22 +237,22 @@ namespace ProtobufDecoder.Application.WinForms
                     width = 16;
                 }
 
-                if(width >= 1) lineBytes[0] = input[offset + 0];
-                if(width >= 2) lineBytes[1] = input[offset + 1];
-                if(width >= 3) lineBytes[2] = input[offset + 2];
-                if(width >= 4) lineBytes[3] = input[offset + 3];
-                if(width >= 5) lineBytes[4] = input[offset + 4];
-                if(width >= 6) lineBytes[5] = input[offset + 5];
-                if(width >= 7) lineBytes[6] = input[offset + 6];
-                if(width >= 8) lineBytes[7] = input[offset + 7];
-                if(width >= 9) lineBytes[8] = input[offset + 8];
-                if(width >= 10) lineBytes[9] = input[offset + 9];
-                if(width >= 11) lineBytes[10] = input[offset + 10];
-                if(width >= 12) lineBytes[11] = input[offset + 11];
-                if(width >= 13) lineBytes[12] = input[offset + 12];
-                if(width >= 14) lineBytes[13] = input[offset + 13];
-                if(width >= 15) lineBytes[14] = input[offset + 14];
-                if(width >= 16) lineBytes[15] = input[offset + 15];
+                if (width >= 1) { lineBytes[0] = input[offset + 0]; } else { lineBytes[0] = 0; }
+                if (width >= 2) { lineBytes[1] = input[offset + 1]; } else { lineBytes[1] = 0; }
+                if (width >= 3) { lineBytes[2] = input[offset + 2]; } else { lineBytes[2] = 0; }
+                if (width >= 4) { lineBytes[3] = input[offset + 3]; } else { lineBytes[3] = 0; }
+                if (width >= 5) { lineBytes[4] = input[offset + 4]; } else { lineBytes[4] = 0; }
+                if (width >= 6) { lineBytes[5] = input[offset + 5]; } else { lineBytes[5] = 0; }
+                if (width >= 7) { lineBytes[6] = input[offset + 6]; } else { lineBytes[6] = 0; }
+                if (width >= 8) { lineBytes[7] = input[offset + 7]; } else { lineBytes[7] = 0; }
+                if (width >= 9) { lineBytes[8] = input[offset + 8]; } else { lineBytes[8] = 0; }
+                if (width >= 10) { lineBytes[9] = input[offset + 9]; } else { lineBytes[9] = 0; }
+                if (width >= 11) { lineBytes[10] = input[offset + 10]; } else { lineBytes[10] = 0; }
+                if (width >= 12) { lineBytes[11] = input[offset + 11]; } else { lineBytes[11] = 0; }
+                if (width >= 13) { lineBytes[12] = input[offset + 12]; } else { lineBytes[12] = 0; }
+                if (width >= 14) { lineBytes[13] = input[offset + 13]; } else { lineBytes[13] = 0; }
+                if (width >= 15) { lineBytes[14] = input[offset + 14]; } else { lineBytes[14] = 0; }
+                if (width >= 16) { lineBytes[15] = input[offset + 15]; } else { lineBytes[15] = 0; }
 
                 rows.Add(new ByteViewerRow(lineBytes, line));
 

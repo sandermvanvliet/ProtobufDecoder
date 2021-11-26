@@ -160,7 +160,7 @@ namespace ProtobufDecoder.Application.WinForms
             this.textBoxFilePath.Name = "textBoxFilePath";
             this.textBoxFilePath.Size = new System.Drawing.Size(561, 31);
             this.textBoxFilePath.TabIndex = 6;
-            this.textBoxFilePath.Text = "C:\\git\\temp\\zwift\\borked-concat-tolength.bin";
+            this.textBoxFilePath.Text = @"C:\git\temp\zwift\pl106.bin";// "C:\\git\\temp\\zwift\\borked-concat-tolength.bin";
             // 
             // label1
             // 
