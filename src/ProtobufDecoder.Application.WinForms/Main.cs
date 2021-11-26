@@ -109,7 +109,21 @@ namespace ProtobufDecoder.Application.WinForms
                 return;
             }
 
-            foreach (var tag in _protobufMessage.Tags)
+            var nodes = CreateTreeViewNodesFromTags(_protobufMessage.Tags);
+
+            foreach (var node in nodes)
+            {
+                treeView1.Nodes.Add(node);
+            }
+
+            PopulateByteViewer(input);
+        }
+
+        private static List<TreeNode> CreateTreeViewNodesFromTags(List<ProtobufTag> tags)
+        {
+            var nodes = new List<TreeNode>();
+
+            foreach (var tag in tags)
             {
                 TreeNode node = null;
 
@@ -135,11 +149,11 @@ namespace ProtobufDecoder.Application.WinForms
 
                 if (node != null)
                 {
-                    treeView1.Nodes.Add(node);
+                    nodes.Add(node);
                 }
             }
 
-            PopulateByteViewer(input);
+            return nodes;
         }
 
         private void buttonClear_Click(object sender, EventArgs e)
@@ -177,22 +191,33 @@ namespace ProtobufDecoder.Application.WinForms
 
                 if (singleTag == null)
                 {
-                    if (tag is ProtobufTagRepeated repeatedTag)
+                    if (tag is ProtobufTagRepeated)
                     {
-                        singleTag = repeatedTag.Items.First();
+                        // Don't show anything for a repeated tag,
+                        // only when an item for a repeated tag
+                        // is selected.
+                        return;
                     }
                 }
+                
+                var byteViewOffset = GetOffsetFor(treeView1.SelectedNode);
+                
+                var startOffset = byteViewOffset + singleTag.StartOffset;
+                var endOffset = byteViewOffset + singleTag.EndOffset;
 
-                var startRow = singleTag.StartOffset / 16;
-                var endRow = singleTag.EndOffset / 16;
+                var startRow = startOffset / 16;
+                var endRow = endOffset / 16;
+
                 // Handle case where EndOffset is a multiple of 16
                 // which causes an off-by-one error for the row index.
-                if (singleTag.EndOffset % 16 == 0)
+                if (endOffset % 16 == 0)
                 {
                     endRow -= 1;
                 }
-                var startColumn = singleTag.StartOffset % 16; // n-th byte of a row
-                var endColumn = singleTag.EndOffset % 16; // n-th byte of a row
+                
+                var startColumn = startOffset % 16; // n-th byte of a row
+                var endColumn = endOffset % 16; // n-th byte of a row
+
                 // Handle the case where the endColumn is exactly
                 // divisible by 16 which would cause byte 32 for
                 // example to highlight to column 0...
@@ -242,6 +267,31 @@ namespace ProtobufDecoder.Application.WinForms
             {
                 _isSelectingFromTreeView = false;
             }
+        }
+
+        private int GetOffsetFor(TreeNode treeNode, int offset = 0)
+        {
+            if (treeNode.Parent == null)
+            {
+                return 0;
+            }
+
+            treeNode = treeNode.Parent;
+            
+            if (treeNode.Tag is ProtobufTagSingle singleTag)
+            {
+                // Add the StartOffset of this tag
+                return singleTag.StartOffset + GetOffsetFor(treeNode, offset);
+            }
+
+            if (treeNode.Tag is ProtobufTagRepeated)
+            {
+                // Don't add any additional offset because
+                // a repeated tag is only a placeholder
+                return offset + GetOffsetFor(treeNode, offset);
+            }
+
+            return offset;
         }
 
         private void PopulateByteViewer(byte[] input)
@@ -339,24 +389,7 @@ namespace ProtobufDecoder.Application.WinForms
 
         private void buttonDecodeTag_Click(object sender, EventArgs e)
         {
-            if (treeView1.SelectedNode == null)
-            {
-                return;
-            }
-
-            var selectedNode = treeView1.SelectedNode;
-
-            if (selectedNode.Tag == null)
-            {
-                return;
-            }
-
-            byte[] input = null;
-
-            if (selectedNode.Tag is ProtobufTagSingle singleTag)
-            {
-                input = singleTag.Value.RawValue;
-            }
+            var input = GetRawBytesOfSelectedTag();
 
             if (input != null)
             {
@@ -375,6 +408,70 @@ namespace ProtobufDecoder.Application.WinForms
                         MessageBoxIcon.Error);
                 }
             }
+        }
+
+        private void buttonDecodeTagInPlace_Click(object sender, EventArgs e)
+        {
+            var input = GetRawBytesOfSelectedTag();
+
+            if (input != null)
+            {
+                try
+                {
+                    var parsedMessage = ProtobufParser.Parse(input);
+                    
+                    var nodes = CreateTreeViewNodesFromTags(parsedMessage.Tags);
+
+                    foreach (var node in nodes)
+                    {
+                        treeView1.SelectedNode.Nodes.Add(node);
+                    }
+
+                    treeView1.SelectedNode.Expand();
+                }
+                catch (Exception exception)
+                {
+                    MessageBox.Show(
+                        string.Format(Strings.FailedToDecodeTag_Text, exception.Message),
+                        Strings.FailedToDecodeTag_Caption,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private byte[] GetRawBytesOfSelectedTag()
+        {
+            if (treeView1.SelectedNode == null)
+            {
+                return null;
+            }
+
+            var selectedNode = treeView1.SelectedNode;
+
+            if (selectedNode.Tag == null)
+            {
+                return null;
+            }
+
+            byte[] input = null;
+
+            if (selectedNode.Tag is ProtobufTagSingle singleTag)
+            {
+                input = singleTag.Value.RawValue;
+            }
+
+            return input;
+        }
+
+        private void decodeInNewWindowToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            buttonDecodeTag_Click(this, e);
+        }
+
+        private void decodeInplaceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            buttonDecodeTagInPlace_Click(this, e);
         }
     }
 }

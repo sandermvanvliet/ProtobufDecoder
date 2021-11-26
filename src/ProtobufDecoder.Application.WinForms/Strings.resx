@@ -155,4 +155,10 @@
   <data name="FailedToDecodeTag_Text" xml:space="preserve">
     <value>Decoding failed because: {0}</value>
   </data>
+  <data name="ButtonDecodeInPlace" xml:space="preserve">
+    <value>Decode in-place</value>
+  </data>
+  <data name="ButtonDecodeTag" xml:space="preserve">
+    <value>Decode in new window</value>
+  </data>
 </root>

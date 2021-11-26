@@ -32,8 +32,9 @@ namespace ProtobufDecoder.Application.WinForms
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -66,12 +67,15 @@ namespace ProtobufDecoder.Application.WinForms
             this.Column14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column15 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column16 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.buttonDecodeTagInPlace = new System.Windows.Forms.Button();
             this.buttonDecodeTag = new System.Windows.Forms.Button();
+            this.contextMenuStripTreeView = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.decodeInNewWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.decodeInplaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewBytes)).BeginInit();
-            this.panel1.SuspendLayout();
+            this.contextMenuStripTreeView.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -121,10 +125,11 @@ namespace ProtobufDecoder.Application.WinForms
             this.treeView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.treeView1.ContextMenuStrip = this.contextMenuStripTreeView;
             this.treeView1.HideSelection = false;
             this.treeView1.Location = new System.Drawing.Point(12, 155);
             this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(512, 1032);
+            this.treeView1.Size = new System.Drawing.Size(512, 1082);
             this.treeView1.TabIndex = 1;
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
             // 
@@ -229,14 +234,14 @@ namespace ProtobufDecoder.Application.WinForms
             this.Column14,
             this.Column15,
             this.Column16});
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewBytes.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewBytes.DefaultCellStyle = dataGridViewCellStyle6;
             this.dataGridViewBytes.Location = new System.Drawing.Point(1129, 155);
             this.dataGridViewBytes.Name = "dataGridViewBytes";
             this.dataGridViewBytes.ReadOnly = true;
@@ -251,10 +256,10 @@ namespace ProtobufDecoder.Application.WinForms
             // columnLine
             // 
             this.columnLine.DataPropertyName = "Line";
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle1.Format = "000000";
-            this.columnLine.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            dataGridViewCellStyle5.Format = "000000";
+            this.columnLine.DefaultCellStyle = dataGridViewCellStyle5;
             this.columnLine.HeaderText = "Line";
             this.columnLine.MinimumWidth = 8;
             this.columnLine.Name = "columnLine";
@@ -406,33 +411,56 @@ namespace ProtobufDecoder.Application.WinForms
             this.Column16.ReadOnly = true;
             this.Column16.Width = 40;
             // 
-            // panel1
+            // buttonDecodeTagInPlace
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.buttonDecodeTag);
-            this.panel1.Location = new System.Drawing.Point(13, 1194);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(511, 83);
-            this.panel1.TabIndex = 10;
+            this.buttonDecodeTagInPlace.Location = new System.Drawing.Point(263, 1243);
+            this.buttonDecodeTagInPlace.Name = "buttonDecodeTagInPlace";
+            this.buttonDecodeTagInPlace.Size = new System.Drawing.Size(261, 34);
+            this.buttonDecodeTagInPlace.TabIndex = 1;
+            this.buttonDecodeTagInPlace.Text = global::ProtobufDecoder.Application.WinForms.Strings.ButtonDecodeInPlace;
+            this.buttonDecodeTagInPlace.UseVisualStyleBackColor = true;
+            this.buttonDecodeTagInPlace.Click += new System.EventHandler(this.buttonDecodeTagInPlace_Click);
             // 
             // buttonDecodeTag
             // 
-            this.buttonDecodeTag.Location = new System.Drawing.Point(5, 3);
+            this.buttonDecodeTag.Location = new System.Drawing.Point(12, 1243);
             this.buttonDecodeTag.Name = "buttonDecodeTag";
-            this.buttonDecodeTag.Size = new System.Drawing.Size(112, 34);
+            this.buttonDecodeTag.Size = new System.Drawing.Size(245, 34);
             this.buttonDecodeTag.TabIndex = 0;
-            this.buttonDecodeTag.Text = "Decode tag";
+            this.buttonDecodeTag.Text = global::ProtobufDecoder.Application.WinForms.Strings.ButtonDecodeTag;
             this.buttonDecodeTag.UseVisualStyleBackColor = true;
             this.buttonDecodeTag.Click += new System.EventHandler(this.buttonDecodeTag_Click);
+            // 
+            // contextMenuStripTreeView
+            // 
+            this.contextMenuStripTreeView.ImageScalingSize = new System.Drawing.Size(24, 24);
+            this.contextMenuStripTreeView.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.decodeInNewWindowToolStripMenuItem,
+            this.decodeInplaceToolStripMenuItem});
+            this.contextMenuStripTreeView.Name = "contextMenuStripTreeView";
+            this.contextMenuStripTreeView.Size = new System.Drawing.Size(269, 68);
+            // 
+            // decodeInNewWindowToolStripMenuItem
+            // 
+            this.decodeInNewWindowToolStripMenuItem.Name = "decodeInNewWindowToolStripMenuItem";
+            this.decodeInNewWindowToolStripMenuItem.Size = new System.Drawing.Size(268, 32);
+            this.decodeInNewWindowToolStripMenuItem.Text = "Decode in new window";
+            this.decodeInNewWindowToolStripMenuItem.Click += new System.EventHandler(this.decodeInNewWindowToolStripMenuItem_Click);
+            // 
+            // decodeInplaceToolStripMenuItem
+            // 
+            this.decodeInplaceToolStripMenuItem.Name = "decodeInplaceToolStripMenuItem";
+            this.decodeInplaceToolStripMenuItem.Size = new System.Drawing.Size(268, 32);
+            this.decodeInplaceToolStripMenuItem.Text = "Decode in-place";
+            this.decodeInplaceToolStripMenuItem.Click += new System.EventHandler(this.decodeInplaceToolStripMenuItem_Click);
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1947, 1289);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.buttonDecodeTagInPlace);
+            this.Controls.Add(this.buttonDecodeTag);
             this.Controls.Add(this.dataGridViewBytes);
             this.Controls.Add(this.propertyGridTag);
             this.Controls.Add(this.buttonClear);
@@ -448,7 +476,7 @@ namespace ProtobufDecoder.Application.WinForms
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewBytes)).EndInit();
-            this.panel1.ResumeLayout(false);
+            this.contextMenuStripTreeView.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -488,8 +516,11 @@ namespace ProtobufDecoder.Application.WinForms
         private System.Windows.Forms.DataGridViewTextBoxColumn Column14;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column15;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column16;
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button buttonDecodeTag;
+        private System.Windows.Forms.Button buttonDecodeTagInPlace;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripTreeView;
+        private System.Windows.Forms.ToolStripMenuItem decodeInNewWindowToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem decodeInplaceToolStripMenuItem;
     }
 }
 

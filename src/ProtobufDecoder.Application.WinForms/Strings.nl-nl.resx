@@ -68,4 +68,10 @@
   <data name="FailedToDecodeTag_Caption" xml:space="preserve">
     <value>Decoderen van de tag is mislukt</value>
   </data>
+  <data name="ButtonDecodeInPlace" xml:space="preserve">
+    <value>Analyseren in dit venster</value>
+  </data>
+  <data name="ButtonDecodeTag" xml:space="preserve">
+    <value>Analyseren in nieuw venster</value>
+  </data>
 </root>

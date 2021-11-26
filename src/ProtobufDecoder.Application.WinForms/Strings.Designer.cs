@@ -97,6 +97,24 @@ namespace ProtobufDecoder.Application.WinForms {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Decode in-place.
+        /// </summary>
+        internal static string ButtonDecodeInPlace {
+            get {
+                return ResourceManager.GetString("ButtonDecodeInPlace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Decode in new window.
+        /// </summary>
+        internal static string ButtonDecodeTag {
+            get {
+                return ResourceManager.GetString("ButtonDecodeTag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed to decode tag value.
         /// </summary>
         internal static string FailedToDecodeTag_Caption {
