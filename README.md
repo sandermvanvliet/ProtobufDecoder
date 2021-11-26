@@ -13,7 +13,7 @@ It can be used for _reverse engineering_ but bear in mind that this may not be l
   - Contents (raw bytes, values) 
 - Display the location and size of a specific tag in the binary payload (select a tag in the tree view and it highlights the bytes)
 
-
+![animated application demo](./app-demo.gif)
 
 ## Todo
 
