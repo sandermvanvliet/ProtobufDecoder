@@ -96,25 +96,9 @@ namespace ProtobufDecoder
             return input.Item2;
         }
 
-        public object As<TValue>()
+        public int AsUInt32()
         {
-            switch (typeof(TValue).Name)
-            {
-                case "Int16":
-                    return Convert.ToInt16(DecodeZigZag(ToTarget(_varintBytes, 16)).Item1.Value);
-                case "Int32":
-                    return Convert.ToInt32(DecodeZigZag(ToTarget(_varintBytes, 32)).Item1.Value);
-                case "Int64":
-                    return Convert.ToInt64(DecodeZigZag(ToTarget(_varintBytes, 64)).Item1.Value);
-                case "UInt16":
-                    return Convert.ToUInt16(ToTarget(_varintBytes, 16).Item1.Value);
-                case "UInt32":
-                    return Convert.ToUInt32(ToTarget(_varintBytes, 32).Item1.Value);
-                case "UInt64":
-                    return Convert.ToUInt64(ToTarget(_varintBytes, 64).Item1.Value);
-            }
-
-            throw new InvalidOperationException($"{typeof(TValue).Name} is not supported");
+            return Convert.ToInt32(ToTarget(_varintBytes, 32).Item1.Value);
         }
 
         // Decoding code below copied from here https://github.com/topas/VarintBitConverter/blob/b84ee7c953ff98b2043a2e58aa32624ff949bd43/src/VarintBitConverter/VarintBitConverter.cs#L185

@@ -124,7 +124,7 @@ namespace ProtobufDecoder
 
             index += parsedLength.Length;
 
-            var valueLength = (int)(uint)parsedLength.Value.As<uint>();
+            var valueLength = parsedLength.Value.AsUInt32();
 
             var fixedBytes = input.Slice(index, valueLength);
 

@@ -154,13 +154,8 @@ namespace ProtobufDecoder.Test.Unit
                 .Items
                 .Should()
                 .AllBeOfType<ProtobufTagSingle>()
-                .Which
-                .First()
-                .Value
-                .As<VarintValue>()
-                .As<uint>()
-                .Should()
-                .Be(3);
+                .And
+                .OnlyContain(t => ((VarintValue)t.Value).AsUInt32() == 3);
         }
     }
 }
