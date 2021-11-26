@@ -74,6 +74,11 @@ namespace ProtobufDecoder
             }
             catch (InvalidOperationException)
             {
+                // We terminate parsing on an InvalidOperationException so
+                // we don't know where the currently parsed tag ends.
+                // Therefore mark it as the end of the payload because we
+                // can't do better.
+                protobufMessage.Tags.Last().EndOffset = input.Length;
             }
 
             // Do some special magic to handle repeated fields.
@@ -126,12 +131,12 @@ namespace ProtobufDecoder
 
         private static ParseResult<Fixed32Value> ParseFixed32(ReadOnlySpan<byte> input, int index)
         {
-            var fixedBytes = input.Slice(index, 4).ToArray();
-
-            if (fixedBytes.Length != 4)
+            if (index + 4 > input.Length)
             {
-                throw new InvalidOperationException($"Expected 4 bytes but got {fixedBytes.Length}");
+                throw new InvalidOperationException($"Expected 4 bytes but got {input.Length - (index + 4)}");
             }
+
+            var fixedBytes = input.Slice(index, 4).ToArray();
 
             return new ParseResult<Fixed32Value>
             {

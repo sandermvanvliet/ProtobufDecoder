@@ -131,6 +131,13 @@ namespace ProtobufDecoder.Application.WinForms
                 propertyGridTag.SelectedObject = tag;
                 propertyGridTag.Update();
 
+                if (tag == null)
+                {
+                    // There is no selected node and therefore
+                    // also no ProtobufTag to do anything with.
+                    return;
+                }
+
                 var startRow = tag.StartOffset / 16;
                 var endRow = tag.EndOffset / 16;
                 var startColumn = tag.StartOffset % 16; // n-th byte of a row
@@ -143,7 +150,7 @@ namespace ProtobufDecoder.Application.WinForms
                     if (rowIndex == startRow)
                     {
                         // Start row
-                        var end = startRow == endRow ? endColumn : 16;
+                        var end = startRow == endRow ? endColumn : 15;
                         for (var columnIndex = startColumn; columnIndex <= end; columnIndex++)
                         {
                             dataGridViewBytes[columnIndex + 1, rowIndex].Selected = true;
@@ -163,7 +170,7 @@ namespace ProtobufDecoder.Application.WinForms
                     else
                     {
                         // Middle row
-                        for (var columnIndex = 0; columnIndex <= 16; columnIndex++)
+                        for (var columnIndex = 0; columnIndex <= 15; columnIndex++)
                         {
                             dataGridViewBytes[columnIndex + 1, rowIndex].Selected = true;
                         }
@@ -251,12 +258,22 @@ namespace ProtobufDecoder.Application.WinForms
                     tag.StartOffset <= selectedOffset &&
                     tag.EndOffset >= selectedOffset);
 
-            if (tag == null)
+            TreeNode nodeToSelect = null;
+
+            if (tag != null)
             {
-                return;
+                nodeToSelect = treeView1.Nodes.Find(tag.Index.ToString(), false).First();
             }
 
-            treeView1.SelectedNode = treeView1.Nodes.Find(tag.Index.ToString(), false).First();
+            if (treeView1.SelectedNode == nodeToSelect)
+            {
+                // We need to re-highlight on the DataGridView now
+                treeView1_AfterSelect(treeView1, new TreeViewEventArgs(nodeToSelect, TreeViewAction.Unknown));
+            }
+            else
+            {
+                treeView1.SelectedNode = nodeToSelect;
+            }
         }
     }
 }
