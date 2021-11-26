@@ -33,7 +33,8 @@ namespace ProtobufDecoder
                     {
                         Index = WireFormat.GetTagFieldNumber(input[index]),
                         WireType = WireFormat.GetTagWireType(input[index]),
-                        StartOffset = index
+                        StartOffset = index,
+                        TagOffset = index
                     };
 
                     protobufTags.Add(tag);
@@ -47,17 +48,23 @@ namespace ProtobufDecoder
                             var parseResult = ParseVarint(input, index);
                             index += parseResult.Length;
                             tag.Value = parseResult.Value;
+                            tag.DataOffset = parseResult.DataOffset;
+                            tag.DataLength = parseResult.Length;
                             break;
                         }
                         case WireFormat.WireType.Fixed64:
                             var parseResultF = ParseFixed64(input, index);
                             index += parseResultF.Length;
                             tag.Value = parseResultF.Value;
+                            tag.DataOffset = parseResultF.DataOffset;
+                            tag.DataLength = parseResultF.Length;
                             break;
                         case WireFormat.WireType.LengthDelimited:
                             var parseResultL = ParseLengthDelimited(input, index);
                             index += parseResultL.Length;
                             tag.Value = parseResultL.Value;
+                            tag.DataOffset = parseResultL.DataOffset;
+                            tag.DataLength = parseResultL.Length;
                             break;
                         case WireFormat.WireType.StartGroup:
                             break;
@@ -67,6 +74,8 @@ namespace ProtobufDecoder
                             var parseResultF32 = ParseFixed32(input, index);
                             index += parseResultF32.Length;
                             tag.Value = parseResultF32.Value;
+                            tag.DataOffset = parseResultF32.DataOffset;
+                            tag.DataLength = parseResultF32.Length;
                             break;
                         default:
                             throw new InvalidOperationException($"Invalid wire type {input[index]}");
@@ -131,7 +140,8 @@ namespace ProtobufDecoder
             return new ParseResult<LengthDelimitedValue>
             {
                 Length = parsedLength.Length + valueLength, // The number of bytes for the length value + the length of the value itself
-                Value = new LengthDelimitedValue(fixedBytes.ToArray())
+                Value = new LengthDelimitedValue(fixedBytes.ToArray()),
+                DataOffset = index
             };
         }
 
@@ -147,7 +157,8 @@ namespace ProtobufDecoder
             return new ParseResult<Fixed32Value>
             {
                 Length = 4,
-                Value = new Fixed32Value(fixedBytes)
+                Value = new Fixed32Value(fixedBytes),
+                DataOffset = index
             };
         }
 
@@ -163,7 +174,8 @@ namespace ProtobufDecoder
             return new ParseResult<Fixed64Value>
             {
                 Length = 8,
-                Value = new Fixed64Value(fixedBytes)
+                Value = new Fixed64Value(fixedBytes),
+                DataOffset = index
             };
         }
 
@@ -198,6 +210,7 @@ namespace ProtobufDecoder
             {
                 Length = varintBytes.Length,
                 Value = new VarintValue(varintBytes),
+                DataOffset = index
             };
         }
     }
