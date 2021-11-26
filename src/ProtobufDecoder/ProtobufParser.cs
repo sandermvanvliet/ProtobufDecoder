@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.Linq;
 using Google.Protobuf;
 
@@ -7,7 +6,7 @@ namespace ProtobufDecoder
 {
     public class ProtobufParser
     {
-        public static ProtobufMessage Parse(byte[] input)
+        public static ProtobufMessage Parse(ReadOnlySpan<byte> input)
         {
             if (input == null)
             {
@@ -73,9 +72,8 @@ namespace ProtobufDecoder
                     tag.EndOffset = index - 1; // Subtract 1 because index is pointing at the start byte of the tag after the current one
                 }
             }
-            catch (InvalidOperationException e)
+            catch (InvalidOperationException)
             {
-                //Debugger.Break();
             }
 
             // Do some special magic to handle repeated fields.
@@ -110,25 +108,25 @@ namespace ProtobufDecoder
             return protobufMessage;
         }
 
-        private static ParseResult<LengthDelimitedValue> ParseLengthDelimited(byte[] input, int index)
+        private static ParseResult<LengthDelimitedValue> ParseLengthDelimited(ReadOnlySpan<byte> input, int index)
         {
             // Length-delimited tags are <tag number>|<varint length>|<data>
             var parsedLength = ParseVarint(input, index);
 
             index += parsedLength.Length;
 
-            var fixedBytes = input.Skip(index).Take(parsedLength.Value.Value).ToArray();
+            var fixedBytes = input.Slice(index, parsedLength.Value.Value);
 
             return new ParseResult<LengthDelimitedValue>
             {
                 Length = parsedLength.Length + parsedLength.Value.Value,
-                Value = new LengthDelimitedValue(fixedBytes)
+                Value = new LengthDelimitedValue(fixedBytes.ToArray())
             };
         }
 
-        private static ParseResult<Fixed32Value> ParseFixed32(byte[] input, int index)
+        private static ParseResult<Fixed32Value> ParseFixed32(ReadOnlySpan<byte> input, int index)
         {
-            var fixedBytes = input.Skip(index).Take(4).ToArray();
+            var fixedBytes = input.Slice(index, 4).ToArray();
 
             if (fixedBytes.Length != 4)
             {
@@ -142,9 +140,9 @@ namespace ProtobufDecoder
             };
         }
 
-        private static ParseResult<Fixed64Value> ParseFixed64(byte[] input, int index)
+        private static ParseResult<Fixed64Value> ParseFixed64(ReadOnlySpan<byte> input, int index)
         {
-            var fixedBytes = input.Skip(index).Take(8).ToArray();
+            var fixedBytes = input.Slice(index, 8).ToArray();
 
             if (fixedBytes.Length != 8)
             {
@@ -158,16 +156,16 @@ namespace ProtobufDecoder
             };
         }
 
-        private static ParseResult<ProtobufValue<int>> ParseVarint(byte[] input, int index)
+        private static ParseResult<ProtobufValue<int>> ParseVarint(ReadOnlySpan<byte> input, int index)
         {
             var length = 0;
 
             while (true)
             {
+                var b = input[index + length];
+                
                 // Check if MSB is set, according to https://developers.google.com/protocol-buffers/docs/encoding#varints
                 // the byte with MSB set indicates the last byte of a Base 128 Varint.
-                var b = input[index + length];
-
                 if ((b & 0x80) == 0)
                 {
                     break;
@@ -183,12 +181,7 @@ namespace ProtobufDecoder
 
             length += 1;
 
-            var varintBytes = new byte[length];
-
-            for (var i = 0; i < length; i++)
-            {
-                varintBytes[i] = input[index + i];
-            }
+            var varintBytes = input.Slice(index, length).ToArray();
 
             return new ParseResult<ProtobufValue<int>>
             {
