@@ -137,10 +137,20 @@ namespace ProtobufDecoder.Application.WinForms
                     return;
                 }
 
-                var startRow = tag.StartOffset / 16;
-                var endRow = tag.EndOffset / 16;
-                var startColumn = tag.StartOffset % 16; // n-th byte of a row
-                var endColumn = tag.EndOffset % 16; // n-th byte of a row
+                var singleTag = tag as ProtobufTagSingle;
+
+                if (singleTag == null)
+                {
+                    if (tag is ProtobufTagRepeated repeatedTag)
+                    {
+                        singleTag = repeatedTag.Items.First();
+                    }
+                }
+
+                var startRow = singleTag.StartOffset / 16;
+                var endRow = singleTag.EndOffset / 16;
+                var startColumn = singleTag.StartOffset % 16; // n-th byte of a row
+                var endColumn = singleTag.EndOffset % 16; // n-th byte of a row
 
                 dataGridViewBytes.ClearSelection();
 
@@ -253,6 +263,7 @@ namespace ProtobufDecoder.Application.WinForms
 
             var tag = _protobufMessage
                 .Tags
+                .OfType<ProtobufTagSingle>() // This breaks repeated tags for now but hey..
                 .FirstOrDefault(tag =>
                     tag.StartOffset <= selectedOffset &&
                     tag.EndOffset >= selectedOffset);

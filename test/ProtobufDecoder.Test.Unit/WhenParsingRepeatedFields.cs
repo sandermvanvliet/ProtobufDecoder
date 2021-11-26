@@ -45,7 +45,7 @@ namespace ProtobufDecoder.Test.Unit
         }
 
         [Fact]
-        public void RepeatedLengthDelimited_ValueIsOfTypeRepeated()
+        public void RepeatedLengthDelimited_TagIsARepeatedTag()
         {
             var input = new byte[] { 0x0a, 0x01, 0x03, 0x0a, 0x01, 0x03, 0x0a, 0x01, 0x03 };
 
@@ -54,11 +54,11 @@ namespace ProtobufDecoder.Test.Unit
             message
                 .Tags
                 .Should()
-                .OnlyContain(t => t.Value is RepeatedValue);
+                .AllBeOfType<ProtobufTagRepeated>();
         }
 
         [Fact]
-        public void RepeatedLengthDelimited_ValueIsOfTypeRepeatedWithThreeValues()
+        public void RepeatedLengthDelimited_TagHasThreeItems()
         {
             var input = new byte[] { 0x0a, 0x01, 0x03, 0x0a, 0x01, 0x03, 0x0a, 0x01, 0x03 };
 
@@ -67,11 +67,49 @@ namespace ProtobufDecoder.Test.Unit
             message
                 .Tags
                 .Single()
-                .Value
-                .As<RepeatedValue>()
-                .Value
+                .As<ProtobufTagRepeated>()
+                .Items
                 .Should()
                 .HaveCount(3);
+        }
+
+        [Fact]
+        public void RepeatedLengthDelimited_ItemsSingleTags()
+        {
+            var input = new byte[] { 0x0a, 0x01, 0x03, 0x0a, 0x01, 0x03, 0x0a, 0x01, 0x03 };
+
+            var message = ProtobufParser.Parse(input);
+
+            message
+                .Tags
+                .Single()
+                .As<ProtobufTagRepeated>()
+                .Items
+                .Should()
+                .AllBeOfType<ProtobufTagSingle>();
+        }
+
+        [Fact]
+        public void RepeatedLengthDelimited_ItemInstanceHasVarintValueOf3()
+        {
+            var input = new byte[] { 0x0a, 0x01, 0x03, 0x0a, 0x01, 0x03, 0x0a, 0x01, 0x03 };
+
+            var message = ProtobufParser.Parse(input);
+
+            message
+                .Tags
+                .Single()
+                .As<ProtobufTagRepeated>()
+                .Items
+                .Should()
+                .AllBeOfType<ProtobufTagSingle>()
+                .Which
+                .First()
+                .Value
+                .As<LengthDelimitedValue>()
+                .Value
+                .Should()
+                .BeEquivalentTo(new byte[] { 0x3 });
         }
 
         [Fact]
@@ -103,20 +141,7 @@ namespace ProtobufDecoder.Test.Unit
         }
 
         [Fact]
-        public void RepeatedVarints_ValueIsOfTypeRepeated()
-        {
-            var input = new byte[] { 0x08, 0x03, 0x08, 0x03, 0x08, 0x03 };
-
-            var message = ProtobufParser.Parse(input);
-
-            message
-                .Tags
-                .Should()
-                .OnlyContain(t => t.Value is RepeatedValue);
-        }
-
-        [Fact]
-        public void RepeatedVarints_ValueIsOfTypeRepeatedWithThreeValues()
+        public void RepeatedVarint_ItemInstanceHasVarintValueOf3()
         {
             var input = new byte[] { 0x08, 0x03, 0x08, 0x03, 0x08, 0x03 };
 
@@ -125,13 +150,17 @@ namespace ProtobufDecoder.Test.Unit
             message
                 .Tags
                 .Single()
+                .As<ProtobufTagRepeated>()
+                .Items
+                .Should()
+                .AllBeOfType<ProtobufTagSingle>()
+                .Which
+                .First()
                 .Value
-                .As<RepeatedValue>()
+                .As<VarintValue>()
                 .Value
                 .Should()
-                .OnlyContain(v => v is VarintValue)
-                .And
-                .OnlyContain(v => ((VarintValue)v).Value == 3);
+                .Be(3);
         }
     }
 }

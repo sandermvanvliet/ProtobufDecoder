@@ -50,6 +50,7 @@ namespace ProtobufDecoder.Test.Unit
 
             message
                 .Tags
+                .OfType<ProtobufTagSingle>()
                 .Should()
                 .OnlyContain(t => t.Value is LengthDelimitedValue);
         }
@@ -63,6 +64,7 @@ namespace ProtobufDecoder.Test.Unit
 
             message
                 .Tags
+                .OfType<ProtobufTagSingle>()
                 .Single()
                 .Value
                 .As<LengthDelimitedValue>()

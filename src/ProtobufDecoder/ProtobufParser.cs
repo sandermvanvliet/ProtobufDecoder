@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Google.Protobuf;
 
@@ -20,20 +21,22 @@ namespace ProtobufDecoder
                 return protobufMessage;
             }
 
+            var protobufTags = new List<ProtobufTagSingle>();
+
             try
             {
                 var index = 0;
 
                 while (index < input.Length)
                 {
-                    var tag = new ProtobufTag
+                    var tag = new ProtobufTagSingle
                     {
                         Index = WireFormat.GetTagFieldNumber(input[index]),
                         WireType = WireFormat.GetTagWireType(input[index]),
                         StartOffset = index
                     };
 
-                    protobufMessage.Tags.Add(tag);
+                    protobufTags.Add(tag);
 
                     index += 1; // This is the tag + wire type byte
 
@@ -78,7 +81,7 @@ namespace ProtobufDecoder
                 // we don't know where the currently parsed tag ends.
                 // Therefore mark it as the end of the payload because we
                 // can't do better.
-                protobufMessage.Tags.Last().EndOffset = input.Length;
+                protobufTags.Last().EndOffset = input.Length;
             }
 
             // Do some special magic to handle repeated fields.
@@ -86,23 +89,24 @@ namespace ProtobufDecoder
             // one occurrence for the same tag.
             // Note: Non-packed repeated tags can appear anywhere in the byte
             //       stream so this grouping destroys the offsets....
-            var groupedTags = protobufMessage
-                .Tags
-                .GroupBy(tag => tag.Index,
+            var groupedTags = protobufTags
+                .GroupBy<ProtobufTagSingle, int, ProtobufTagSingle, ProtobufTag>(
+                    tag => tag.Index,
                     tag => tag,
                     (key, values) =>
                     {
+                        if (values.Count() == 1)
+                        {
+                            return values.First();
+                        }
+
                         var firstTag = values.First();
 
-                        return new ProtobufTag
+                        return new ProtobufTagRepeated
                         {
                             Index = key,
                             WireType = firstTag.WireType,
-                            Value = values.Count() > 1
-                                ? new RepeatedValue(values.Select(v => v.Value))
-                                : firstTag.Value,
-                            StartOffset = firstTag.StartOffset,
-                            EndOffset = firstTag.EndOffset
+                            Items = values.ToArray()
                         };
                     })
                 .ToList();

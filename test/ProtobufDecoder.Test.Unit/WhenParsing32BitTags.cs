@@ -43,6 +43,7 @@ namespace ProtobufDecoder.Test.Unit
 
             message
                 .Tags
+                .OfType<ProtobufTagSingle>()
                 .Should()
                 .OnlyContain(t => t.Value is Fixed32Value);
         }
@@ -56,6 +57,7 @@ namespace ProtobufDecoder.Test.Unit
 
             message
                 .Tags
+                .OfType<ProtobufTagSingle>()
                 .Single()
                 .Value
                 .As<Fixed32Value>()
@@ -88,6 +90,7 @@ namespace ProtobufDecoder.Test.Unit
 
             message
                 .Tags
+                .OfType<ProtobufTagSingle>()
                 .Single(t => t.Index == 2)
                 .Value
                 .As<Fixed32Value>()

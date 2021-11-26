@@ -1,3 +1,4 @@
+using System.Linq;
 using FluentAssertions;
 using Google.Protobuf;
 using Xunit;
@@ -42,6 +43,7 @@ namespace ProtobufDecoder.Test.Unit
 
             message
                 .Tags
+                .OfType<ProtobufTagSingle>()
                 .Should()
                 .OnlyContain(t => t.Value is VarintValue);
         }
@@ -55,6 +57,7 @@ namespace ProtobufDecoder.Test.Unit
 
             message
                 .Tags
+                .OfType<ProtobufTagSingle>()
                 .Should()
                 .OnlyContain(t => ((VarintValue)t.Value).Value == 150);
         }
@@ -83,6 +86,7 @@ namespace ProtobufDecoder.Test.Unit
 
             message
                 .Tags
+                .OfType<ProtobufTagSingle>()
                 .Should()
                 .Contain(t => t.Index == 2 && t.WireType == WireFormat.WireType.Varint && ((VarintValue)t.Value).Value == 1);
         }

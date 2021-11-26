@@ -1,3 +1,4 @@
+using System.Linq;
 using FluentAssertions;
 using Google.Protobuf;
 using Xunit;
@@ -42,6 +43,7 @@ namespace ProtobufDecoder.Test.Unit
 
             message
                 .Tags
+                .OfType<ProtobufTagSingle>()
                 .Should()
                 .OnlyContain(t => t.Value is LengthDelimitedValue);
         }
@@ -55,6 +57,7 @@ namespace ProtobufDecoder.Test.Unit
 
             message
                 .Tags
+                .OfType<ProtobufTagSingle>()
                 .Should()
                 .OnlyContain(t => ((LengthDelimitedValue)t.Value).StringRepresentation == "testing");
         }
@@ -83,6 +86,7 @@ namespace ProtobufDecoder.Test.Unit
 
             message
                 .Tags
+                .OfType<ProtobufTagSingle>()
                 .Should()
                 .Contain(t => t.Index == 2 && t.WireType == WireFormat.WireType.LengthDelimited && ((LengthDelimitedValue)t.Value).StringRepresentation == "testing");
         }

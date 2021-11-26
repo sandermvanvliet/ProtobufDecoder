@@ -3,7 +3,7 @@ using Google.Protobuf;
 
 namespace ProtobufDecoder
 {
-    public class ProtobufTag
+    public abstract class ProtobufTag
     {
         [Browsable(true)]
         [Description("The Protobuf wire type")]
@@ -15,7 +15,10 @@ namespace ProtobufDecoder
         [DisplayName("Tag number")]
         [ReadOnly(true)]
         public int Index { get; set; }
+    }
 
+    public class ProtobufTagSingle : ProtobufTag
+    {
         [Browsable(true)]
         [Description("The value of this tag")]
         [ReadOnly(true)]
@@ -31,5 +34,13 @@ namespace ProtobufDecoder
         [Description("Position in the byte stream where this tag ends")]
         [ReadOnly(true)]
         public int EndOffset { get; set; }
+    }
+
+    public class ProtobufTagRepeated : ProtobufTag
+    {
+        [Browsable(true)]
+        [Description("The instances of this tag in the payload")]
+        [ReadOnly(true)]
+        public ProtobufTagSingle[] Items { get; set; }
     }
 }
