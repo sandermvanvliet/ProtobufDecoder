@@ -1,5 +1,6 @@
 ﻿
 using System.ComponentModel.Design;
+using System.Drawing;
 
 namespace ProtobufDecoder.Application.WinForms
 {
@@ -88,13 +89,13 @@ namespace ProtobufDecoder.Application.WinForms
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(54, 29);
-            this.fileToolStripMenuItem.Text = "&File";
+            this.fileToolStripMenuItem.Text = Strings.MenuFile;
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(141, 34);
-            this.exitToolStripMenuItem.Text = "E&xit";
+            this.exitToolStripMenuItem.Text = Strings.MenuFileExit;
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
@@ -103,13 +104,13 @@ namespace ProtobufDecoder.Application.WinForms
             this.aboutProtobufDecoderToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(65, 29);
-            this.helpToolStripMenuItem.Text = "&Help";
+            this.helpToolStripMenuItem.Text = Strings.MenuHelp;
             // 
             // aboutProtobufDecoderToolStripMenuItem
             // 
             this.aboutProtobufDecoderToolStripMenuItem.Name = "aboutProtobufDecoderToolStripMenuItem";
             this.aboutProtobufDecoderToolStripMenuItem.Size = new System.Drawing.Size(312, 34);
-            this.aboutProtobufDecoderToolStripMenuItem.Text = "&About Protobuf Decoder";
+            this.aboutProtobufDecoderToolStripMenuItem.Text = Strings.MenuHelpAbout;
             this.aboutProtobufDecoderToolStripMenuItem.Click += new System.EventHandler(this.aboutProtobufDecoderToolStripMenuItem_Click);
             // 
             // treeView1
@@ -141,7 +142,7 @@ namespace ProtobufDecoder.Application.WinForms
             this.groupBox1.Size = new System.Drawing.Size(1923, 73);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Input";
+            this.groupBox1.Text = Strings.InputCaption;
             // 
             // buttonBrowse
             // 
@@ -168,7 +169,8 @@ namespace ProtobufDecoder.Application.WinForms
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(210, 25);
             this.label1.TabIndex = 5;
-            this.label1.Text = "Protobuf binary payload:";
+            this.label1.TextAlign = ContentAlignment.MiddleRight;
+            this.label1.Text = Strings.InputSourcePath;
             // 
             // buttonDecode
             // 
@@ -176,7 +178,7 @@ namespace ProtobufDecoder.Application.WinForms
             this.buttonDecode.Name = "buttonDecode";
             this.buttonDecode.Size = new System.Drawing.Size(112, 34);
             this.buttonDecode.TabIndex = 6;
-            this.buttonDecode.Text = "Decode";
+            this.buttonDecode.Text = Strings.ButtonDecode;
             this.buttonDecode.UseVisualStyleBackColor = true;
             this.buttonDecode.Click += new System.EventHandler(this.buttonDecode_Click);
             // 
@@ -186,7 +188,7 @@ namespace ProtobufDecoder.Application.WinForms
             this.buttonClear.Name = "buttonClear";
             this.buttonClear.Size = new System.Drawing.Size(112, 34);
             this.buttonClear.TabIndex = 7;
-            this.buttonClear.Text = "Clear";
+            this.buttonClear.Text = Strings.ButtonClear;
             this.buttonClear.UseVisualStyleBackColor = true;
             this.buttonClear.Click += new System.EventHandler(this.buttonClear_Click);
             // 

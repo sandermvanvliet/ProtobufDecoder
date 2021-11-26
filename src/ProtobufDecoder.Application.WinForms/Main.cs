@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -46,8 +45,8 @@ namespace ProtobufDecoder.Application.WinForms
             if (string.IsNullOrEmpty(inputFilePath))
             {
                 MessageBox.Show(
-                    "Please select a file to decode",
-                    "No input file selected",
+                    Strings.NoInputSelected_Text,
+                    Strings.NoInputSelected_Caption,
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
 
@@ -57,8 +56,8 @@ namespace ProtobufDecoder.Application.WinForms
             if (!File.Exists(inputFilePath))
             {
                 MessageBox.Show(
-                    "Please check the path to the input file",
-                    "Input file does not exist",
+                    Strings.InputFileDoesNotExist_Text,
+                    Strings.FailedToReadInput_Caption,
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
 
@@ -74,8 +73,8 @@ namespace ProtobufDecoder.Application.WinForms
             catch (IOException ioException)
             {
                 MessageBox.Show(
-                    $"Reading the input file failed because: {ioException.Message}",
-                    "Failed to read input file",
+                    string.Format(Strings.FailedToReadInput_Text, ioException.Message),
+                    Strings.FailedToReadInput_Caption,
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
 
@@ -91,8 +90,8 @@ namespace ProtobufDecoder.Application.WinForms
             catch (Exception exception)
             {
                 MessageBox.Show(
-                    $"Parsing the input file failed because: {exception.Message}",
-                    "Failed to parse input file",
+                    string.Format(Strings.FailedToParseInput_Text, exception.Message),
+                    Strings.FailedToParseInput_Caption,
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
 

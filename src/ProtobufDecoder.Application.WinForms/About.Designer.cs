@@ -43,7 +43,7 @@ namespace ProtobufDecoder.Application.WinForms
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(74, 25);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Version:";
+            this.label1.Text = Strings.AboutVersion;
             // 
             // labelAppVersion
             // 
@@ -101,7 +101,7 @@ namespace ProtobufDecoder.Application.WinForms
             this.MaximumSize = new System.Drawing.Size(591, 217);
             this.MinimumSize = new System.Drawing.Size(591, 217);
             this.Name = "About";
-            this.Text = "About Protobuf Decoder";
+            this.Text = Strings.AboutTitle;
             this.ResumeLayout(false);
             this.PerformLayout();
 

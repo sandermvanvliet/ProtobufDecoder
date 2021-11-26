@@ -1,0 +1,65 @@
+﻿<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="FailedToParseInput_Caption" xml:space="preserve">
+    <value>Lezen van bronbestand is mislukt</value>
+  </data>
+  <data name="FailedToParseInput_Text" xml:space="preserve">
+    <value>Lezen van het bronbestand is mislukt omdat: {0}</value>
+  </data>
+  <data name="FailedToReadInput_Caption" xml:space="preserve">
+    <value>Lezen van bronbestand is mislukt</value>
+  </data>
+  <data name="FailedToReadInput_Text" xml:space="preserve">
+    <value>Lezen van het bronbestand is mislukt omdat: {0}</value>
+  </data>
+  <data name="InputFileDoesNotExist_Text" xml:space="preserve">
+    <value>Controleer het pad naar het bronbestand</value>
+  </data>
+  <data name="NoInputSelected_Caption" xml:space="preserve">
+    <value>Geen bronbestand geselecteerd</value>
+  </data>
+  <data name="NoInputSelected_Text" xml:space="preserve">
+    <value>Selecteer een bronbestand om in te lezen</value>
+  </data>
+  <data name="MenuFile" xml:space="preserve">
+    <value>&amp;Bestand</value>
+  </data>
+  <data name="MenuHelp" xml:space="preserve">
+    <value>&amp;Help</value>
+  </data>
+  <data name="MenuFileExit" xml:space="preserve">
+    <value>&amp;Afsluiten</value>
+  </data>
+  <data name="MenuHelpAbout" xml:space="preserve">
+    <value>&amp;Over</value>
+  </data>
+  <data name="ButtonDecode" xml:space="preserve">
+    <value>Inlezen</value>
+  </data>
+  <data name="ButtonClear" xml:space="preserve">
+    <value>Wissen</value>
+  </data>
+  <data name="InputSourcePath" xml:space="preserve">
+    <value>Bronbestand:</value>
+  </data>
+  <data name="InputCaption" xml:space="preserve">
+    <value>Parameters</value>
+  </data>
+  <data name="AboutVersion" xml:space="preserve">
+    <value>Versie:</value>
+  </data>
+  <data name="AboutTitle" xml:space="preserve">
+    <value>Over Protobuf Decoder</value>
+  </data>
+</root>
