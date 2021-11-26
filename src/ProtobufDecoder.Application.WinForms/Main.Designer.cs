@@ -66,9 +66,12 @@ namespace ProtobufDecoder.Application.WinForms
             this.Column14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column15 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column16 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.buttonDecodeTag = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewBytes)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -89,13 +92,13 @@ namespace ProtobufDecoder.Application.WinForms
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(54, 29);
-            this.fileToolStripMenuItem.Text = Strings.MenuFile;
+            this.fileToolStripMenuItem.Text = global::ProtobufDecoder.Application.WinForms.Strings.MenuFile;
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(141, 34);
-            this.exitToolStripMenuItem.Text = Strings.MenuFileExit;
+            this.exitToolStripMenuItem.Text = global::ProtobufDecoder.Application.WinForms.Strings.MenuFileExit;
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
@@ -104,13 +107,13 @@ namespace ProtobufDecoder.Application.WinForms
             this.aboutProtobufDecoderToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(65, 29);
-            this.helpToolStripMenuItem.Text = Strings.MenuHelp;
+            this.helpToolStripMenuItem.Text = global::ProtobufDecoder.Application.WinForms.Strings.MenuHelp;
             // 
             // aboutProtobufDecoderToolStripMenuItem
             // 
             this.aboutProtobufDecoderToolStripMenuItem.Name = "aboutProtobufDecoderToolStripMenuItem";
-            this.aboutProtobufDecoderToolStripMenuItem.Size = new System.Drawing.Size(312, 34);
-            this.aboutProtobufDecoderToolStripMenuItem.Text = Strings.MenuHelpAbout;
+            this.aboutProtobufDecoderToolStripMenuItem.Size = new System.Drawing.Size(164, 34);
+            this.aboutProtobufDecoderToolStripMenuItem.Text = global::ProtobufDecoder.Application.WinForms.Strings.MenuHelpAbout;
             this.aboutProtobufDecoderToolStripMenuItem.Click += new System.EventHandler(this.aboutProtobufDecoderToolStripMenuItem_Click);
             // 
             // treeView1
@@ -121,7 +124,7 @@ namespace ProtobufDecoder.Application.WinForms
             this.treeView1.HideSelection = false;
             this.treeView1.Location = new System.Drawing.Point(12, 155);
             this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(512, 1122);
+            this.treeView1.Size = new System.Drawing.Size(512, 1032);
             this.treeView1.TabIndex = 1;
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
             // 
@@ -142,7 +145,7 @@ namespace ProtobufDecoder.Application.WinForms
             this.groupBox1.Size = new System.Drawing.Size(1923, 73);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = Strings.InputCaption;
+            this.groupBox1.Text = "Parameters";
             // 
             // buttonBrowse
             // 
@@ -160,17 +163,17 @@ namespace ProtobufDecoder.Application.WinForms
             this.textBoxFilePath.Name = "textBoxFilePath";
             this.textBoxFilePath.Size = new System.Drawing.Size(561, 31);
             this.textBoxFilePath.TabIndex = 6;
-            this.textBoxFilePath.Text = @"C:\git\temp\zwift\pl106.bin";// "C:\\git\\temp\\zwift\\borked-concat-tolength.bin";
+            this.textBoxFilePath.Text = "C:\\git\\temp\\zwift\\pl106.bin";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(7, 34);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(210, 25);
+            this.label1.Size = new System.Drawing.Size(86, 25);
             this.label1.TabIndex = 5;
-            this.label1.TextAlign = ContentAlignment.MiddleRight;
-            this.label1.Text = Strings.InputSourcePath;
+            this.label1.Text = "Input file:";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // buttonDecode
             // 
@@ -178,7 +181,7 @@ namespace ProtobufDecoder.Application.WinForms
             this.buttonDecode.Name = "buttonDecode";
             this.buttonDecode.Size = new System.Drawing.Size(112, 34);
             this.buttonDecode.TabIndex = 6;
-            this.buttonDecode.Text = Strings.ButtonDecode;
+            this.buttonDecode.Text = global::ProtobufDecoder.Application.WinForms.Strings.ButtonDecode;
             this.buttonDecode.UseVisualStyleBackColor = true;
             this.buttonDecode.Click += new System.EventHandler(this.buttonDecode_Click);
             // 
@@ -188,7 +191,7 @@ namespace ProtobufDecoder.Application.WinForms
             this.buttonClear.Name = "buttonClear";
             this.buttonClear.Size = new System.Drawing.Size(112, 34);
             this.buttonClear.TabIndex = 7;
-            this.buttonClear.Text = Strings.ButtonClear;
+            this.buttonClear.Text = global::ProtobufDecoder.Application.WinForms.Strings.ButtonClear;
             this.buttonClear.UseVisualStyleBackColor = true;
             this.buttonClear.Click += new System.EventHandler(this.buttonClear_Click);
             // 
@@ -403,11 +406,33 @@ namespace ProtobufDecoder.Application.WinForms
             this.Column16.ReadOnly = true;
             this.Column16.Width = 40;
             // 
+            // panel1
+            // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.buttonDecodeTag);
+            this.panel1.Location = new System.Drawing.Point(13, 1194);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(511, 83);
+            this.panel1.TabIndex = 10;
+            // 
+            // buttonDecodeTag
+            // 
+            this.buttonDecodeTag.Location = new System.Drawing.Point(5, 3);
+            this.buttonDecodeTag.Name = "buttonDecodeTag";
+            this.buttonDecodeTag.Size = new System.Drawing.Size(112, 34);
+            this.buttonDecodeTag.TabIndex = 0;
+            this.buttonDecodeTag.Text = "Decode tag";
+            this.buttonDecodeTag.UseVisualStyleBackColor = true;
+            this.buttonDecodeTag.Click += new System.EventHandler(this.buttonDecodeTag_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1947, 1289);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.dataGridViewBytes);
             this.Controls.Add(this.propertyGridTag);
             this.Controls.Add(this.buttonClear);
@@ -423,6 +448,7 @@ namespace ProtobufDecoder.Application.WinForms
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewBytes)).EndInit();
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -462,6 +488,8 @@ namespace ProtobufDecoder.Application.WinForms
         private System.Windows.Forms.DataGridViewTextBoxColumn Column14;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column15;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column16;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button buttonDecodeTag;
     }
 }
 

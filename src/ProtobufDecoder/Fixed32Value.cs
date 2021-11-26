@@ -7,7 +7,7 @@ namespace ProtobufDecoder
     {
         public Fixed32Value(byte[] value) : base(ParseFloat(value))
         {
-            RawBytes = value;
+            RawValue = value;
         }
 
         private static float ParseFloat(byte[] value)
@@ -18,6 +18,6 @@ namespace ProtobufDecoder
         [Description("The raw bytes that represent this Fixed32 value")]
         [ReadOnly(true)]
         [Browsable(true)]
-        public byte[] RawBytes {get; }
+        public byte[] RawBytes => RawValue;
     }
 }

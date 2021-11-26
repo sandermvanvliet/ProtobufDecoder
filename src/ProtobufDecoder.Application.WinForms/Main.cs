@@ -16,6 +16,11 @@ namespace ProtobufDecoder.Application.WinForms
             InitializeComponent();
         }
 
+        public Main(byte[] input) : this()
+        {
+            Decode(input);
+        }
+
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Close();
@@ -84,6 +89,11 @@ namespace ProtobufDecoder.Application.WinForms
                 return;
             }
 
+            Decode(input);
+        }
+
+        private void Decode(byte[] input)
+        {
             try
             {
                 _protobufMessage = ProtobufParser.Parse(input);
@@ -118,7 +128,7 @@ namespace ProtobufDecoder.Application.WinForms
                             new TreeNode($"Instance {index + 1}")
                             {
                                 Tag = subTag,
-                                Name = subTag.Index+"-"+index
+                                Name = subTag.Index + "-" + index
                             });
                     }
                 }
@@ -311,6 +321,35 @@ namespace ProtobufDecoder.Application.WinForms
             else
             {
                 treeView1.SelectedNode = nodeToSelect;
+            }
+        }
+
+        private void buttonDecodeTag_Click(object sender, EventArgs e)
+        {
+            if (treeView1.SelectedNode == null)
+            {
+                return;
+            }
+
+            var selectedNode = treeView1.SelectedNode;
+
+            if (selectedNode.Tag == null)
+            {
+                return;
+            }
+
+            byte[] input = null;
+
+            if (selectedNode.Tag is ProtobufTagSingle singleTag)
+            {
+                input = singleTag.Value.RawValue;
+            }
+
+            if (input != null)
+            {
+                var tagDecodeForm = new Main(input);
+
+                tagDecodeForm.Show(this);
             }
         }
     }

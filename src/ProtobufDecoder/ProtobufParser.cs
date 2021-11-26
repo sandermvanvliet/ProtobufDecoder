@@ -197,7 +197,7 @@ namespace ProtobufDecoder
             return new ParseResult<VarintValue>
             {
                 Length = varintBytes.Length,
-                Value = new VarintValue(varintBytes)
+                Value = new VarintValue(varintBytes),
             };
         }
     }

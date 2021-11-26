@@ -4,6 +4,8 @@ namespace ProtobufDecoder
 {
     public abstract class ProtobufValue
     {
+        [Browsable(false)]
+        public byte[] RawValue { get; set; }
     }
 
     public abstract class ProtobufValue<TValue> : ProtobufValue

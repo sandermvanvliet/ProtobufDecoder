@@ -7,6 +7,7 @@ namespace ProtobufDecoder
     {
         public LengthDelimitedValue(byte[] value) : base(value)
         {
+            RawValue = value;
         }
 
         // Fun fact: you can't tell a string and a repeated packed varint value apart....

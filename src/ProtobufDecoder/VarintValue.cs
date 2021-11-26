@@ -6,11 +6,9 @@ namespace ProtobufDecoder
 {
     public class VarintValue : ProtobufValue
     {
-        private readonly byte[] _varintBytes;
-
         public VarintValue(byte[] varintBytes)
         {
-            _varintBytes = varintBytes;
+            RawValue = varintBytes;
         }
 
         [Description("The boolean representation")]
@@ -20,7 +18,7 @@ namespace ProtobufDecoder
         {
             get
             {
-                var result = ToTarget(_varintBytes, 64);
+                var result = ToTarget(RawValue, 64);
 
                 if (result.Item1.HasValue)
                 {
@@ -44,37 +42,37 @@ namespace ProtobufDecoder
         [Description("The raw bytes that represent this Varint")]
         [ReadOnly(true)]
         [Browsable(true)]
-        public byte[] RawBytes => _varintBytes;
+        public byte[] RawBytes => RawValue;
         
         [Description("The unsigned 16-bit integer representation")]
         [ReadOnly(true)]
         [Browsable(true)]
-        public string UInt16 => SafeConvert((ToTarget(_varintBytes, 16)));
+        public string UInt16 => SafeConvert((ToTarget(RawValue, 16)));
 
         [Description("The unsigned 32-bit integer representation")]
         [ReadOnly(true)]
         [Browsable(true)]
-        public string UInt32 => SafeConvert((ToTarget(_varintBytes, 32)));
+        public string UInt32 => SafeConvert((ToTarget(RawValue, 32)));
 
         [Description("The unsigned 64-bit integer representation")]
         [ReadOnly(true)]
         [Browsable(true)]
-        public string UInt64 => SafeConvert((ToTarget(_varintBytes, 64)));
+        public string UInt64 => SafeConvert((ToTarget(RawValue, 64)));
 
         [Description("The signed 16-bit integer representation")]
         [ReadOnly(true)]
         [Browsable(true)]
-        public string Int16 => SafeConvert((DecodeZigZag(ToTarget(_varintBytes, 16))));
+        public string Int16 => SafeConvert((DecodeZigZag(ToTarget(RawValue, 16))));
 
         [Description("The signed 32-bit integer representation")]
         [ReadOnly(true)]
         [Browsable(true)]
-        public string Int32 => SafeConvert((DecodeZigZag(ToTarget(_varintBytes, 32))));
+        public string Int32 => SafeConvert((DecodeZigZag(ToTarget(RawValue, 32))));
         
         [Description("The signed 64-bit integer representation")]
         [ReadOnly(true)]
         [Browsable(true)]
-        public string Int64 => SafeConvert((DecodeZigZag(ToTarget(_varintBytes, 64))));
+        public string Int64 => SafeConvert((DecodeZigZag(ToTarget(RawValue, 64))));
 
         private static string SafeConvert(Tuple<ulong?, string> input)
         {
@@ -98,7 +96,7 @@ namespace ProtobufDecoder
 
         public int AsUInt32()
         {
-            return Convert.ToInt32(ToTarget(_varintBytes, 32).Item1.Value);
+            return Convert.ToInt32(ToTarget(RawValue, 32).Item1.Value);
         }
 
         // Decoding code below copied from here https://github.com/topas/VarintBitConverter/blob/b84ee7c953ff98b2043a2e58aa32624ff949bd43/src/VarintBitConverter/VarintBitConverter.cs#L185
