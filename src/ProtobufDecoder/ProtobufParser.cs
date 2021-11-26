@@ -124,11 +124,13 @@ namespace ProtobufDecoder
 
             index += parsedLength.Length;
 
-            var fixedBytes = input.Slice(index, parsedLength.Value.Value);
+            var valueLength = (int)(uint)parsedLength.Value.As<uint>();
+
+            var fixedBytes = input.Slice(index, valueLength);
 
             return new ParseResult<LengthDelimitedValue>
             {
-                Length = parsedLength.Length + parsedLength.Value.Value,
+                Length = parsedLength.Length + valueLength, // The number of bytes for the length value + the length of the value itself
                 Value = new LengthDelimitedValue(fixedBytes.ToArray())
             };
         }
@@ -165,7 +167,7 @@ namespace ProtobufDecoder
             };
         }
 
-        private static ParseResult<ProtobufValue<int>> ParseVarint(ReadOnlySpan<byte> input, int index)
+        private static ParseResult<VarintValue> ParseVarint(ReadOnlySpan<byte> input, int index)
         {
             var length = 0;
 
@@ -192,7 +194,7 @@ namespace ProtobufDecoder
 
             var varintBytes = input.Slice(index, length).ToArray();
 
-            return new ParseResult<ProtobufValue<int>>
+            return new ParseResult<VarintValue>
             {
                 Length = varintBytes.Length,
                 Value = new VarintValue(varintBytes)

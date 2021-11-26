@@ -158,7 +158,7 @@ namespace ProtobufDecoder.Test.Unit
                 .First()
                 .Value
                 .As<VarintValue>()
-                .Value
+                .As<uint>()
                 .Should()
                 .Be(3);
         }

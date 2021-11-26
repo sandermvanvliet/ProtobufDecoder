@@ -4,29 +4,13 @@ using System.Globalization;
 
 namespace ProtobufDecoder
 {
-    public class VarintValue : ProtobufValue<int>
+    public class VarintValue : ProtobufValue
     {
         private readonly byte[] _varintBytes;
 
-        public VarintValue(byte[] varintBytes) : base(ConvertToInt32(varintBytes))
+        public VarintValue(byte[] varintBytes)
         {
             _varintBytes = varintBytes;
-        }
-
-        private static int ConvertToInt32(byte[] varintBytes)
-        {
-            var varintValue = 0;
-            var shift = 0;
-
-            foreach (var b in varintBytes)
-            {
-                var tmp = b & 0x7f;
-                varintValue |= tmp << shift;
-
-                shift += 7;
-            }
-
-            return varintValue;
         }
 
         [Description("The boolean representation")]
@@ -36,14 +20,21 @@ namespace ProtobufDecoder
         {
             get
             {
-                if (Value == 0)
-                {
-                    return "false";
-                }
+                var result = ToTarget(_varintBytes, 64);
 
-                if (Value == 1)
+                if (result.Item1.HasValue)
                 {
-                    return "true";
+                    if (result.Item1.Value > 1)
+                    {
+                        return "Not a boolean";
+                    }
+
+                    if (result.Item1.Value == 1)
+                    {
+                        return Boolean.TrueString;
+                    }
+
+                    return Boolean.FalseString;
                 }
 
                 return "Not a boolean";
@@ -58,52 +49,99 @@ namespace ProtobufDecoder
         [Description("The unsigned 16-bit integer representation")]
         [ReadOnly(true)]
         [Browsable(true)]
-        public string UInt16 => SafeConvert(() => ((ushort)ToTarget(_varintBytes, 16)).ToString(CultureInfo.InvariantCulture));
+        public string UInt16 => SafeConvert((ToTarget(_varintBytes, 16)));
 
         [Description("The unsigned 32-bit integer representation")]
         [ReadOnly(true)]
         [Browsable(true)]
-        public string UInt32 => SafeConvert(() => ((uint)ToTarget(_varintBytes, 32)).ToString(CultureInfo.InvariantCulture));
+        public string UInt32 => SafeConvert((ToTarget(_varintBytes, 32)));
 
-        [Description("The signed 64-bit integer representation")]
+        [Description("The unsigned 64-bit integer representation")]
         [ReadOnly(true)]
         [Browsable(true)]
-        public string UInt64 => SafeConvert(() => ((ulong)ToTarget(_varintBytes, 64)).ToString(CultureInfo.InvariantCulture));
+        public string UInt64 => SafeConvert((ToTarget(_varintBytes, 64)));
 
         [Description("The signed 16-bit integer representation")]
         [ReadOnly(true)]
         [Browsable(true)]
-        public string Int16 => SafeConvert(() => ((short)DecodeZigZag(ToTarget(_varintBytes, 16))).ToString(CultureInfo.InvariantCulture));
+        public string Int16 => SafeConvert((DecodeZigZag(ToTarget(_varintBytes, 16))));
 
         [Description("The signed 32-bit integer representation")]
         [ReadOnly(true)]
         [Browsable(true)]
-        public string Int32 => SafeConvert(() => ((int)DecodeZigZag(ToTarget(_varintBytes, 32))).ToString(CultureInfo.InvariantCulture));
-
+        public string Int32 => SafeConvert((DecodeZigZag(ToTarget(_varintBytes, 32))));
         
         [Description("The signed 64-bit integer representation")]
         [ReadOnly(true)]
         [Browsable(true)]
-        public string Int64 => SafeConvert(() => ((long)DecodeZigZag(ToTarget(_varintBytes, 64))).ToString(CultureInfo.InvariantCulture));
+        public string Int64 => SafeConvert((DecodeZigZag(ToTarget(_varintBytes, 64))));
 
-        // Decoding code from here https://github.com/topas/VarintBitConverter/blob/b84ee7c953ff98b2043a2e58aa32624ff949bd43/src/VarintBitConverter/VarintBitConverter.cs#L185
+        private static string SafeConvert(Tuple<ulong?, string> input)
+        {
+            if (input.Item1.HasValue)
+            {
+                return input.Item1.Value.ToString(CultureInfo.InvariantCulture);
+            }
+
+            return input.Item2;
+        }
+
+        private static string SafeConvert(Tuple<long?, string> input)
+        {
+            if (input.Item1.HasValue)
+            {
+                return input.Item1.Value.ToString(CultureInfo.InvariantCulture);
+            }
+
+            return input.Item2;
+        }
+
+        public object As<TValue>()
+        {
+            switch (typeof(TValue).Name)
+            {
+                case "Int16":
+                    return Convert.ToInt16(DecodeZigZag(ToTarget(_varintBytes, 16)).Item1.Value);
+                case "Int32":
+                    return Convert.ToInt32(DecodeZigZag(ToTarget(_varintBytes, 32)).Item1.Value);
+                case "Int64":
+                    return Convert.ToInt64(DecodeZigZag(ToTarget(_varintBytes, 64)).Item1.Value);
+                case "UInt16":
+                    return Convert.ToUInt16(ToTarget(_varintBytes, 16).Item1.Value);
+                case "UInt32":
+                    return Convert.ToUInt32(ToTarget(_varintBytes, 32).Item1.Value);
+                case "UInt64":
+                    return Convert.ToUInt64(ToTarget(_varintBytes, 64).Item1.Value);
+            }
+
+            throw new InvalidOperationException($"{typeof(TValue).Name} is not supported");
+        }
+
+        // Decoding code below copied from here https://github.com/topas/VarintBitConverter/blob/b84ee7c953ff98b2043a2e58aa32624ff949bd43/src/VarintBitConverter/VarintBitConverter.cs#L185
         // Copyright notice:
         //
         // VarintBitConverter:
         // https://github.com/topas/VarintBitConverter 
         // Copyright (c) 2011 Tomas Pastorek, Ixone.cz. All rights reserved.
         //
-        private static long DecodeZigZag(ulong value)
+        private static Tuple<long?, string> DecodeZigZag(Tuple<ulong?, string> input)
         {
-            if ((value & 0x1) == 0x1)
+            if (input.Item1 == null)
             {
-                return (-1 * ((long)(value >> 1) + 1));
+                return new Tuple<long?, string>(null, input.Item2);
             }
 
-            return (long)(value >> 1);
+            var value = input.Item1.Value;
+
+            if ((value & 0x1) == 0x1)
+            {
+                return new Tuple<long?, string>((-1 * ((long)(value >> 1) + 1)), null);
+            }
+
+            return new Tuple<long?, string>((long)(value >> 1), null);
         }
         
-        private static ulong ToTarget(byte[] bytes, int sizeBits)
+        private static Tuple<ulong?, string> ToTarget(byte[] bytes, int sizeBits)
         {
             var shift = 0;
             ulong result = 0;
@@ -116,39 +154,23 @@ namespace ProtobufDecoder
 
                 if (shift > sizeBits)
                 {
-                    throw new ArgumentOutOfRangeException(nameof(bytes),  "Got too many bytes to represent this value");
+                    return new Tuple<ulong?, string>(null,  "Got too many bytes to represent this value");
                 }
 
                 if ((byteValue & 0x80) != 0x80)
                 {
-                    if ((index * 2) < (sizeBits / 8))
-                    {
-                        throw new ArgumentException("More bits were specified than there are bytes");
-                    }
+                    //if (((index + 1) * 2) < (sizeBits / 8))
+                    //{
+                    //    return new Tuple<ulong?, string>(null,  "More bits were specified than there are bytes");
+                    //}
 
-                    return result;
+                    return new Tuple<ulong?, string>(result, null);
                 }
 
                 shift += 7;
             }
 
-            throw new ArgumentException("Cannot decode varint from byte array.", nameof(bytes));
-        }
-
-        private static string SafeConvert(Func<string> getValueFunc)
-        {
-            try
-            {
-                return getValueFunc();
-            }
-            catch (ArgumentOutOfRangeException e)
-            {
-                return e.Message;
-            }
-            catch (ArgumentException e)
-            {
-                return e.Message;
-            }
+            return new Tuple<ulong?, string>(null, "Cannot decode varint from byte array.");
         }
     }
 }
