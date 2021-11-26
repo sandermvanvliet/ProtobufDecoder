@@ -87,6 +87,12 @@ namespace ProtobufDecoder
         public string Int64 => SafeConvert(() => ((long)DecodeZigZag(ToTarget(_varintBytes, 64))).ToString(CultureInfo.InvariantCulture));
 
         // Decoding code from here https://github.com/topas/VarintBitConverter/blob/b84ee7c953ff98b2043a2e58aa32624ff949bd43/src/VarintBitConverter/VarintBitConverter.cs#L185
+        // Copyright notice:
+        //
+        // VarintBitConverter:
+        // https://github.com/topas/VarintBitConverter 
+        // Copyright (c) 2011 Tomas Pastorek, Ixone.cz. All rights reserved.
+        //
         private static long DecodeZigZag(ulong value)
         {
             if ((value & 0x1) == 0x1)
