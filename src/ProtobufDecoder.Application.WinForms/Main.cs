@@ -245,20 +245,22 @@ namespace ProtobufDecoder.Application.WinForms
             }
 
             // Find the tag for the selected cell
-            if (dataGridViewBytes.SelectedCells.Count == 0)
+            if (dataGridViewBytes.GetCellCount(DataGridViewElementStates.Selected) == 0)
             {
                 return;
             }
 
-            var selectedCell = dataGridViewBytes.SelectedCells[0];
+            // Grab the first selected cell from the range that may have been selected
+            var firstSelectedCell = dataGridViewBytes.SelectedCells[0];
 
-            if (selectedCell.ColumnIndex == 0)
+            // Ignore selection of the row number cell
+            if (firstSelectedCell.ColumnIndex == 0)
             {
                 return;
             }
 
-            var startColumn = selectedCell.ColumnIndex - 1; // Take care of the row number column
-            var startRow = selectedCell.RowIndex * 16;
+            var startColumn = firstSelectedCell.ColumnIndex - 1; // Take care of the row number column
+            var startRow = firstSelectedCell.RowIndex * 16;
             var selectedOffset = startRow + startColumn;
 
             var tag = _protobufMessage
