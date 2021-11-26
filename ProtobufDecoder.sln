@@ -7,11 +7,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProtobufDecoder.Application
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A0347729-2D8E-40F3-9F17-CB926CDA7325}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProtobufDecoder", "src\ProtobufDecoder\ProtobufDecoder.csproj", "{C0CA5E5C-4D0A-4FB8-9CB6-AE5F02897990}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProtobufDecoder", "src\ProtobufDecoder\ProtobufDecoder.csproj", "{C0CA5E5C-4D0A-4FB8-9CB6-AE5F02897990}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{89391546-8B29-4EDA-B259-B561EB449CDD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProtobufDecoder.Test.Unit", "test\ProtobufDecoder.Test.Unit\ProtobufDecoder.Test.Unit.csproj", "{337EF3D8-F123-4A1C-9C55-2609C03C0492}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProtobufDecoder.Test.Unit", "test\ProtobufDecoder.Test.Unit\ProtobufDecoder.Test.Unit.csproj", "{337EF3D8-F123-4A1C-9C55-2609C03C0492}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{362C7E2E-E69A-4664-A35C-15861AC11727}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
