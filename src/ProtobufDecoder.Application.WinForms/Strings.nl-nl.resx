@@ -62,4 +62,10 @@
   <data name="AboutTitle" xml:space="preserve">
     <value>Over Protobuf Decoder</value>
   </data>
+  <data name="FailedToDecodeTag_Text" xml:space="preserve">
+    <value>Decoderen van de tag is mislukt omdat: {0}</value>
+  </data>
+  <data name="FailedToDecodeTag_Caption" xml:space="preserve">
+    <value>Decoderen van de tag is mislukt</value>
+  </data>
 </root>

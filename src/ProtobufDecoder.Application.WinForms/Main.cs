@@ -347,9 +347,20 @@ namespace ProtobufDecoder.Application.WinForms
 
             if (input != null)
             {
-                var tagDecodeForm = new Main(input);
+                try
+                {
+                    var tagDecodeForm = new Main(input);
 
-                tagDecodeForm.Show(this);
+                    tagDecodeForm.Show(this);
+                }
+                catch (Exception exception)
+                {
+                    MessageBox.Show(
+                        string.Format(Strings.FailedToDecodeTag_Text, exception.Message),
+                        Strings.FailedToDecodeTag_Caption,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
             }
         }
     }

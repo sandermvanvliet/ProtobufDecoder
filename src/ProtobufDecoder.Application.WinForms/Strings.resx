@@ -149,4 +149,10 @@
   <data name="AboutTitle" xml:space="preserve">
     <value>About Protobuf Decoder</value>
   </data>
+  <data name="FailedToDecodeTag_Caption" xml:space="preserve">
+    <value>Failed to decode tag value</value>
+  </data>
+  <data name="FailedToDecodeTag_Text" xml:space="preserve">
+    <value>Decoding failed because: {0}</value>
+  </data>
 </root>
