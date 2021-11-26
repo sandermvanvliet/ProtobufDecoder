@@ -185,8 +185,21 @@ namespace ProtobufDecoder.Application.WinForms
 
                 var startRow = singleTag.StartOffset / 16;
                 var endRow = singleTag.EndOffset / 16;
+                // Handle case where EndOffset is a multiple of 16
+                // which causes an off-by-one error for the row index.
+                if (singleTag.EndOffset % 16 == 0)
+                {
+                    endRow -= 1;
+                }
                 var startColumn = singleTag.StartOffset % 16; // n-th byte of a row
                 var endColumn = singleTag.EndOffset % 16; // n-th byte of a row
+                // Handle the case where the endColumn is exactly
+                // divisible by 16 which would cause byte 32 for
+                // example to highlight to column 0...
+                if (endColumn == 0)
+                {
+                    endColumn = 15;
+                }
 
                 dataGridViewBytes.ClearSelection();
 
