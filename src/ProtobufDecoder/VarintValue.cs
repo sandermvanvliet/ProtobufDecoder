@@ -11,6 +11,8 @@ namespace ProtobufDecoder
             RawValue = varintBytes;
         }
 
+        public override bool CanDecode => false;
+
         [Description("The boolean representation")]
         [ReadOnly(true)]
         [Browsable(true)]

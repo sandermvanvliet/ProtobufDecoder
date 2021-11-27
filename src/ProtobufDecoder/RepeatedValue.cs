@@ -10,6 +10,8 @@ namespace ProtobufDecoder
             Items = new ProtobufValueCollection(values);
         }
 
+        public override bool CanDecode => false;
+
         [Browsable(true)]
         [ReadOnly(true)]
         [Description("The list of items")]

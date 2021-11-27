@@ -10,6 +10,8 @@ namespace ProtobufDecoder
             RawValue = value;
         }
 
+        public override bool CanDecode => false;
+
         private static double ParseDouble(byte[] value)
         {
             return BitConverter.ToDouble(value);

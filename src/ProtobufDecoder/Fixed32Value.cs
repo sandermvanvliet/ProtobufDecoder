@@ -10,6 +10,8 @@ namespace ProtobufDecoder
             RawValue = value;
         }
 
+        public override bool CanDecode => false;
+
         private static float ParseFloat(byte[] value)
         {
             return BitConverter.ToSingle(value);

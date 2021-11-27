@@ -10,6 +10,8 @@ namespace ProtobufDecoder
             RawValue = value;
         }
 
+        public override bool CanDecode => true;
+
         // Fun fact: you can't tell a string and a repeated packed varint value apart....
         [Browsable(true)]
         [Description("The underlying value decoded as a UTF-8 string")]
