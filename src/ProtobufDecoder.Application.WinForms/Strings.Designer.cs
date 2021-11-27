@@ -115,6 +115,24 @@ namespace ProtobufDecoder.Application.WinForms {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot decode tag.
+        /// </summary>
+        internal static string CannotDecodeTag_Caption {
+            get {
+                return ResourceManager.GetString("CannotDecodeTag_Caption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot decode this tag because it isn&apos;t a length-delimited tag.
+        /// </summary>
+        internal static string CannotDecodeTag_Text {
+            get {
+                return ResourceManager.GetString("CannotDecodeTag_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed to decode tag value.
         /// </summary>
         internal static string FailedToDecodeTag_Caption {

@@ -161,4 +161,10 @@
   <data name="ButtonDecodeTag" xml:space="preserve">
     <value>Decode in new window</value>
   </data>
+  <data name="CannotDecodeTag_Caption" xml:space="preserve">
+    <value>Cannot decode tag</value>
+  </data>
+  <data name="CannotDecodeTag_Text" xml:space="preserve">
+    <value>Cannot decode this tag because it isn't a length-delimited tag</value>
+  </data>
 </root>

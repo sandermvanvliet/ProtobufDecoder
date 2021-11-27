@@ -74,4 +74,10 @@
   <data name="ButtonDecodeTag" xml:space="preserve">
     <value>Analyseren in nieuw venster</value>
   </data>
+  <data name="CannotDecodeTag_Caption" xml:space="preserve">
+    <value>Kan tag niet decoderen</value>
+  </data>
+  <data name="CannotDecodeTag_Text" xml:space="preserve">
+    <value>Deze tag kan niet gedecodeerd worden omdat het geen variabele lengte tag is</value>
+  </data>
 </root>
