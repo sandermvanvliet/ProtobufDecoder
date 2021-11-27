@@ -29,12 +29,17 @@ namespace ProtobufDecoder.Application.WinForms
         private void aboutProtobufDecoderToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var aboutForm = new About();
-
+            aboutForm.StartPosition = FormStartPosition.CenterParent;
             aboutForm.ShowDialog(this);
         }
 
         private void selectProtobufFileDialog_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            if (e.Cancel)
+            {
+                return;
+            }
+
             textBoxFilePath.Text = selectProtobufFileDialog.FileName;
         }
 
@@ -46,7 +51,7 @@ namespace ProtobufDecoder.Application.WinForms
         private void buttonDecode_Click(object sender, EventArgs e)
         {
             // Ensure everything is cleared before we add something new.
-            buttonClear.PerformClick();
+            ClearWindow();
 
             var inputFilePath = textBoxFilePath.Text;
 
@@ -64,20 +69,14 @@ namespace ProtobufDecoder.Application.WinForms
                 return;
             }
 
-            byte[] input;
-
             try
             {
-                input = File.ReadAllBytes(inputFilePath);
+                Decode(File.ReadAllBytes(inputFilePath));
             }
             catch (IOException ioException)
             {
                 ShowMessageBox.ForReadingInputFailed(ioException);
-
-                return;
             }
-
-            Decode(input);
         }
 
         private void Decode(byte[] input)
@@ -105,6 +104,11 @@ namespace ProtobufDecoder.Application.WinForms
 
         private void buttonClear_Click(object sender, EventArgs e)
         {
+            ClearWindow();
+        }
+
+        private void ClearWindow()
+        {
             propertyGridTag.SelectedObject = null;
             propertyGridTag.Update();
             treeView1.Nodes.Clear();
@@ -119,6 +123,8 @@ namespace ProtobufDecoder.Application.WinForms
             {
                 var tag = GetSelectedTag();
 
+                // If there is no selected tag this takes
+                // care of clearing the property grid
                 propertyGridTag.SelectedObject = tag;
 
                 var singleTag = tag as ProtobufTagSingle;
@@ -345,26 +351,17 @@ namespace ProtobufDecoder.Application.WinForms
 
         private static byte[] GetRawBytesOfSelectedTag(ProtobufTag tag)
         {
-            byte[] input = null;
-
             if (tag is ProtobufTagSingle singleTag)
             {
-                input = singleTag.Value.RawValue;
+                return singleTag.Value.RawValue;
             }
 
-            return input;
+            return null;
         }
 
         private ProtobufTag GetSelectedTag()
         {
-            if (treeView1.SelectedNode == null)
-            {
-                return null;
-            }
-
-            var selectedNode = treeView1.SelectedNode;
-
-            return selectedNode.Tag as ProtobufTag;
+            return treeView1.SelectedNode?.Tag as ProtobufTag;
         }
     }
 }
