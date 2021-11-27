@@ -93,7 +93,7 @@ namespace ProtobufDecoder.Application.WinForms
                 return;
             }
 
-            var nodes = CreateTreeViewNodesFromTags(_protobufMessage.Tags);
+            var nodes = TreeNodeBuilder.BuildFromTags(_protobufMessage.Tags);
 
             foreach (var node in nodes)
             {
@@ -101,43 +101,6 @@ namespace ProtobufDecoder.Application.WinForms
             }
 
             dataGridViewBytes.DataSource = DataGridViewRowBuilder.Build(input);
-        }
-
-        private static List<TreeNode> CreateTreeViewNodesFromTags(List<ProtobufTag> tags)
-        {
-            var nodes = new List<TreeNode>();
-
-            foreach (var tag in tags)
-            {
-                TreeNode node = null;
-
-                if (tag is ProtobufTagSingle)
-                {
-                    node = new TreeNode($"Tag {tag.Index}") { Tag = tag, Name = tag.Index.ToString() };
-                }
-                else if (tag is ProtobufTagRepeated repeatedTag)
-                {
-                    node = new TreeNode($"Tag {tag.Index} (repeated)") { Tag = tag, Name = tag.Index.ToString() };
-
-                    for (var index = 0; index < repeatedTag.Items.Length; index++)
-                    {
-                        var subTag = repeatedTag.Items[index];
-                        node.Nodes.Add(
-                            new TreeNode($"Instance {index + 1}")
-                            {
-                                Tag = subTag,
-                                Name = subTag.Index + "-" + index
-                            });
-                    }
-                }
-
-                if (node != null)
-                {
-                    nodes.Add(node);
-                }
-            }
-
-            return nodes;
         }
 
         private void buttonClear_Click(object sender, EventArgs e)
@@ -360,7 +323,7 @@ namespace ProtobufDecoder.Application.WinForms
                 {
                     var parsedMessage = ProtobufParser.Parse(input);
 
-                    var nodes = CreateTreeViewNodesFromTags(parsedMessage.Tags);
+                    var nodes = TreeNodeBuilder.BuildFromTags(parsedMessage.Tags);
 
                     foreach (var node in nodes)
                     {
