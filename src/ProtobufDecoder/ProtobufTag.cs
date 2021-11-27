@@ -30,12 +30,12 @@ namespace ProtobufDecoder
         [Description("Position in the byte stream where this tag starts")]
         [ReadOnly(true)]
         public int StartOffset { get; set; }
-        
+
         [Category("Offsets")]
         [Browsable(true)]
         [Description("Position in the byte stream where this tag starts")]
         [ReadOnly(true)]
-        public int TagOffset { get; set; }
+        public int TagOffset => StartOffset;
         
         [Category("Offsets")]
         [Browsable(true)]

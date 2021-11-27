@@ -33,8 +33,7 @@ namespace ProtobufDecoder
                     {
                         Index = WireFormat.GetTagFieldNumber(input[index]),
                         WireType = WireFormat.GetTagWireType(input[index]),
-                        StartOffset = index,
-                        TagOffset = index
+                        StartOffset = index
                     };
 
                     protobufTags.Add(tag);
