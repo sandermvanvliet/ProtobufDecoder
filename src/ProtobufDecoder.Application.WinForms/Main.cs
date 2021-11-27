@@ -168,7 +168,7 @@ namespace ProtobufDecoder.Application.WinForms
                     return;
                 }
 
-                var byteViewOffset = GetOffsetFor(treeView1.SelectedNode);
+                var byteViewOffset = GetOffsetOf(treeView1.SelectedNode);
 
                 var startOffset = byteViewOffset + singleTag.StartOffset;
                 var endOffset = byteViewOffset + singleTag.EndOffset;
@@ -237,7 +237,7 @@ namespace ProtobufDecoder.Application.WinForms
             }
         }
 
-        private int GetOffsetFor(TreeNode treeNode, int offset = 0)
+        private static int GetOffsetOf(TreeNode treeNode, int offset = 0)
         {
             if (treeNode.Parent == null)
             {
@@ -249,14 +249,14 @@ namespace ProtobufDecoder.Application.WinForms
             if (treeNode.Tag is ProtobufTagSingle singleTag)
             {
                 // Add the StartOffset of this tag
-                return singleTag.StartOffset + GetOffsetFor(treeNode, offset);
+                return singleTag.StartOffset + GetOffsetOf(treeNode, offset);
             }
 
             if (treeNode.Tag is ProtobufTagRepeated)
             {
                 // Don't add any additional offset because
                 // a repeated tag is only a placeholder
-                return offset + GetOffsetFor(treeNode, offset);
+                return offset + GetOffsetOf(treeNode, offset);
             }
 
             return offset;
