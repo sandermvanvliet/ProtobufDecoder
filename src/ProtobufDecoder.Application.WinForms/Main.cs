@@ -363,7 +363,7 @@ namespace ProtobufDecoder.Application.WinForms
             }
         }
 
-        private void buttonDecodeTag_Click(object sender, EventArgs e)
+        private void DecodeTagInWindowCommand(object sender, EventArgs e)
         {
             var tag = GetSelectedTag();
 
@@ -391,7 +391,7 @@ namespace ProtobufDecoder.Application.WinForms
             }
         }
 
-        private void buttonDecodeTagInPlace_Click(object sender, EventArgs e)
+        private void DecodeTagInPlaceCommand(object sender, EventArgs e)
         {
             var tag = GetSelectedTag();
 
@@ -426,7 +426,7 @@ namespace ProtobufDecoder.Application.WinForms
             }
         }
 
-        private byte[] GetRawBytesOfSelectedTag(ProtobufTag tag)
+        private static byte[] GetRawBytesOfSelectedTag(ProtobufTag tag)
         {
             byte[] input = null;
 
@@ -440,7 +440,6 @@ namespace ProtobufDecoder.Application.WinForms
 
         private ProtobufTag GetSelectedTag()
         {
-
             if (treeView1.SelectedNode == null)
             {
                 return null;
@@ -449,16 +448,6 @@ namespace ProtobufDecoder.Application.WinForms
             var selectedNode = treeView1.SelectedNode;
 
             return selectedNode.Tag as ProtobufTag;
-        }
-
-        private void decodeInNewWindowToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            buttonDecodeTag_Click(this, e);
-        }
-
-        private void decodeInplaceToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            buttonDecodeTagInPlace_Click(this, e);
         }
     }
 }

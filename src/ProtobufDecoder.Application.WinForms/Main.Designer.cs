@@ -419,7 +419,7 @@ namespace ProtobufDecoder.Application.WinForms
             this.buttonDecodeTagInPlace.TabIndex = 1;
             this.buttonDecodeTagInPlace.Text = global::ProtobufDecoder.Application.WinForms.Strings.ButtonDecodeInPlace;
             this.buttonDecodeTagInPlace.UseVisualStyleBackColor = true;
-            this.buttonDecodeTagInPlace.Click += new System.EventHandler(this.buttonDecodeTagInPlace_Click);
+            this.buttonDecodeTagInPlace.Click += new System.EventHandler(this.DecodeTagInPlaceCommand);
             // 
             // buttonDecodeTag
             // 
@@ -429,7 +429,7 @@ namespace ProtobufDecoder.Application.WinForms
             this.buttonDecodeTag.TabIndex = 0;
             this.buttonDecodeTag.Text = global::ProtobufDecoder.Application.WinForms.Strings.ButtonDecodeTag;
             this.buttonDecodeTag.UseVisualStyleBackColor = true;
-            this.buttonDecodeTag.Click += new System.EventHandler(this.buttonDecodeTag_Click);
+            this.buttonDecodeTag.Click += new System.EventHandler(this.DecodeTagInWindowCommand);
             // 
             // contextMenuStripTreeView
             // 
@@ -445,14 +445,14 @@ namespace ProtobufDecoder.Application.WinForms
             this.decodeInNewWindowToolStripMenuItem.Name = "decodeInNewWindowToolStripMenuItem";
             this.decodeInNewWindowToolStripMenuItem.Size = new System.Drawing.Size(268, 32);
             this.decodeInNewWindowToolStripMenuItem.Text = "Decode in new window";
-            this.decodeInNewWindowToolStripMenuItem.Click += new System.EventHandler(this.decodeInNewWindowToolStripMenuItem_Click);
+            this.decodeInNewWindowToolStripMenuItem.Click += new System.EventHandler(this.DecodeTagInWindowCommand);
             // 
             // decodeInplaceToolStripMenuItem
             // 
             this.decodeInplaceToolStripMenuItem.Name = "decodeInplaceToolStripMenuItem";
             this.decodeInplaceToolStripMenuItem.Size = new System.Drawing.Size(268, 32);
             this.decodeInplaceToolStripMenuItem.Text = "Decode in-place";
-            this.decodeInplaceToolStripMenuItem.Click += new System.EventHandler(this.decodeInplaceToolStripMenuItem_Click);
+            this.decodeInplaceToolStripMenuItem.Click += new System.EventHandler(this.DecodeTagInPlaceCommand);
             // 
             // Main
             // 
