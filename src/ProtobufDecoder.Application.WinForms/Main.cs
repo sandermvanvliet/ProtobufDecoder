@@ -279,8 +279,8 @@ namespace ProtobufDecoder.Application.WinForms
         private void DecodeTagInWindowCommand(object sender, EventArgs e)
         {
             var tag = GetSelectedTag();
-
-            if (tag is ProtobufTagRepeated || (tag is ProtobufTagSingle singleTag && !singleTag.Value.CanDecode))
+            
+            if (!(tag is ProtobufTagSingle singleTag && singleTag.Value.CanDecode))
             {
                 ShowMessageBox.ForTagDecodingNotSupported();
 
@@ -289,26 +289,28 @@ namespace ProtobufDecoder.Application.WinForms
 
             var input = GetRawBytesOfSelectedTag(tag);
 
-            if (input != null)
+            if (input == null)
             {
-                try
-                {
-                    var tagDecodeForm = new Main(input);
+                return;
+            }
 
-                    tagDecodeForm.Show(this);
-                }
-                catch (Exception exception)
-                {
-                    ShowMessageBox.ForFailedToDecodeTag(exception);
-                }
+            try
+            {
+                var tagDecodeForm = new Main(input);
+
+                tagDecodeForm.Show(this);
+            }
+            catch (Exception exception)
+            {
+                ShowMessageBox.ForFailedToDecodeTag(exception);
             }
         }
 
         private void DecodeTagInPlaceCommand(object sender, EventArgs e)
         {
             var tag = GetSelectedTag();
-
-            if (tag is ProtobufTagRepeated || (tag is ProtobufTagSingle singleTag && !singleTag.Value.CanDecode))
+            
+            if (!(tag is ProtobufTagSingle singleTag && singleTag.Value.CanDecode))
             {
                 ShowMessageBox.ForTagDecodingNotSupported();
 
@@ -317,25 +319,27 @@ namespace ProtobufDecoder.Application.WinForms
 
             var input = GetRawBytesOfSelectedTag(tag);
 
-            if (input != null)
+            if (input == null)
             {
-                try
+                return;
+            }
+
+            try
+            {
+                var parsedMessage = ProtobufParser.Parse(input);
+
+                var nodes = TreeNodeBuilder.BuildFromTags(parsedMessage.Tags);
+
+                foreach (var node in nodes)
                 {
-                    var parsedMessage = ProtobufParser.Parse(input);
-
-                    var nodes = TreeNodeBuilder.BuildFromTags(parsedMessage.Tags);
-
-                    foreach (var node in nodes)
-                    {
-                        treeView1.SelectedNode.Nodes.Add(node);
-                    }
-
-                    treeView1.SelectedNode.Expand();
+                    treeView1.SelectedNode.Nodes.Add(node);
                 }
-                catch (Exception exception)
-                {
-                    ShowMessageBox.ForFailedToDecodeTag(exception);
-                }
+                    
+                treeView1.SelectedNode.Expand();
+            }
+            catch (Exception exception)
+            {
+                ShowMessageBox.ForFailedToDecodeTag(exception);
             }
         }
 
