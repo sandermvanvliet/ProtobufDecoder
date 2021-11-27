@@ -15,7 +15,10 @@ namespace ProtobufDecoder.Application.WinForms
 
             while (offset < input.Length)
             {
-                var row = new ByteViewerRow(offset);
+                var row = new ByteViewerRow
+                {
+                    Line = offset.ToString("X6")
+                };
 
                 if (remaining >= 1) { row.Byte1 = input[offset + 0].ToString("X2"); }
                 if (remaining >= 2) { row.Byte2 = input[offset + 1].ToString("X2"); }

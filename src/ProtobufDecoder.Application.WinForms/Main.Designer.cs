@@ -34,7 +34,6 @@ namespace ProtobufDecoder.Application.WinForms
         {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -299,10 +298,6 @@ namespace ProtobufDecoder.Application.WinForms
             // columnLine
             // 
             this.columnLine.DataPropertyName = "Line";
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle1.Format = "X5";
-            this.columnLine.DefaultCellStyle = dataGridViewCellStyle1;
             this.columnLine.HeaderText = "Line";
             this.columnLine.MinimumWidth = 8;
             this.columnLine.Name = "columnLine";

@@ -2,12 +2,7 @@
 {
     public class ByteViewerRow
     {
-        public ByteViewerRow(int line)
-        {
-            Line = line;
-        }
-
-        public int Line { get; set; }
+        public string Line { get; set; }
         public string Byte1 { get; set; }
         public string Byte2 { get; set; }
         public string Byte3 { get; set; }
