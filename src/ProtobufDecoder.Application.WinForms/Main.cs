@@ -157,14 +157,6 @@ namespace ProtobufDecoder.Application.WinForms
                 var tag = GetSelectedTag();
 
                 propertyGridTag.SelectedObject = tag;
-                propertyGridTag.Update();
-
-                if (tag == null)
-                {
-                    // There is no selected node and therefore
-                    // also no ProtobufTag to do anything with.
-                    return;
-                }
 
                 var singleTag = tag as ProtobufTagSingle;
 
