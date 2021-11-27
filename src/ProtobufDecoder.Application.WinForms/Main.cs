@@ -100,7 +100,7 @@ namespace ProtobufDecoder.Application.WinForms
                 treeView1.Nodes.Add(node);
             }
 
-            PopulateByteViewer(input);
+            dataGridViewBytes.DataSource = DataGridViewRowBuilder.Build(input);
         }
 
         private static List<TreeNode> CreateTreeViewNodesFromTags(List<ProtobufTag> tags)
@@ -260,48 +260,6 @@ namespace ProtobufDecoder.Application.WinForms
             }
 
             return offset;
-        }
-
-        private void PopulateByteViewer(byte[] input)
-        {
-            var line = 0;
-            var offset = 0;
-            var rows = new List<ByteViewerRow>();
-
-            var lineBytes = new byte[16];
-
-            while (offset < input.Length)
-            {
-                var width = input.Length - offset;
-                if (width >= 16)
-                {
-                    width = 16;
-                }
-
-                if (width >= 1) { lineBytes[0] = input[offset + 0]; } else { lineBytes[0] = 0; }
-                if (width >= 2) { lineBytes[1] = input[offset + 1]; } else { lineBytes[1] = 0; }
-                if (width >= 3) { lineBytes[2] = input[offset + 2]; } else { lineBytes[2] = 0; }
-                if (width >= 4) { lineBytes[3] = input[offset + 3]; } else { lineBytes[3] = 0; }
-                if (width >= 5) { lineBytes[4] = input[offset + 4]; } else { lineBytes[4] = 0; }
-                if (width >= 6) { lineBytes[5] = input[offset + 5]; } else { lineBytes[5] = 0; }
-                if (width >= 7) { lineBytes[6] = input[offset + 6]; } else { lineBytes[6] = 0; }
-                if (width >= 8) { lineBytes[7] = input[offset + 7]; } else { lineBytes[7] = 0; }
-                if (width >= 9) { lineBytes[8] = input[offset + 8]; } else { lineBytes[8] = 0; }
-                if (width >= 10) { lineBytes[9] = input[offset + 9]; } else { lineBytes[9] = 0; }
-                if (width >= 11) { lineBytes[10] = input[offset + 10]; } else { lineBytes[10] = 0; }
-                if (width >= 12) { lineBytes[11] = input[offset + 11]; } else { lineBytes[11] = 0; }
-                if (width >= 13) { lineBytes[12] = input[offset + 12]; } else { lineBytes[12] = 0; }
-                if (width >= 14) { lineBytes[13] = input[offset + 13]; } else { lineBytes[13] = 0; }
-                if (width >= 15) { lineBytes[14] = input[offset + 14]; } else { lineBytes[14] = 0; }
-                if (width >= 16) { lineBytes[15] = input[offset + 15]; } else { lineBytes[15] = 0; }
-
-                rows.Add(new ByteViewerRow(lineBytes, line));
-
-                line++;
-                offset += 16; // bytes per line
-            }
-
-            dataGridViewBytes.DataSource = rows;
         }
 
         private void dataGridViewBytes_SelectionChanged(object sender, EventArgs e)
