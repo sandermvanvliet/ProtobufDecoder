@@ -52,8 +52,6 @@ namespace ProtobufDecoder.Application.WinForms
             this.buttonClear = new System.Windows.Forms.Button();
             this.propertyGridTag = new System.Windows.Forms.PropertyGrid();
             this.dataGridViewBytes = new System.Windows.Forms.DataGridView();
-            this.buttonDecodeTagInPlace = new System.Windows.Forms.Button();
-            this.buttonDecodeTag = new System.Windows.Forms.Button();
             this.columnLine = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -71,6 +69,9 @@ namespace ProtobufDecoder.Application.WinForms
             this.Column14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column15 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column16 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.buttonDecodeTagInPlace = new System.Windows.Forms.Button();
+            this.buttonDecodeTag = new System.Windows.Forms.Button();
+            this.textBoxProtoFile = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             this.contextMenuStripTreeView.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -85,7 +86,7 @@ namespace ProtobufDecoder.Application.WinForms
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1947, 33);
+            this.menuStrip1.Size = new System.Drawing.Size(2325, 33);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -128,7 +129,7 @@ namespace ProtobufDecoder.Application.WinForms
             this.treeView1.HideSelection = false;
             this.treeView1.Location = new System.Drawing.Point(12, 155);
             this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(512, 1082);
+            this.treeView1.Size = new System.Drawing.Size(422, 1082);
             this.treeView1.TabIndex = 1;
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
             // 
@@ -226,7 +227,7 @@ namespace ProtobufDecoder.Application.WinForms
             // 
             this.propertyGridTag.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.propertyGridTag.Location = new System.Drawing.Point(530, 155);
+            this.propertyGridTag.Location = new System.Drawing.Point(908, 155);
             this.propertyGridTag.Name = "propertyGridTag";
             this.propertyGridTag.Size = new System.Drawing.Size(593, 1122);
             this.propertyGridTag.TabIndex = 8;
@@ -237,6 +238,8 @@ namespace ProtobufDecoder.Application.WinForms
             this.dataGridViewBytes.AllowUserToDeleteRows = false;
             this.dataGridViewBytes.AllowUserToResizeColumns = false;
             this.dataGridViewBytes.AllowUserToResizeRows = false;
+            this.dataGridViewBytes.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewBytes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewBytes.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.columnLine,
@@ -264,7 +267,7 @@ namespace ProtobufDecoder.Application.WinForms
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewBytes.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dataGridViewBytes.Location = new System.Drawing.Point(1129, 155);
+            this.dataGridViewBytes.Location = new System.Drawing.Point(1507, 155);
             this.dataGridViewBytes.Name = "dataGridViewBytes";
             this.dataGridViewBytes.ReadOnly = true;
             this.dataGridViewBytes.RowHeadersVisible = false;
@@ -274,26 +277,6 @@ namespace ProtobufDecoder.Application.WinForms
             this.dataGridViewBytes.Size = new System.Drawing.Size(806, 1122);
             this.dataGridViewBytes.TabIndex = 9;
             this.dataGridViewBytes.SelectionChanged += new System.EventHandler(this.dataGridViewBytes_SelectionChanged);
-            // 
-            // buttonDecodeTagInPlace
-            // 
-            this.buttonDecodeTagInPlace.Location = new System.Drawing.Point(263, 1243);
-            this.buttonDecodeTagInPlace.Name = "buttonDecodeTagInPlace";
-            this.buttonDecodeTagInPlace.Size = new System.Drawing.Size(261, 34);
-            this.buttonDecodeTagInPlace.TabIndex = 1;
-            this.buttonDecodeTagInPlace.Text = global::ProtobufDecoder.Application.WinForms.Strings.ButtonDecodeInPlace;
-            this.buttonDecodeTagInPlace.UseVisualStyleBackColor = true;
-            this.buttonDecodeTagInPlace.Click += new System.EventHandler(this.DecodeTagInPlaceCommand);
-            // 
-            // buttonDecodeTag
-            // 
-            this.buttonDecodeTag.Location = new System.Drawing.Point(12, 1243);
-            this.buttonDecodeTag.Name = "buttonDecodeTag";
-            this.buttonDecodeTag.Size = new System.Drawing.Size(245, 34);
-            this.buttonDecodeTag.TabIndex = 0;
-            this.buttonDecodeTag.Text = global::ProtobufDecoder.Application.WinForms.Strings.ButtonDecodeTag;
-            this.buttonDecodeTag.UseVisualStyleBackColor = true;
-            this.buttonDecodeTag.Click += new System.EventHandler(this.DecodeTagInWindowCommand);
             // 
             // columnLine
             // 
@@ -449,11 +432,42 @@ namespace ProtobufDecoder.Application.WinForms
             this.Column16.ReadOnly = true;
             this.Column16.Width = 40;
             // 
+            // buttonDecodeTagInPlace
+            // 
+            this.buttonDecodeTagInPlace.Location = new System.Drawing.Point(263, 1243);
+            this.buttonDecodeTagInPlace.Name = "buttonDecodeTagInPlace";
+            this.buttonDecodeTagInPlace.Size = new System.Drawing.Size(261, 34);
+            this.buttonDecodeTagInPlace.TabIndex = 1;
+            this.buttonDecodeTagInPlace.Text = global::ProtobufDecoder.Application.WinForms.Strings.ButtonDecodeInPlace;
+            this.buttonDecodeTagInPlace.UseVisualStyleBackColor = true;
+            this.buttonDecodeTagInPlace.Click += new System.EventHandler(this.DecodeTagInPlaceCommand);
+            // 
+            // buttonDecodeTag
+            // 
+            this.buttonDecodeTag.Location = new System.Drawing.Point(12, 1243);
+            this.buttonDecodeTag.Name = "buttonDecodeTag";
+            this.buttonDecodeTag.Size = new System.Drawing.Size(245, 34);
+            this.buttonDecodeTag.TabIndex = 0;
+            this.buttonDecodeTag.Text = global::ProtobufDecoder.Application.WinForms.Strings.ButtonDecodeTag;
+            this.buttonDecodeTag.UseVisualStyleBackColor = true;
+            this.buttonDecodeTag.Click += new System.EventHandler(this.DecodeTagInWindowCommand);
+            // 
+            // textBoxProtoFile
+            // 
+            this.textBoxProtoFile.BackColor = System.Drawing.SystemColors.Window;
+            this.textBoxProtoFile.Location = new System.Drawing.Point(441, 155);
+            this.textBoxProtoFile.Multiline = true;
+            this.textBoxProtoFile.Name = "textBoxProtoFile";
+            this.textBoxProtoFile.ReadOnly = true;
+            this.textBoxProtoFile.Size = new System.Drawing.Size(452, 1082);
+            this.textBoxProtoFile.TabIndex = 10;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1947, 1289);
+            this.ClientSize = new System.Drawing.Size(2325, 1289);
+            this.Controls.Add(this.textBoxProtoFile);
             this.Controls.Add(this.buttonDecodeTagInPlace);
             this.Controls.Add(this.buttonDecodeTag);
             this.Controls.Add(this.dataGridViewBytes);
@@ -516,6 +530,7 @@ namespace ProtobufDecoder.Application.WinForms
         private System.Windows.Forms.DataGridViewTextBoxColumn Column14;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column15;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column16;
+        private System.Windows.Forms.TextBox textBoxProtoFile;
     }
 }
 

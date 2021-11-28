@@ -19,6 +19,8 @@ namespace ProtobufDecoder.Application.WinForms
         public Main(byte[] input) : this()
         {
             Decode(input);
+
+            RenderProtoFile(_protobufMessage);
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -72,11 +74,25 @@ namespace ProtobufDecoder.Application.WinForms
             try
             {
                 Decode(File.ReadAllBytes(inputFilePath));
+
+                RenderProtoFile(_protobufMessage);
             }
             catch (IOException ioException)
             {
                 ShowMessageBox.ForReadingInputFailed(ioException);
             }
+        }
+
+        private void RenderProtoFile(ProtobufMessage protobufMessage)
+        {
+            if (string.IsNullOrEmpty(_protobufMessage.Name))
+            {
+                _protobufMessage.Name = "Message";
+            }
+
+            var proto = ProtobufWriter.ToString(protobufMessage);
+
+            textBoxProtoFile.Text = proto;
         }
 
         private void Decode(byte[] input)
@@ -113,6 +129,7 @@ namespace ProtobufDecoder.Application.WinForms
             propertyGridTag.Update();
             treeView1.Nodes.Clear();
             dataGridViewBytes.DataSource = new List<ByteViewerRow>();
+            textBoxProtoFile.Clear();
         }
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
@@ -335,7 +352,10 @@ namespace ProtobufDecoder.Application.WinForms
             try
             {
                 var parsedMessage = ProtobufParser.Parse(input);
-                var embeddedMessageTag = new ProtobufTagEmbeddedMessage(tag, parsedMessage.Tags.ToArray());
+                var embeddedMessageTag = new ProtobufTagEmbeddedMessage(tag, parsedMessage.Tags.ToArray())
+                {
+                    Name = $"EmbeddedMessage{tag.Index}"
+                };
 
                 // Replace the existing tag with the expanded tag
                 _protobufMessage.Tags.Remove(tag);
@@ -351,6 +371,8 @@ namespace ProtobufDecoder.Application.WinForms
                 }
                     
                 treeView1.SelectedNode.Expand();
+
+                RenderProtoFile(_protobufMessage);
             }
             catch (Exception exception)
             {
