@@ -19,7 +19,7 @@ It can be used for _reverse engineering_ but bear in mind that this may not be l
 
 ## Todo
 
-- [X] Decode length-delimited tag values that could be strings, packed repeated values or embedded messages
+- [X] ~~Decode length-delimited tag values that could be strings, packed repeated values or embedded messages~~
 - [ ] Generate `.proto` file from decoded payload
 - [ ] Load a `.proto` file and apply it to the decoded payload (to verify the `.proto` file and payload match)
 - [ ] Decode groups
