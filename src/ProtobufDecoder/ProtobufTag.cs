@@ -23,6 +23,11 @@ namespace ProtobufDecoder
         /// <remarks>This is only set when this tag belogs to an embedded message. For tags in the main message this is always <c>null</c></remarks>
         [Browsable(false)]
         public ProtobufTag Parent { get; set; }
+
+        /// <summary>
+        /// Optional name of this tag
+        /// </summary>
+        public string Name { get; set; }
     }
 
     public class ProtobufTagSingle : ProtobufTag
@@ -84,6 +89,7 @@ namespace ProtobufDecoder
     {
         public ProtobufTagEmbeddedMessage(ProtobufTagSingle tag, ProtobufTag[] tags)
         {
+            Index = tag.Index;
             StartOffset = tag.StartOffset;
             DataOffset = tag.DataOffset;
             DataLength = tag.DataLength;
@@ -91,7 +97,13 @@ namespace ProtobufDecoder
             Parent = tag.Parent;
 
             // Ensure parent is set on all child tags of this tag
-            Tags = tags.Select(t => t.Parent = this).ToArray();
+            Tags = tags
+                .Select(t =>
+                {
+                    t.Parent = this;
+                    return t;
+                })
+                .ToArray();
         }
         
         [Browsable(true)]
