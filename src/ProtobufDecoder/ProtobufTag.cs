@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Linq;
 using Google.Protobuf;
 
 namespace ProtobufDecoder
@@ -15,6 +16,13 @@ namespace ProtobufDecoder
         [DisplayName("Tag number")]
         [ReadOnly(true)]
         public int Index { get; set; }
+
+        /// <summary>
+        /// The parent of this tag
+        /// </summary>
+        /// <remarks>This is only set when this tag belogs to an embedded message. For tags in the main message this is always <c>null</c></remarks>
+        [Browsable(false)]
+        public ProtobufTag Parent { get; set; }
     }
 
     public class ProtobufTagSingle : ProtobufTag
@@ -56,11 +64,39 @@ namespace ProtobufDecoder
         public int EndOffset { get; set; }
     }
 
+    /// <summary>
+    /// A virtual tag that contains all occurences of a tag number
+    /// </summary>
+    /// <remarks>Protobuf allows a tag number to appear multiple times, this type acts as a collection of those types and isn't a "real" tag itself</remarks>
     public class ProtobufTagRepeated : ProtobufTag
     {
         [Browsable(true)]
         [Description("The instances of this tag in the payload")]
         [ReadOnly(true)]
         public ProtobufTagSingle[] Items { get; set; }
+    }
+
+    /// <summary>
+    /// A Protobuf tag that is an embedded message
+    /// </summary>
+    /// <remarks>This type holds the tags of the embedded message</remarks>
+    public class ProtobufTagEmbeddedMessage : ProtobufTagSingle
+    {
+        public ProtobufTagEmbeddedMessage(ProtobufTagSingle tag, ProtobufTag[] tags)
+        {
+            StartOffset = tag.StartOffset;
+            DataOffset = tag.DataOffset;
+            DataLength = tag.DataLength;
+            EndOffset = tag.EndOffset;
+            Parent = tag.Parent;
+
+            // Ensure parent is set on all child tags of this tag
+            Tags = tags.Select(t => t.Parent = this).ToArray();
+        }
+        
+        [Browsable(true)]
+        [Description("The tags of this embedded message")]
+        [ReadOnly(true)]
+        public ProtobufTag[] Tags { get; set; }
     }
 }

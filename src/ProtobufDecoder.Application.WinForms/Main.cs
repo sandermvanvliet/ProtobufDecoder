@@ -215,6 +215,12 @@ namespace ProtobufDecoder.Application.WinForms
 
             treeNode = treeNode.Parent;
 
+            if (treeNode.Tag is ProtobufTagEmbeddedMessage embeddedTag)
+            {
+                // Add the StartOffset of this tag
+                return embeddedTag.DataOffset + GetOffsetOf(treeNode, offset);
+            }
+
             if (treeNode.Tag is ProtobufTagSingle singleTag)
             {
                 // Add the StartOffset of this tag
@@ -284,9 +290,7 @@ namespace ProtobufDecoder.Application.WinForms
 
         private void DecodeTagInWindowCommand(object sender, EventArgs e)
         {
-            var tag = GetSelectedTag();
-            
-            if (!(tag is ProtobufTagSingle singleTag && singleTag.Value.CanDecode))
+            if (GetSelectedTag() is not ProtobufTagSingle tag || !tag.Value.CanDecode)
             {
                 ShowMessageBox.ForTagDecodingNotSupported();
 
@@ -314,9 +318,7 @@ namespace ProtobufDecoder.Application.WinForms
 
         private void DecodeTagInPlaceCommand(object sender, EventArgs e)
         {
-            var tag = GetSelectedTag();
-            
-            if (!(tag is ProtobufTagSingle singleTag && singleTag.Value.CanDecode))
+            if (GetSelectedTag() is not ProtobufTagSingle tag || !tag.Value.CanDecode)
             {
                 ShowMessageBox.ForTagDecodingNotSupported();
 
@@ -333,6 +335,13 @@ namespace ProtobufDecoder.Application.WinForms
             try
             {
                 var parsedMessage = ProtobufParser.Parse(input);
+                var embeddedMessageTag = new ProtobufTagEmbeddedMessage(tag, parsedMessage.Tags.ToArray());
+
+                // Replace the existing tag with the expanded tag
+                _protobufMessage.Tags.Remove(tag);
+                _protobufMessage.Tags.Add(embeddedMessageTag);
+                // Replace the expanded tag on the TreeNode as well
+                treeView1.SelectedNode.Tag = embeddedMessageTag;
 
                 var nodes = TreeNodeBuilder.BuildFromTags(parsedMessage.Tags);
 
