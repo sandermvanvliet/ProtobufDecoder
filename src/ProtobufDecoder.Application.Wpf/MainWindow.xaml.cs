@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.IO;
+using System.Windows;
 using Microsoft.Win32;
 
 namespace ProtobufDecoder.Application.Wpf
@@ -15,8 +17,15 @@ namespace ProtobufDecoder.Application.Wpf
             DataContext = this;
         }
 
+        public ProtobufMessage Message { get; set; }
+
         public DependencyProperty InputFilePathProperty = DependencyProperty.Register(
-            nameof(InputFilePath), 
+            nameof(InputFilePath),
+            typeof(string),
+            typeof(MainWindow));
+
+        public DependencyProperty RenderedProtoFileProperty = DependencyProperty.Register(
+            nameof(RenderedProtoFile),
             typeof(string),
             typeof(MainWindow));
 
@@ -24,6 +33,12 @@ namespace ProtobufDecoder.Application.Wpf
         {
             get => (string)GetValue(InputFilePathProperty);
             set => SetValue(InputFilePathProperty, value);
+        }
+
+        public string RenderedProtoFile
+        {
+            get => (string)GetValue(RenderedProtoFileProperty);
+            set => SetValue(RenderedProtoFileProperty, value);
         }
 
         private void AboutMenuItem_OnClick(object sender, RoutedEventArgs e)
@@ -55,7 +70,72 @@ namespace ProtobufDecoder.Application.Wpf
             if (result.HasValue && result.Value)
             {
                 InputFilePath = dialog.FileName;
+
+
+                // Ensure everything is cleared before we add something new.
+                ClearWindow();
+
+                if (string.IsNullOrEmpty(InputFilePath))
+                {
+                    ShowMessageBox.ForNoInputSelected();
+
+                    return;
+                }
+
+                if (!File.Exists(InputFilePath))
+                {
+                    ShowMessageBox.ForFileDoesNotExist();
+
+                    return;
+                }
+
+                try
+                {
+                    Decode(File.ReadAllBytes(InputFilePath));
+
+                    RenderProtoFile(Message);
+                }
+                catch (IOException ioException)
+                {
+                    ShowMessageBox.ForReadingInputFailed(ioException);
+                }
             }
+        }
+
+        private void RenderProtoFile(ProtobufMessage protobufMessage)
+        {
+            if (string.IsNullOrEmpty(Message.Name))
+            {
+                Message.Name = "Message";
+            }
+
+            RenderedProtoFile = ProtobufWriter.ToString(protobufMessage);
+        }
+
+        private void Decode(byte[] input)
+        {
+            try
+            {
+                Message = ProtobufParser.Parse(input);
+            }
+            catch (Exception exception)
+            {
+                ShowMessageBox.ForFailedToParseInput(exception);
+
+                return;
+            }
+
+            TagsTreeView.ItemsSource = Message.Tags;
+        }
+
+        private void ClearWindow()
+        {
+            TagsTreeView.ItemsSource = null;
+            GeneratedProtoTextBlock.Text = null;
+        }
+
+        private void TagsTreeView_OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
         }
     }
 }
