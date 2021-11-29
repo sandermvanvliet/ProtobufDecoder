@@ -6,6 +6,8 @@ namespace ProtobufDecoder
 {
     public abstract class ProtobufTag
     {
+        private string _name;
+
         [Browsable(true)]
         [Description("The Protobuf wire type")]
         [ReadOnly(true)]
@@ -27,7 +29,19 @@ namespace ProtobufDecoder
         /// <summary>
         /// Optional name of this tag
         /// </summary>
-        public string Name { get; set; }
+        public string Name
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_name))
+                {
+                    return $"tag{Index}";
+                }
+
+                return _name;
+            }
+            set => _name = value;
+        }
     }
 
     public class ProtobufTagSingle : ProtobufTag
