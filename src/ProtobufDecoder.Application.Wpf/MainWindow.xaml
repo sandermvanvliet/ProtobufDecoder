@@ -1,0 +1,65 @@
+﻿<Window x:Class="ProtobufDecoder.Application.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProtobufDecoder.Application.Wpf"
+        xmlns:protobufDecoder="clr-namespace:ProtobufDecoder;assembly=ProtobufDecoder"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="1000">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type protobufDecoder:ProtobufTagSingle}">
+            <TextBlock Text="{Binding Path=Name}"></TextBlock>
+        </DataTemplate>
+
+        <HierarchicalDataTemplate DataType="{x:Type protobufDecoder:ProtobufTagRepeated}"
+                                  ItemsSource="{Binding Path=Items}">
+            <TextBlock Text="{Binding Path=Name}"></TextBlock>
+        </HierarchicalDataTemplate>
+
+        <HierarchicalDataTemplate DataType="{x:Type protobufDecoder:ProtobufTagEmbeddedMessage}"
+                                  ItemsSource="{Binding Path=Tags}">
+            <TextBlock Text="{Binding Path=Name}"></TextBlock>
+        </HierarchicalDataTemplate>
+    </Window.Resources>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top" IsMainMenu="True" Margin="0,0,0,0">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Exit" Name="ExitMenuItem" Click="ExitMenuItem_OnClick" />
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Header="_About" Name="AboutMenuItem" Click="AboutMenuItem_OnClick"></MenuItem>
+            </MenuItem>
+        </Menu>
+        <Border DockPanel.Dock="Top" Height="28" VerticalAlignment="Center" Margin="0,0,0,0" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" >
+            <StackPanel Orientation="Horizontal" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+                <Label Width="40" HorizontalContentAlignment="Right">Path:</Label>
+                <TextBox Name="ProtobufFilePath" Width="300" Margin="4" IsReadOnly="True" Text="{Binding Path=InputFilePath}" />
+                <Button Content="..." Name="BrowseFileButton" Click="BrowseFileButton_Click" Margin="0,4,4,4" Width="25" />
+            </StackPanel>
+        </Border>
+        <Border DockPanel.Dock="Bottom" Height="18" VerticalAlignment="Bottom" Margin="0,0,0,0" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" >
+            <StackPanel Orientation="Horizontal" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+                <TextBlock Margin="4,0,0,0"><Run Text="Loaded OK"/></TextBlock>
+            </StackPanel>
+        </Border>
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+            <TextBlock Name="ByteViewTextBlock" Width="250">Bytes will be here</TextBlock>
+            <TreeView Name="TagsTreeView" Width="250">
+            </TreeView>
+            <Border Width="250" BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" BorderThickness="1">
+                <TextBlock Name="GeneratedProtoTextBlock"></TextBlock>
+            </Border>
+            <ListView Name="TagPropertiesListBox" Width="250">
+                <ListView.View>
+                    <GridView>
+                        <GridView.Columns>
+                            <GridViewColumn Header="Name" Width="125" />
+                            <GridViewColumn Header="Value" Width="125"/>
+                        </GridView.Columns>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </StackPanel>
+    </DockPanel>
+</Window>
