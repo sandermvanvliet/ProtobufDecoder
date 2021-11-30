@@ -14,10 +14,6 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 _ => LoadAndDecode(Model.InputFilePath),
                 _ => !string.IsNullOrEmpty(Model.InputFilePath));
 
-            RenderProtoFileCommand = new RelayCommand(
-                _ => RenderProtoFile(Model.Message),
-                _ => Model.Message != null);
-
             OpenFileCommand = new RelayCommand(
                 _ => OpenFile(),
                 _ => true);
@@ -29,7 +25,6 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
         public ICommand LoadFileCommand { get; }
         public ICommand OpenFileCommand { get; set; }
-        public ICommand RenderProtoFileCommand { get; }
         public ICommand SaveGeneratedProtoCommand { get; }
 
         public MainWindowModel Model { get; set; }
@@ -39,16 +34,6 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             var bytes = File.ReadAllBytes(inputFilePath);
             Model.InputFileByteStream = new MemoryStream(bytes);
             Model.Message = ProtobufParser.Parse(bytes);
-        }
-
-        private void RenderProtoFile(ProtobufMessage modelMessage)
-        {
-            if (modelMessage.Name == null)
-            {
-                modelMessage.Name = "TestMessage";
-            }
-
-            Model.RenderedProtoFile = ProtobufWriter.ToString(modelMessage);
         }
 
         private void OpenFile()

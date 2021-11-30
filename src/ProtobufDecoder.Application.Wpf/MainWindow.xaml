@@ -7,6 +7,7 @@
         xmlns:protobufDecoder="clr-namespace:ProtobufDecoder;assembly=ProtobufDecoder"
         xmlns:hex="clr-namespace:WpfHexaEditor;assembly=WPFHexaEditor"
         xmlns:viewModels="clr-namespace:ProtobufDecoder.Application.Wpf.ViewModels"
+        xmlns:converters="clr-namespace:ProtobufDecoder.Application.Wpf.Converters"
         mc:Ignorable="d"
         Title="{Binding Path=Model.WindowTitle}" 
         Height="663" 
@@ -30,7 +31,8 @@
                                   ItemsSource="{Binding Path=Tags}">
             <TextBlock Text="{Binding Path=Name}"></TextBlock>
         </HierarchicalDataTemplate>
-        <local:ProtobufTagConverter x:Key="ProtobufTagConverter"/>
+        <converters:ProtobufTagConverter x:Key="ProtobufTagConverter"/>
+        <converters:ProtobufMessageConverter x:Key="GeneratedProtoConverter" />
         <CollectionViewSource
             x:Key="GroupedViewSource"
             IsLiveGroupingRequested="True"
@@ -71,7 +73,7 @@
                            Stream="{Binding Path=Model.InputFileByteStream}"/>
             <TreeView Name="TagsTreeView" Width="250" SelectedItemChanged="TagsTreeView_OnSelectedItemChanged" ItemsSource="{Binding Path=Model.Message.Tags}" />
             <Border Width="250" BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" BorderThickness="1">
-                <TextBox Name="GeneratedProtoTextBlock" Text="{Binding Path=Model.RenderedProtoFile}" IsReadOnly="True"></TextBox>
+                <TextBox Name="GeneratedProtoTextBlock" Text="{Binding Path=Model.Message, Converter={StaticResource GeneratedProtoConverter}}" IsReadOnly="True"></TextBox>
             </Border>
             <ListView Name="TagPropertiesListBox" 
                       Width="250" 

@@ -13,14 +13,6 @@ namespace ProtobufDecoder.Application.Wpf
             DataContext = viewModel;
 
             InitializeComponent();
-
-            ViewModel.Model.PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName == nameof(ViewModel.Model.Message))
-                {
-                    ViewModel.RenderProtoFileCommand.Execute(null);
-                }
-            };
         }
 
         private MainWindowViewModel ViewModel => (MainWindowViewModel)DataContext;

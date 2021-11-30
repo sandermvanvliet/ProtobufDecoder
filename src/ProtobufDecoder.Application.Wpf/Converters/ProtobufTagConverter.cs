@@ -6,28 +6,30 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 
-namespace ProtobufDecoder.Application.Wpf
+namespace ProtobufDecoder.Application.Wpf.Converters
 {
     [ValueConversion(typeof(ProtobufTag), typeof(List<ProtobufTagPropertyDescriptor>))]
     public class ProtobufTagConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var tag = value as ProtobufTag;
-
-            var properties = TypeDescriptor.GetProperties(tag);
             var list = new List<ProtobufTagPropertyDescriptor>();
 
-            foreach (PropertyDescriptor p in properties)
+            if (value is ProtobufTag tag)
             {
-                if(p.Attributes.OfType<BrowsableAttribute>().Any(a => a.Browsable == false))
+                var properties = TypeDescriptor.GetProperties(tag);
+
+                foreach (PropertyDescriptor p in properties)
                 {
-                    continue;
+                    if (p.Attributes.OfType<BrowsableAttribute>().Any(a => a.Browsable == false))
+                    {
+                        continue;
+                    }
+
+                    var category = GetCategoryOf(p);
+
+                    list.Add(new ProtobufTagPropertyDescriptor(p.Name, p.GetValue(tag)?.ToString(), category));
                 }
-
-                var category = GetCategoryOf(p);
-
-                list.Add(new ProtobufTagPropertyDescriptor(p.Name, p.GetValue(tag)?.ToString(), category));
             }
 
             return list;
