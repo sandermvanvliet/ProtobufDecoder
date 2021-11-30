@@ -35,14 +35,7 @@ namespace ProtobufDecoder.Application.Wpf
 
         private void TagsTreeView_OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            var tag = TagsTreeView.SelectedItem as ProtobufTag;
-
-            if (tag == null)
-            {
-                return;
-            }
-
-            if (tag is ProtobufTagSingle singleTag)
+            if (TagsTreeView.SelectedItem is ProtobufTagSingle singleTag)
             {
                 HexEditor.SelectionStart = singleTag.StartOffset;
                 HexEditor.SelectionStop = singleTag.EndOffset;
