@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ProtobufDecoder.Application.Wpf": {
+      "commandName": "Project",
+      "commandLineArgs": "c:\\git\\temp\\zwift\\pl106.bin"
+    }
+  }
+}

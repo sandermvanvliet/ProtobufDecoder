@@ -6,8 +6,13 @@
         xmlns:local="clr-namespace:ProtobufDecoder.Application.Wpf"
         xmlns:protobufDecoder="clr-namespace:ProtobufDecoder;assembly=ProtobufDecoder"
         xmlns:hex="clr-namespace:WpfHexaEditor;assembly=WPFHexaEditor"
+        xmlns:viewModels="clr-namespace:ProtobufDecoder.Application.Wpf.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="663" Width="1187">
+        Title="{Binding Path=Model.WindowTitle}" 
+        Height="663" 
+        Width="1187"
+        Loaded="MainWindow_OnLoaded"
+        d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}">
     <Window.Resources>
         <DataTemplate DataType="{x:Type protobufDecoder:ProtobufTagSingle}">
             <TextBlock Text="{Binding Path=Name}"></TextBlock>
@@ -39,21 +44,18 @@
         </CollectionViewSource>
     </Window.Resources>
     <DockPanel>
-        <Menu DockPanel.Dock="Top" IsMainMenu="True" Margin="0,0,0,0">
+        <Menu DockPanel.Dock="Top" IsMainMenu="True" Margin="0,0,0,0" Height="20">
             <MenuItem Header="_File">
+                <MenuItem Header="_Open" Name="OpenFileMenuItem" Click="OpenFileMenuItem_OnClick"/>
+                <Separator/>
+                <MenuItem Header="_Save generated proto" Name="SaveGeneratedProto" Command="{Binding Path=SaveGeneratedProtoCommand}"/>
+                <Separator/>
                 <MenuItem Header="_Exit" Name="ExitMenuItem" Click="ExitMenuItem_OnClick" />
             </MenuItem>
             <MenuItem Header="_Help">
                 <MenuItem Header="_About" Name="AboutMenuItem" Click="AboutMenuItem_OnClick"></MenuItem>
             </MenuItem>
         </Menu>
-        <Border DockPanel.Dock="Top" Height="28" VerticalAlignment="Center" Margin="0,0,0,0" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" >
-            <StackPanel Orientation="Horizontal" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
-                <Label Width="40" HorizontalContentAlignment="Right">Path:</Label>
-                <TextBox Name="ProtobufFilePath" Width="300" Margin="4" IsReadOnly="True" Text="{Binding Path=InputFilePath}" />
-                <Button Content="..." Name="BrowseFileButton" Click="BrowseFileButton_Click" Margin="0,4,4,4" Width="25" />
-            </StackPanel>
-        </Border>
         <Border DockPanel.Dock="Bottom" Height="18" VerticalAlignment="Bottom" Margin="0,0,0,0" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" >
             <StackPanel Orientation="Horizontal" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
                 <TextBlock Margin="4,0,0,0"><Run Text="Loaded OK"/></TextBlock>
@@ -66,10 +68,10 @@
                            AllowDrop="False"
                            ByteGrouping="EightByte"
                            DefaultCopyToClipboardMode="CSharpCode"
-                           Stream="{Binding Path=InputFileByteStream}"/>
-            <TreeView Name="TagsTreeView" Width="250" SelectedItemChanged="TagsTreeView_OnSelectedItemChanged" />
+                           Stream="{Binding Path=Model.InputFileByteStream}"/>
+            <TreeView Name="TagsTreeView" Width="250" SelectedItemChanged="TagsTreeView_OnSelectedItemChanged" ItemsSource="{Binding Path=Model.Message.Tags}" />
             <Border Width="250" BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" BorderThickness="1">
-                <TextBox Name="GeneratedProtoTextBlock" Text="{Binding Path=RenderedProtoFile}" IsReadOnly="True"></TextBox>
+                <TextBox Name="GeneratedProtoTextBlock" Text="{Binding Path=Model.RenderedProtoFile}" IsReadOnly="True"></TextBox>
             </Border>
             <ListView Name="TagPropertiesListBox" 
                       Width="250" 
