@@ -61,7 +61,7 @@ namespace ProtobufDecoder.Application.Wpf.Test.Unit
             {
                 Model =
                 {
-                    RenderedProtoFile = "some content"
+                    Message = new ProtobufMessage()
                 }
             };
 
@@ -89,7 +89,7 @@ namespace ProtobufDecoder.Application.Wpf.Test.Unit
             {
                 Model =
                 {
-                    RenderedProtoFile = "some content"
+                    Message = new ProtobufMessage()
                 }
             };
 

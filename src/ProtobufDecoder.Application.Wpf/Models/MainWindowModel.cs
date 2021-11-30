@@ -56,17 +56,6 @@ namespace ProtobufDecoder.Application.Wpf.Models
             }
         }
 
-        public string RenderedProtoFile
-        {
-            get => _renderedProtoFile;
-            set
-            {
-                if (value == _renderedProtoFile) return;
-                _renderedProtoFile = value;
-                OnPropertyChanged();
-            }
-        }
-
         public Stream InputFileByteStream
         {
             get => _inputFileByteStream;

@@ -22,11 +22,11 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
             SaveGeneratedProtoCommand = new RelayCommand(
                 _ => SaveGeneratedProtoFile(),
-                _ => !string.IsNullOrEmpty(Model?.RenderedProtoFile));
+                _ => Model?.Message != null);
 
             SaveGeneratedProtoAsCommand = new RelayCommand(
                 _ => SaveGeneratedProtoFileAs(),
-                _ => !string.IsNullOrEmpty(Model?.RenderedProtoFile));
+                _ => Model?.Message != null);
         }
 
         public ICommand LoadFileCommand { get; }
@@ -85,7 +85,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 Model.OutputFilePath = dialog.FileName;
             }
 
-            File.WriteAllText(Model.OutputFilePath, Model.RenderedProtoFile);
+            File.WriteAllText(Model.OutputFilePath, ProtobufWriter.ToString(Model.Message));
         }
 
         private void SaveGeneratedProtoFileAs()
@@ -105,7 +105,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 return;
             }
 
-            File.WriteAllText(dialog.FileName, Model.RenderedProtoFile);
+            File.WriteAllText(dialog.FileName, ProtobufWriter.ToString(Model.Message));
         }
     }
 }
