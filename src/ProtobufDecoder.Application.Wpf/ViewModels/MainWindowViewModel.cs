@@ -12,7 +12,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
         {
             LoadFileCommand = new RelayCommand(
                 _ => LoadAndDecode(Model.InputFilePath),
-                x => !string.IsNullOrEmpty(Model.InputFilePath));
+                _ => !string.IsNullOrEmpty(Model.InputFilePath));
 
             RenderProtoFileCommand = new RelayCommand(
                 _ => RenderProtoFile(Model.Message),
@@ -65,6 +65,8 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             if(result.HasValue && result.Value)
             {
                 Model.InputFilePath = dialog.FileName;
+
+                LoadFileCommand.Execute(null);
             }
         }
 
