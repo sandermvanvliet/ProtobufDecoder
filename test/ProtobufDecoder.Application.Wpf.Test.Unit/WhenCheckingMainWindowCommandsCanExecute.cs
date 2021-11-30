@@ -71,5 +71,33 @@ namespace ProtobufDecoder.Application.Wpf.Test.Unit
                 .Should()
                 .BeTrue();
         }
+
+        [Fact]
+        public void GivenViewModel_SaveGeneratedProtoFileAsCommandCannotBeExecuted()
+        {
+            new MainWindowViewModel()
+                .SaveGeneratedProtoAsCommand
+                .CanExecute(null)
+                .Should()
+                .BeFalse();
+        }
+
+        [Fact]
+        public void GivenViewModelWithRenderedProtoContent_SaveGeneratedProtoFileAsCommandCanBeExecuted()
+        {
+            var viewModel = new MainWindowViewModel
+            {
+                Model =
+                {
+                    RenderedProtoFile = "some content"
+                }
+            };
+
+            viewModel
+                .SaveGeneratedProtoAsCommand
+                .CanExecute(null)
+                .Should()
+                .BeTrue();
+        }
     }
 }

@@ -21,15 +21,21 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 _ => true);
 
             SaveGeneratedProtoCommand = new RelayCommand(
-                _ => SaveGeneratedProtoFile(Model.RenderedProtoFile),
+                _ => SaveGeneratedProtoFile(),
+                _ => !string.IsNullOrEmpty(Model?.RenderedProtoFile));
+
+            SaveGeneratedProtoAsCommand = new RelayCommand(
+                _ => SaveGeneratedProtoFileAs(),
                 _ => !string.IsNullOrEmpty(Model?.RenderedProtoFile));
         }
 
         public ICommand LoadFileCommand { get; }
         public ICommand OpenFileCommand { get; set; }
         public ICommand SaveGeneratedProtoCommand { get; }
+        public ICommand SaveGeneratedProtoAsCommand { get; }
 
         public MainWindowModel Model { get; set; }
+
 
         private void LoadAndDecode(string inputFilePath)
         {
@@ -46,10 +52,10 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 CheckFileExists = true,
                 ShowReadOnly = true
             };
-            
+
             var result = dialog.ShowDialog();
 
-            if(result.HasValue && result.Value)
+            if (result.HasValue && result.Value)
             {
                 Model.InputFilePath = dialog.FileName;
 
@@ -57,7 +63,32 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             }
         }
 
-        private void SaveGeneratedProtoFile(string renederedProtoFile)
+        private void SaveGeneratedProtoFile()
+        {
+            if (string.IsNullOrEmpty(Model.OutputFilePath))
+            {
+                var dialog = new SaveFileDialog
+                {
+                    RestoreDirectory = true,
+                    AddExtension = true,
+                    DefaultExt = ".proto",
+                    Filter = "Protobuf files (.proto)|*.proto"
+                };
+
+                var result = dialog.ShowDialog();
+
+                if (!result.HasValue || !result.Value)
+                {
+                    return;
+                }
+
+                Model.OutputFilePath = dialog.FileName;
+            }
+
+            File.WriteAllText(Model.OutputFilePath, Model.RenderedProtoFile);
+        }
+
+        private void SaveGeneratedProtoFileAs()
         {
             var dialog = new SaveFileDialog
             {
@@ -69,10 +100,12 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
             var result = dialog.ShowDialog();
 
-            if(result.HasValue && result.Value)
+            if (!result.HasValue || !result.Value)
             {
-                File.WriteAllText(dialog.FileName, renederedProtoFile);
+                return;
             }
+
+            File.WriteAllText(dialog.FileName, Model.RenderedProtoFile);
         }
     }
 }

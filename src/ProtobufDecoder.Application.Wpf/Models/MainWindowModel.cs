@@ -12,6 +12,7 @@ namespace ProtobufDecoder.Application.Wpf.Models
         private string _windowTitle = "ProtobufDecoder";
         private string _renderedProtoFile;
         private Stream _inputFileByteStream;
+        private string _outputFilePath;
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
@@ -73,6 +74,17 @@ namespace ProtobufDecoder.Application.Wpf.Models
             {
                 if (Equals(value, _inputFileByteStream)) return;
                 _inputFileByteStream = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string OutputFilePath
+        {
+            get => _outputFilePath;
+            set
+            {
+                if (value == _outputFilePath) return;
+                _outputFilePath = value;
                 OnPropertyChanged();
             }
         }
