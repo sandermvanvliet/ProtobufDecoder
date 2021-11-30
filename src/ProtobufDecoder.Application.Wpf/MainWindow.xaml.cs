@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using Microsoft.Win32;
 using ProtobufDecoder.Application.Wpf.ViewModels;
 
 namespace ProtobufDecoder.Application.Wpf
@@ -64,32 +63,6 @@ namespace ProtobufDecoder.Application.Wpf
             {
                 ViewModel.LoadFileCommand.Execute(ViewModel.Model.InputFilePath);
             }
-        }
-
-        private void OpenFileMenuItem_OnClick(object sender, RoutedEventArgs e)
-        {
-            var dialog = new OpenFileDialog
-            {
-                RestoreDirectory = true,
-                ShowReadOnly = true
-            };
-
-            var result = dialog.ShowDialog(this);
-
-            if (result.Value)
-            {
-                ViewModel.Model.InputFilePath = dialog.FileName;
-
-                if (ViewModel.LoadFileCommand.CanExecute(ViewModel.Model.InputFilePath))
-                {
-                    ViewModel.LoadFileCommand.Execute(ViewModel.Model.InputFilePath);
-                }
-            }
-        }
-
-        private void SaveGeneratedProto_OnClick(object sender, RoutedEventArgs e)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

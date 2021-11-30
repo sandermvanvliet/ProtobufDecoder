@@ -18,12 +18,17 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 _ => RenderProtoFile(Model.Message),
                 _ => Model.Message != null);
 
+            OpenFileCommand = new RelayCommand(
+                _ => OpenFile(),
+                _ => true);
+
             SaveGeneratedProtoCommand = new RelayCommand(
                 _ => SaveGeneratedProtoFile(Model.RenderedProtoFile),
                 _ => !string.IsNullOrEmpty(Model.RenderedProtoFile));
         }
 
         public ICommand LoadFileCommand { get; }
+        public ICommand OpenFileCommand { get; set; }
         public ICommand RenderProtoFileCommand { get; }
         public ICommand SaveGeneratedProtoCommand { get; }
 
@@ -44,6 +49,23 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             }
 
             Model.RenderedProtoFile = ProtobufWriter.ToString(modelMessage);
+        }
+
+        private void OpenFile()
+        {
+            var dialog = new OpenFileDialog
+            {
+                RestoreDirectory = true,
+                CheckFileExists = true,
+                ShowReadOnly = true
+            };
+            
+            var result = dialog.ShowDialog();
+
+            if(result.HasValue && result.Value)
+            {
+                Model.InputFilePath = dialog.FileName;
+            }
         }
 
         private void SaveGeneratedProtoFile(string renederedProtoFile)
