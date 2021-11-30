@@ -14,7 +14,10 @@
 
         <HierarchicalDataTemplate DataType="{x:Type protobufDecoder:ProtobufTagRepeated}"
                                   ItemsSource="{Binding Path=Items}">
-            <TextBlock Text="{Binding Path=Name}"></TextBlock>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Path=Name}" />
+                <TextBlock Text="(repeated)" Margin="4, 0, 0, 0"/>
+            </StackPanel>
         </HierarchicalDataTemplate>
 
         <HierarchicalDataTemplate DataType="{x:Type protobufDecoder:ProtobufTagEmbeddedMessage}"
@@ -22,6 +25,17 @@
             <TextBlock Text="{Binding Path=Name}"></TextBlock>
         </HierarchicalDataTemplate>
         <local:ProtobufTagConverter x:Key="ProtobufTagConverter"/>
+        <CollectionViewSource
+            x:Key="GroupedViewSource"
+            IsLiveGroupingRequested="True"
+            Source="{Binding ElementName=TagsTreeView, Path=SelectedItem, Converter={StaticResource ProtobufTagConverter}}">
+            <CollectionViewSource.LiveGroupingProperties>
+                Category
+            </CollectionViewSource.LiveGroupingProperties>
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="Category" />
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
     </Window.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top" IsMainMenu="True" Margin="0,0,0,0">
@@ -50,15 +64,31 @@
             <Border Width="250" BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" BorderThickness="1">
                 <TextBox Name="GeneratedProtoTextBlock" Text="{Binding Path=RenderedProtoFile}" IsReadOnly="True"></TextBox>
             </Border>
-            <ListView Name="TagPropertiesListBox" Width="250" ItemsSource="{Binding ElementName=TagsTreeView, Path=SelectedItem, Converter={StaticResource ProtobufTagConverter}}">
+            <ListView Name="TagPropertiesListBox" 
+                      Width="250" 
+                      ItemsSource="{Binding Source={StaticResource GroupedViewSource}}">
                 <ListView.View>
                     <GridView>
                         <GridView.Columns>
-                            <GridViewColumn Header="Name" Width="125" DisplayMemberBinding="{Binding Path=Key}" />
+                            <GridViewColumn Header="Name" Width="125" DisplayMemberBinding="{Binding Path=Name}" />
                             <GridViewColumn Header="Value" Width="125" DisplayMemberBinding="{Binding Path=Value}"/>
                         </GridView.Columns>
                     </GridView>
                 </ListView.View>
+
+                <ListView.GroupStyle>
+                    <GroupStyle>
+                        <GroupStyle.HeaderTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrush}}" 
+                                        Background="{DynamicResource {x:Static SystemColors.ControlBrush}}"
+                                        BorderThickness="1">
+                                    <TextBlock FontWeight="Bold" Text="{Binding Path=Name, TargetNullValue=Common}"/>
+                                </Border>
+                            </DataTemplate>
+                        </GroupStyle.HeaderTemplate>
+                    </GroupStyle>
+                </ListView.GroupStyle>
             </ListView>
         </StackPanel>
     </DockPanel>
