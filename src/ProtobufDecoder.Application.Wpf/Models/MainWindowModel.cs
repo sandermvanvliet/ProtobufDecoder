@@ -9,7 +9,7 @@ namespace ProtobufDecoder.Application.Wpf.Models
     {
         private string _inputFilePath;
         private ProtobufMessage _message;
-        private string _windowTitle;
+        private string _windowTitle = "ProtobufDecoder";
         private string _renderedProtoFile;
         private Stream _inputFileByteStream;
         public event PropertyChangedEventHandler PropertyChanged;
