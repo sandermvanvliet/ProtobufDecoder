@@ -29,6 +29,11 @@ namespace ProtobufDecoder.Application.Wpf
             typeof(string),
             typeof(MainWindow));
 
+        public DependencyProperty InputFileByteStreamProperty = DependencyProperty.Register(
+            nameof(InputFileByteStream),
+            typeof(Stream),
+            typeof(MainWindow));
+
         public string InputFilePath
         {
             get => (string)GetValue(InputFilePathProperty);
@@ -39,6 +44,12 @@ namespace ProtobufDecoder.Application.Wpf
         {
             get => (string)GetValue(RenderedProtoFileProperty);
             set => SetValue(RenderedProtoFileProperty, value);
+        }
+
+        public Stream InputFileByteStream
+        {
+            get => (Stream)GetValue(InputFileByteStreamProperty);
+            set => SetValue(InputFileByteStreamProperty, value);
         }
 
         private void AboutMenuItem_OnClick(object sender, RoutedEventArgs e)
@@ -91,7 +102,9 @@ namespace ProtobufDecoder.Application.Wpf
 
                 try
                 {
-                    Decode(File.ReadAllBytes(InputFilePath));
+                    var bytes = File.ReadAllBytes(InputFilePath);
+                    InputFileByteStream = new MemoryStream(bytes);
+                    Decode(bytes);
 
                     RenderProtoFile(Message);
                 }
@@ -136,6 +149,18 @@ namespace ProtobufDecoder.Application.Wpf
 
         private void TagsTreeView_OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
+            var tag = TagsTreeView.SelectedItem as ProtobufTag;
+
+            if (tag == null)
+            {
+                return;
+            }
+
+            if (tag is ProtobufTagSingle singleTag)
+            {
+                HexEditor.SelectionStart = singleTag.StartOffset;
+                HexEditor.SelectionStop = singleTag.EndOffset;
+            }
         }
     }
 }

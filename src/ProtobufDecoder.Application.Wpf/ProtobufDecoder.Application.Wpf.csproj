@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="WPFHexaEditor" Version="2.1.7" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ProtobufDecoder\ProtobufDecoder.csproj" />
   </ItemGroup>
 

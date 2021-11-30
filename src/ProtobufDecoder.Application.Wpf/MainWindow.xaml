@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProtobufDecoder.Application.Wpf"
         xmlns:protobufDecoder="clr-namespace:ProtobufDecoder;assembly=ProtobufDecoder"
+        xmlns:hex="clr-namespace:WpfHexaEditor;assembly=WPFHexaEditor"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="1000">
+        Title="MainWindow" Height="663" Width="1187">
     <Window.Resources>
         <DataTemplate DataType="{x:Type protobufDecoder:ProtobufTagSingle}">
             <TextBlock Text="{Binding Path=Name}"></TextBlock>
@@ -59,7 +60,13 @@
             </StackPanel>
         </Border>
         <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
-            <TextBlock Name="ByteViewTextBlock" Width="250">Bytes will be here</TextBlock>
+            <hex:HexEditor Name="HexEditor" 
+                           Width="600"
+                           ReadOnlyMode="True"
+                           AllowDrop="False"
+                           ByteGrouping="EightByte"
+                           DefaultCopyToClipboardMode="CSharpCode"
+                           Stream="{Binding Path=InputFileByteStream}"/>
             <TreeView Name="TagsTreeView" Width="250" SelectedItemChanged="TagsTreeView_OnSelectedItemChanged" />
             <Border Width="250" BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" BorderThickness="1">
                 <TextBox Name="GeneratedProtoTextBlock" Text="{Binding Path=RenderedProtoFile}" IsReadOnly="True"></TextBox>
