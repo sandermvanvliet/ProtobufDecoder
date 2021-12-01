@@ -73,7 +73,7 @@ namespace ProtobufDecoder.Application.Wpf
                             HexEditor.CustomBackgroundBlockItems.Add(
                                 new CustomBackgroundBlock(
                                     embeddedMessageStartOffset,
-                                    embeddedMessage.EndOffset + parentOffset,
+                                    (embeddedMessage.EndOffset + parentOffset) - embeddedMessage.StartOffset,
                                     GetNextSelectionColor()));
                         }
                     }
