@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
 using ProtobufDecoder.Application.Wpf.Annotations;
@@ -10,7 +12,6 @@ namespace ProtobufDecoder.Application.Wpf.Models
         private string _inputFilePath;
         private ProtobufMessage _message;
         private string _windowTitle = "ProtobufDecoder";
-        private string _renderedProtoFile;
         private Stream _inputFileByteStream;
         private string _outputFilePath;
         public event PropertyChangedEventHandler PropertyChanged;
@@ -75,6 +76,44 @@ namespace ProtobufDecoder.Application.Wpf.Models
                 if (value == _outputFilePath) return;
                 _outputFilePath = value;
                 OnPropertyChanged();
+            }
+        }
+
+        public void DecodeTag(ProtobufTag tag)
+        {
+            if (tag is ProtobufTagSingle singleTag)
+            {
+                if(singleTag.Value.CanDecode)
+                {
+                    try
+                    {
+                        var parsedMessage = ProtobufParser.Parse(singleTag.Value.RawValue);
+                        var embeddedMessageTag = new ProtobufTagEmbeddedMessage(singleTag, parsedMessage.Tags.ToArray())
+                        {
+                            Name = $"EmbeddedMessage{tag.Index}"
+                        };
+
+                        // Replace the existing tag with the expanded tag
+                        if (singleTag.Parent is ProtobufTagRepeated repeatedTag)
+                        {
+                            var tagIndex = repeatedTag.Items.IndexOf(singleTag);
+                            repeatedTag.Items.RemoveAt(tagIndex);
+                            repeatedTag.Items.Insert(tagIndex, embeddedMessageTag);
+                            OnPropertyChanged(nameof(Message));
+                        }
+                        else if(singleTag.Parent is ProtobufTagEmbeddedMessage embeddedTag)
+                        {
+                            var tagIndex = embeddedTag.Tags.IndexOf(singleTag);
+                            embeddedTag.Tags.RemoveAt(tagIndex);
+                            embeddedTag.Tags.Insert(tagIndex, embeddedMessageTag);
+                            OnPropertyChanged(nameof(Message));
+                        }
+                    }
+                    catch (Exception exception)
+                    {
+                        Debug.WriteLine(exception);
+                    }
+                }
             }
         }
     }
