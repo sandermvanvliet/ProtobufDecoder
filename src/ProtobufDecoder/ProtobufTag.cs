@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using Google.Protobuf;
@@ -93,7 +94,7 @@ namespace ProtobufDecoder
         [Browsable(true)]
         [Description("The instances of this tag in the payload")]
         [ReadOnly(true)]
-        public List<ProtobufTagSingle> Items { get; set; } = new List<ProtobufTagSingle>();
+        public ObservableCollection<ProtobufTagSingle> Items { get; set; } = new ObservableCollection<ProtobufTagSingle>();
     }
 
     /// <summary>
@@ -112,18 +113,18 @@ namespace ProtobufDecoder
             Parent = tag.Parent;
 
             // Ensure parent is set on all child tags of this tag
-            Tags = tags
+            Tags = new ObservableCollection<ProtobufTag>(tags
                 .Select(t =>
                 {
                     t.Parent = this;
                     return t;
                 })
-                .ToList();
+                .ToList());
         }
 
         [Browsable(true)]
         [Description("The tags of this embedded message")]
         [ReadOnly(true)]
-        public List<ProtobufTag> Tags { get; }
+        public ObservableCollection<ProtobufTag> Tags { get; }
     }
 }

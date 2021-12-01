@@ -38,9 +38,42 @@ namespace ProtobufDecoder.Application.Wpf
         {
             if (TagsTreeView.SelectedItem is ProtobufTagSingle singleTag)
             {
-                HexEditor.SelectionStart = singleTag.StartOffset;
-                HexEditor.SelectionStop = singleTag.EndOffset;
+                var byteViewOffset = GetOffsetOf(singleTag);
+
+                HexEditor.SelectionStart = singleTag.StartOffset + byteViewOffset;
+                HexEditor.SelectionStop = singleTag.EndOffset + byteViewOffset;
             }
+        }
+
+        private static int GetOffsetOf(ProtobufTag tag, int offset = 0)
+        {
+            if (tag.Parent == null)
+            {
+                return 0;
+            }
+
+            tag = tag.Parent;
+
+            if (tag is ProtobufTagEmbeddedMessage embeddedTag)
+            {
+                // Add the StartOffset of this tag
+                return embeddedTag.DataOffset + GetOffsetOf(tag, offset);
+            }
+
+            if (tag is ProtobufTagSingle singleTag)
+            {
+                // Add the StartOffset of this tag
+                return singleTag.StartOffset + GetOffsetOf(tag, offset);
+            }
+
+            if (tag is ProtobufTagRepeated)
+            {
+                // Don't add any additional offset because
+                // a repeated tag is only a placeholder
+                return offset + GetOffsetOf(tag, offset);
+            }
+
+            return offset;
         }
 
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
@@ -59,8 +92,6 @@ namespace ProtobufDecoder.Application.Wpf
                 {
                     if(singleTag.Value.CanDecode)
                     {
-                        var treeViewItem = TagsTreeView.ItemContainerGenerator.ContainerFromItem(TagsTreeView.SelectedItem) as TreeViewItem;
-
                         var parsedMessage = ProtobufParser.Parse(singleTag.Value.RawValue);
                         var embeddedMessageTag = new ProtobufTagEmbeddedMessage(singleTag, parsedMessage.Tags.ToArray())
                         {
@@ -71,14 +102,6 @@ namespace ProtobufDecoder.Application.Wpf
                         var parentTag = singleTag.Parent as ProtobufTagRepeated;
                         parentTag.Items.Remove(singleTag);
                         parentTag.Items.Add(embeddedMessageTag);
-
-                        treeViewItem.ItemsSource = embeddedMessageTag.Tags;
-                        treeViewItem.IsExpanded = true;
-
-                        //TagsTreeView.ItemsSource = null;
-                        //TagsTreeView.ItemsSource = ViewModel.Model.Message.Tags;
-
-                        //treeViewItem.IsExpanded = true;
                     }
                 }
             }

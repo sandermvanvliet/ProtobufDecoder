@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Google.Protobuf;
 
@@ -116,13 +117,13 @@ namespace ProtobufDecoder
                             WireType = firstTag.WireType
                         };
 
-                        protobufTagRepeated.Items = values
+                        protobufTagRepeated.Items = new ObservableCollection<ProtobufTagSingle>(values
                             .Select(t =>
                             {
                                 t.Parent = protobufTagRepeated;
                                 return t;
                             })
-                            .ToList();
+                            .ToList());
 
                         return protobufTagRepeated;
                     })
