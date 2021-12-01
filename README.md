@@ -28,7 +28,7 @@ It can be used for _reverse engineering_ but bear in mind that this may not be l
 
 See [LICENSE](./LICENSE).
 
-## Attributions
+## Achknowledgements
 
 This application uses:
 
