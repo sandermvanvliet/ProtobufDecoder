@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using ProtobufDecoder.Application.Wpf.ViewModels;
 
 namespace ProtobufDecoder.Application.Wpf
@@ -47,6 +48,39 @@ namespace ProtobufDecoder.Application.Wpf
             if (ViewModel.LoadFileCommand.CanExecute(ViewModel.Model.InputFilePath))
             {
                 ViewModel.LoadFileCommand.Execute(ViewModel.Model.InputFilePath);
+            }
+        }
+
+        private void DecodeTagMenuItem_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (TagsTreeView.SelectedItem is ProtobufTag tag)
+            {
+                if (tag is ProtobufTagSingle singleTag)
+                {
+                    if(singleTag.Value.CanDecode)
+                    {
+                        var treeViewItem = TagsTreeView.ItemContainerGenerator.ContainerFromItem(TagsTreeView.SelectedItem) as TreeViewItem;
+
+                        var parsedMessage = ProtobufParser.Parse(singleTag.Value.RawValue);
+                        var embeddedMessageTag = new ProtobufTagEmbeddedMessage(singleTag, parsedMessage.Tags.ToArray())
+                        {
+                            Name = $"EmbeddedMessage{tag.Index}"
+                        };
+
+                        // Replace the existing tag with the expanded tag
+                        var parentTag = singleTag.Parent as ProtobufTagRepeated;
+                        parentTag.Items.Remove(singleTag);
+                        parentTag.Items.Add(embeddedMessageTag);
+
+                        treeViewItem.ItemsSource = embeddedMessageTag.Tags;
+                        treeViewItem.IsExpanded = true;
+
+                        //TagsTreeView.ItemsSource = null;
+                        //TagsTreeView.ItemsSource = ViewModel.Model.Message.Tags;
+
+                        //treeViewItem.IsExpanded = true;
+                    }
+                }
             }
         }
     }

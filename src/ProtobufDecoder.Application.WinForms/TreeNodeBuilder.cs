@@ -21,7 +21,7 @@ namespace ProtobufDecoder.Application.WinForms
                 {
                     node = new TreeNode($"Tag {tag.Index} (repeated)") { Tag = tag, Name = tag.Index.ToString() };
 
-                    for (var index = 0; index < repeatedTag.Items.Length; index++)
+                    for (var index = 0; index < repeatedTag.Items.Count; index++)
                     {
                         var subTag = repeatedTag.Items[index];
                         node.Nodes.Add(

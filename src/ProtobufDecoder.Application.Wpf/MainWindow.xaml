@@ -28,7 +28,7 @@
 
         <HierarchicalDataTemplate DataType="{x:Type protobufDecoder:ProtobufTagEmbeddedMessage}"
                                   ItemsSource="{Binding Path=Tags}">
-            <TextBlock Text="{Binding Path=Name}"></TextBlock>
+            <TextBlock Text="{Binding Path=Name}" />
         </HierarchicalDataTemplate>
         <converters:ProtobufTagConverter x:Key="ProtobufTagConverter"/>
         <converters:ProtobufMessageConverter x:Key="GeneratedProtoConverter" />
@@ -71,7 +71,13 @@
                            ByteGrouping="EightByte"
                            DefaultCopyToClipboardMode="CSharpCode"
                            Stream="{Binding Path=Model.InputFileByteStream}"/>
-            <TreeView Name="TagsTreeView" Width="250" SelectedItemChanged="TagsTreeView_OnSelectedItemChanged" ItemsSource="{Binding Path=Model.Message.Tags}" />
+            <TreeView Name="TagsTreeView" Width="250" SelectedItemChanged="TagsTreeView_OnSelectedItemChanged" ItemsSource="{Binding Path=Model.Message.Tags}">
+                <TreeView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Decode tag" Name="DecodeTagMenuItem" Click="DecodeTagMenuItem_OnClick" />
+                    </ContextMenu>
+                </TreeView.ContextMenu>
+            </TreeView>
             <Border Width="250" BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" BorderThickness="1">
                 <TextBox Name="GeneratedProtoTextBlock" Text="{Binding Path=Model.Message, Converter={StaticResource GeneratedProtoConverter}}" IsReadOnly="True"></TextBox>
             </Border>
