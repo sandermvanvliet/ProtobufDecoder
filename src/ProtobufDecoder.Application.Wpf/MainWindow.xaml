@@ -84,10 +84,11 @@
                            Stream="{Binding Path=Model.InputFileByteStream}"
                            AllowCustomBackgroundBlock="True"
                            AllowZoom="False"
-                           AllowAutoHighLightSelectionByte="False" />
+                           AllowAutoHighLightSelectionByte="False"
+                           Margin="4,0,0,0" />
             <Grid VerticalAlignment="Stretch"
                   Grid.Column="1"
-                  Margin="8,0,0,0">
+                  Margin="4,0,0,0">
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition Height="300" />
@@ -118,7 +119,7 @@
                       ItemsSource="{Binding Source={StaticResource GroupedViewSource}}"
                       HorizontalAlignment="Stretch"
                       VerticalAlignment="Stretch"
-                      Margin="8,0,0,0"
+                      Margin="4,0,4,0"
                       Grid.Column="2">
                 <ListView.View>
                     <GridView>
