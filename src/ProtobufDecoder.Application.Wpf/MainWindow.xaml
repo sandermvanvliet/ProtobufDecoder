@@ -8,21 +8,21 @@
         xmlns:viewModels="clr-namespace:ProtobufDecoder.Application.Wpf.ViewModels"
         xmlns:converters="clr-namespace:ProtobufDecoder.Application.Wpf.Converters"
         mc:Ignorable="d"
-        Title="{Binding Path=Model.WindowTitle}" 
-        Height="600" 
+        Title="{Binding Path=Model.WindowTitle}"
+        Height="600"
         Width="1200"
         Loaded="MainWindow_OnLoaded"
         d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}">
     <Window.Resources>
         <DataTemplate DataType="{x:Type protobufDecoder:ProtobufTagSingle}">
-            <TextBlock Text="{Binding Path=Name}"></TextBlock>
+            <TextBlock Text="{Binding Path=Name}" />
         </DataTemplate>
 
         <HierarchicalDataTemplate DataType="{x:Type protobufDecoder:ProtobufTagRepeated}"
                                   ItemsSource="{Binding Path=Items}">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding Path=Name}" />
-                <TextBlock Text="(repeated)" Margin="4, 0, 0, 0"/>
+                <TextBlock Text="(repeated)" Margin="4, 0, 0, 0" />
             </StackPanel>
         </HierarchicalDataTemplate>
 
@@ -30,7 +30,7 @@
                                   ItemsSource="{Binding Path=Tags}">
             <TextBlock Text="{Binding Path=Name}" />
         </HierarchicalDataTemplate>
-        <converters:ProtobufTagConverter x:Key="ProtobufTagConverter"/>
+        <converters:ProtobufTagConverter x:Key="ProtobufTagConverter" />
         <converters:ProtobufMessageConverter x:Key="GeneratedProtoConverter" />
         <CollectionViewSource
             x:Key="GroupedViewSource"
@@ -48,29 +48,34 @@
         <Menu DockPanel.Dock="Top" IsMainMenu="True" Margin="0,0,0,0" Height="20">
             <MenuItem Header="_File">
                 <MenuItem Header="_Open" Name="OpenFileMenuItem" Command="{Binding Path=OpenFileCommand}" />
-                <Separator/>
-                <MenuItem Header="_Save generated proto" Name="SaveGeneratedProto" Command="{Binding Path=SaveGeneratedProtoCommand}"/>
-                <MenuItem Header="_Save generated proto as..." Name="SaveGeneratedProtoAs" Command="{Binding Path=SaveGeneratedProtoAsCommand}"/>
-                <Separator/>
+                <Separator />
+                <MenuItem Header="_Save generated proto" Name="SaveGeneratedProto"
+                          Command="{Binding Path=SaveGeneratedProtoCommand}" />
+                <MenuItem Header="_Save generated proto as..." Name="SaveGeneratedProtoAs"
+                          Command="{Binding Path=SaveGeneratedProtoAsCommand}" />
+                <Separator />
                 <MenuItem Header="_Exit" Name="ExitMenuItem" Click="ExitMenuItem_OnClick" />
             </MenuItem>
             <MenuItem Header="_Help">
-                <MenuItem Header="_About" Name="AboutMenuItem" Click="AboutMenuItem_OnClick"></MenuItem>
+                <MenuItem Header="_About" Name="AboutMenuItem" Click="AboutMenuItem_OnClick" />
             </MenuItem>
         </Menu>
-        <Border DockPanel.Dock="Bottom" Height="18" VerticalAlignment="Bottom" Margin="0,0,0,0" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" >
+        <Border DockPanel.Dock="Bottom" Height="18" VerticalAlignment="Bottom" Margin="0,0,0,0"
+                BorderThickness="0,1,0,0" BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}">
             <StackPanel Orientation="Horizontal" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
-                <TextBlock Margin="4,0,0,0"><Run Text="Loaded OK"/></TextBlock>
+                <TextBlock Margin="4,0,0,0">
+                    <Run Text="Loaded OK" />
+                </TextBlock>
             </StackPanel>
         </Border>
-        <Grid       Margin="0,0,0,0"
-                    HorizontalAlignment="Stretch">
+        <Grid Margin="0,0,0,0"
+              HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="580"/>
-                <ColumnDefinition Width="300"/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="580" />
+                <ColumnDefinition Width="300" />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <hex:HexEditor Name="HexEditor" 
+            <hex:HexEditor Name="HexEditor"
                            Grid.Column="0"
                            ReadOnlyMode="True"
                            AllowDrop="False"
@@ -79,17 +84,16 @@
                            Stream="{Binding Path=Model.InputFileByteStream}"
                            AllowCustomBackgroundBlock="True"
                            AllowZoom="False"
-                           AllowAutoHighLightSelectionByte="False"
-                           />
-            <Grid                         VerticalAlignment="Stretch"
-                        Grid.Column="1"
-                        Margin="8,0,0,0">
+                           AllowAutoHighLightSelectionByte="False" />
+            <Grid VerticalAlignment="Stretch"
+                  Grid.Column="1"
+                  Margin="8,0,0,0">
                 <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition Height="300"/>
+                    <RowDefinition />
+                    <RowDefinition Height="300" />
                 </Grid.RowDefinitions>
-                <TreeView x:Name="TagsTreeView" 
-                          SelectedItemChanged="TagsTreeView_OnSelectedItemChanged" 
+                <TreeView x:Name="TagsTreeView"
+                          SelectedItemChanged="TagsTreeView_OnSelectedItemChanged"
                           ItemsSource="{Binding Model.Message.Tags}"
                           VerticalAlignment="Stretch"
                           Grid.Row="0">
@@ -99,18 +103,18 @@
                         </ContextMenu>
                     </TreeView.ContextMenu>
                 </TreeView>
-                <Border BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrush}}" 
-                        BorderThickness="0.5" 
-                        HorizontalAlignment=    "Stretch"
+                <Border BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrush}}"
+                        BorderThickness="0.5"
+                        HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         Margin="0,4,0,0"
                         Grid.Row="1">
-                    <TextBox x:Name="GeneratedProtoTextBlock" 
-                             Text="{Binding Model.Message, Converter={StaticResource GeneratedProtoConverter}}" 
-                             IsReadOnly="True"/>
+                    <TextBox x:Name="GeneratedProtoTextBlock"
+                             Text="{Binding Model.Message, Converter={StaticResource GeneratedProtoConverter}}"
+                             IsReadOnly="True" />
                 </Border>
             </Grid>
-            <ListView Name="TagPropertiesListBox" 
+            <ListView Name="TagPropertiesListBox"
                       ItemsSource="{Binding Source={StaticResource GroupedViewSource}}"
                       HorizontalAlignment="Stretch"
                       VerticalAlignment="Stretch"
@@ -120,7 +124,7 @@
                     <GridView>
                         <GridView.Columns>
                             <GridViewColumn Header="Name" Width="80" DisplayMemberBinding="{Binding Path=Name}" />
-                            <GridViewColumn Header="Value" DisplayMemberBinding="{Binding Path=Value}"/>
+                            <GridViewColumn Header="Value" DisplayMemberBinding="{Binding Path=Value}" />
                         </GridView.Columns>
                     </GridView>
                 </ListView.View>
@@ -129,10 +133,10 @@
                     <GroupStyle>
                         <GroupStyle.HeaderTemplate>
                             <DataTemplate>
-                                <Border BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrush}}" 
+                                <Border BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrush}}"
                                         Background="{DynamicResource {x:Static SystemColors.ControlBrush}}"
                                         BorderThickness="1">
-                                    <TextBlock FontWeight="Bold" Text="{Binding Path=Name, TargetNullValue=Common}"/>
+                                    <TextBlock FontWeight="Bold" Text="{Binding Path=Name, TargetNullValue=Common}" />
                                 </Border>
                             </DataTemplate>
                         </GroupStyle.HeaderTemplate>
