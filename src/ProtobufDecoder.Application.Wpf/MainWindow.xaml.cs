@@ -1,6 +1,10 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Windows;
+using System.Windows.Media;
 using ProtobufDecoder.Application.Wpf.ViewModels;
+using WpfHexaEditor.Core;
 
 namespace ProtobufDecoder.Application.Wpf
 {
@@ -9,6 +13,19 @@ namespace ProtobufDecoder.Application.Wpf
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly Random _random = new Random();
+        private readonly List<SolidColorBrush> _selectionColors = new()
+        {
+            Brushes.LightGreen,
+            Brushes.LightSkyBlue,
+            Brushes.LightCoral,
+            Brushes.LightCyan,
+            Brushes.LightSalmon,
+            Brushes.LightSeaGreen,
+            Brushes.LightSlateGray
+        };
+        private int _selectionColorIndex;
+
         public MainWindow(MainWindowViewModel viewModel)
         {
             DataContext = viewModel;
@@ -40,9 +57,47 @@ namespace ProtobufDecoder.Application.Wpf
             {
                 var byteViewOffset = GetOffsetOf(singleTag);
 
+                try
+                {
+                    if (singleTag.Parent is ProtobufTagEmbeddedMessage embeddedMessage)
+                    {
+                        var parentOffset = GetOffsetOf(embeddedMessage);
+
+                        var embeddedMessageStartOffset = embeddedMessage.StartOffset + parentOffset;
+
+                        var block = HexEditor.GetCustomBackgroundBlock(embeddedMessageStartOffset);
+
+                        if (block == null)
+                        {
+                            // Only add a background block when it doesn't
+                            // already exist.
+                            HexEditor.CustomBackgroundBlockItems.Add(
+                                new CustomBackgroundBlock(
+                                    embeddedMessageStartOffset,
+                                    embeddedMessage.EndOffset + parentOffset,
+                                    GetNextSelectionColor()));
+                        }
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Debug.WriteLine(exception);
+                }
+
                 HexEditor.SelectionStart = singleTag.StartOffset + byteViewOffset;
                 HexEditor.SelectionStop = singleTag.EndOffset + byteViewOffset;
             }
+        }
+
+        private SolidColorBrush GetNextSelectionColor()
+        {
+            if (_selectionColorIndex >= _selectionColors.Count)
+            {
+                // Roll around
+                _selectionColorIndex = 0;
+            }
+
+            return _selectionColors[_selectionColorIndex++];
         }
 
         private static int GetOffsetOf(ProtobufTag tag, int offset = 0)

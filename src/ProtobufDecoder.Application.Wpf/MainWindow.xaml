@@ -70,7 +70,11 @@
                            AllowDrop="False"
                            ByteGrouping="EightByte"
                            DefaultCopyToClipboardMode="CSharpCode"
-                           Stream="{Binding Path=Model.InputFileByteStream}"/>
+                           Stream="{Binding Path=Model.InputFileByteStream}"
+                           AllowCustomBackgroundBlock="True"
+                           AllowZoom="False"
+                           AllowAutoHighLightSelectionByte="False"
+                           />
             <TreeView Name="TagsTreeView" Width="250" SelectedItemChanged="TagsTreeView_OnSelectedItemChanged" ItemsSource="{Binding Path=Model.Message.Tags}">
                 <TreeView.ContextMenu>
                     <ContextMenu>
