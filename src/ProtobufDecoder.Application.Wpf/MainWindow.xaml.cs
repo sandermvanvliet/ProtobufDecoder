@@ -73,7 +73,7 @@ namespace ProtobufDecoder.Application.Wpf
                             HexEditor.CustomBackgroundBlockItems.Add(
                                 new CustomBackgroundBlock(
                                     embeddedMessageStartOffset,
-                                    (embeddedMessage.EndOffset + parentOffset) - embeddedMessage.StartOffset,
+                                    embeddedMessage.Length,
                                     GetNextSelectionColor()));
                         }
                     }
@@ -155,10 +155,18 @@ namespace ProtobufDecoder.Application.Wpf
                             };
 
                             // Replace the existing tag with the expanded tag
-                            var parentTag = singleTag.Parent as ProtobufTagRepeated;
-                            var tagIndex = parentTag.Items.IndexOf(singleTag);
-                            parentTag.Items.RemoveAt(tagIndex);
-                            parentTag.Items.Insert(tagIndex, embeddedMessageTag);
+                            if (singleTag.Parent is ProtobufTagRepeated repeatedTag)
+                            {
+                                var tagIndex = repeatedTag.Items.IndexOf(singleTag);
+                                repeatedTag.Items.RemoveAt(tagIndex);
+                                repeatedTag.Items.Insert(tagIndex, embeddedMessageTag);
+                            }
+                            else if(singleTag.Parent is ProtobufTagEmbeddedMessage embeddedTag)
+                            {
+                                var tagIndex = embeddedTag.Tags.IndexOf(singleTag);
+                                embeddedTag.Tags.RemoveAt(tagIndex);
+                                embeddedTag.Tags.Insert(tagIndex, embeddedMessageTag);
+                            }
                         }
                         catch (Exception exception)
                         {

@@ -83,6 +83,12 @@ namespace ProtobufDecoder
         [Description("Position in the byte stream where this tag ends")]
         [ReadOnly(true)]
         public int EndOffset { get; set; }
+
+        [Category("Offsets")]
+        [Browsable(true)]
+        [Description("Number of bytes of this entire tag")]
+        [ReadOnly(true)]
+        public int Length => (EndOffset - StartOffset) + 1;
     }
 
     /// <summary>
