@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using Google.Protobuf;
@@ -92,7 +93,7 @@ namespace ProtobufDecoder
         [Browsable(true)]
         [Description("The instances of this tag in the payload")]
         [ReadOnly(true)]
-        public ProtobufTagSingle[] Items { get; set; }
+        public List<ProtobufTagSingle> Items { get; set; } = new List<ProtobufTagSingle>();
     }
 
     /// <summary>
@@ -117,12 +118,12 @@ namespace ProtobufDecoder
                     t.Parent = this;
                     return t;
                 })
-                .ToArray();
+                .ToList();
         }
-        
+
         [Browsable(true)]
         [Description("The tags of this embedded message")]
         [ReadOnly(true)]
-        public ProtobufTag[] Tags { get; set; }
+        public List<ProtobufTag> Tags { get; }
     }
 }
