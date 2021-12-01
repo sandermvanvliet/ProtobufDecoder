@@ -28,4 +28,9 @@ It can be used for _reverse engineering_ but bear in mind that this may not be l
 
 See [LICENSE](./LICENSE).
 
-This application uses code from [topas/VarintBitConverter/](https://github.com/topas/VarintBitConverter/) for Varint decoding. (See [VarintValue](./src/ProtobufDecoder/VarintValue.cs))
+## Attributions
+
+This application uses:
+
+- [topas/VarintBitConverter/](https://github.com/topas/VarintBitConverter/) for Varint decoding from the Protobuf payloads. (See [VarintValue](./src/ProtobufDecoder/VarintValue.cs))
+- [WPF:HexEditor](https://github.com/abbaye/WPFHexEditorControl) to display the raw payload and tag highlighting
