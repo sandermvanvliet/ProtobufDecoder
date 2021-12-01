@@ -1,4 +1,7 @@
 ﻿using System.IO;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using Microsoft.Win32;
 using ProtobufDecoder.Application.Wpf.Commands;
@@ -27,15 +30,20 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             SaveGeneratedProtoAsCommand = new RelayCommand(
                 _ => SaveGeneratedProtoFileAs(),
                 _ => Model?.Message != null);
+
+            CopyTagValueCommand = new RelayCommand(
+                _ => CopyTagValueToCsharpArray((_ as  TreeView)?.SelectedItem as ProtobufTag),
+                _ => (_ as TreeView)?.SelectedItem != null);
         }
 
         public ICommand LoadFileCommand { get; }
         public ICommand OpenFileCommand { get; set; }
         public ICommand SaveGeneratedProtoCommand { get; }
         public ICommand SaveGeneratedProtoAsCommand { get; }
+        public ICommand CopyTagValueCommand { get; set; }
 
         public MainWindowModel Model { get; set; }
-
+        public ProtobufTag SelectedTag { get; set; }
 
         private void LoadAndDecode(string inputFilePath)
         {
@@ -106,6 +114,17 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             }
 
             File.WriteAllText(dialog.FileName, ProtobufWriter.ToString(Model.Message));
+        }
+
+        private static void CopyTagValueToCsharpArray(ProtobufTag selectedTag)
+        {
+            if (selectedTag is ProtobufTagSingle singleTag)
+            {
+                var bytes = string.Join(", ", singleTag.Value.RawValue.Select(x => "0x" + x.ToString("X2").ToLower()));
+                var csharpArray = $"var tagValueBytes = new byte[] {{{bytes}}};";
+
+                Clipboard.SetText(csharpArray);
+            }
         }
     }
 }

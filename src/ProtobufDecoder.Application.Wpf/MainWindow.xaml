@@ -101,6 +101,8 @@
                     <TreeView.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="Decode tag" x:Name="DecodeTagMenuItem" Click="DecodeTagMenuItem_OnClick" />
+                            <MenuItem Header="Copy value as C# bytes" x:Name="CopyValueAsBytes" Command="{Binding Path=CopyTagValueCommand}" 
+                                      CommandParameter="{Binding PlacementTarget, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}" />
                         </ContextMenu>
                     </TreeView.ContextMenu>
                 </TreeView>
