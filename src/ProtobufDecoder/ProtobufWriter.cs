@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using Google.Protobuf;
 
@@ -27,22 +28,15 @@ namespace ProtobufDecoder
             {
                 if (tag is ProtobufTagEmbeddedMessage embeddedMessage)
                 {
-                    var name = "tag" + embeddedMessage.Index;
-
-                    builder.AppendLine($"    message {embeddedMessage.Name}");
-                    builder.AppendLine("    {");
-                    foreach (var embeddedTag in embeddedMessage.Tags)
-                    {
-                        var embeddedTagName = string.IsNullOrEmpty(embeddedTag.Name) ? "tag" + embeddedTag.Index : embeddedTag.Name;
-
-                        builder.AppendLine($"        {FormatWireTypeForProto(embeddedTag)} {embeddedTagName} = {embeddedTag.Index};");
-                    }
-                    builder.AppendLine("    }");
-                    builder.AppendLine();
-
-                    builder.AppendLine($"    {embeddedMessage.Name} {name} = {tag.Index};");
+                    RenderEmbeddedMessage(embeddedMessage, builder, tag, "    ");
                 }
-
+                else if(tag is ProtobufTagRepeated repeatedTag && repeatedTag.Items.Any(t => t is ProtobufTagEmbeddedMessage))
+                {
+                    foreach (var t in repeatedTag.Items.OfType<ProtobufTagEmbeddedMessage>())
+                    {
+                        RenderEmbeddedMessage(t, builder, tag, "    ");
+                    }
+                }
                 else
                 {
                     var name = string.IsNullOrEmpty(tag.Name) ? "tag" + tag.Index : tag.Name;
@@ -54,6 +48,29 @@ namespace ProtobufDecoder
             builder.AppendLine("}");
 
             return builder.ToString();
+        }
+
+        private static void RenderEmbeddedMessage(
+            ProtobufTagEmbeddedMessage embeddedMessage, 
+            StringBuilder builder,
+            ProtobufTag tag,
+            string indent)
+        {
+            var name = "tag" + embeddedMessage.Index;
+
+            builder.AppendLine($"{indent}message {embeddedMessage.Name}");
+            builder.AppendLine($"{indent}{{");
+            foreach (var embeddedTag in embeddedMessage.Tags)
+            {
+                var embeddedTagName = string.IsNullOrEmpty(embeddedTag.Name) ? "tag" + embeddedTag.Index : embeddedTag.Name;
+
+                builder.AppendLine($"{indent}    {FormatWireTypeForProto(embeddedTag)} {embeddedTagName} = {embeddedTag.Index};");
+            }
+
+            builder.AppendLine($"{indent}}}");
+            builder.AppendLine();
+
+            builder.AppendLine($"{indent}{embeddedMessage.Name} {name} = {tag.Index};");
         }
 
         private static string FormatWireTypeForProto(ProtobufTag tag)
