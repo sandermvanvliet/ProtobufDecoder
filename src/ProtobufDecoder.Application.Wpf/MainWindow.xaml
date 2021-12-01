@@ -9,8 +9,8 @@
         xmlns:converters="clr-namespace:ProtobufDecoder.Application.Wpf.Converters"
         mc:Ignorable="d"
         Title="{Binding Path=Model.WindowTitle}" 
-        Height="663" 
-        Width="1187"
+        Height="600" 
+        Width="1200"
         Loaded="MainWindow_OnLoaded"
         d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}">
     <Window.Resources>
@@ -63,9 +63,15 @@
                 <TextBlock Margin="4,0,0,0"><Run Text="Loaded OK"/></TextBlock>
             </StackPanel>
         </Border>
-        <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+        <Grid       Margin="0,0,0,0"
+                    HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="580"/>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
             <hex:HexEditor Name="HexEditor" 
-                           Width="600"
+                           Grid.Column="0"
                            ReadOnlyMode="True"
                            AllowDrop="False"
                            ByteGrouping="EightByte"
@@ -75,24 +81,46 @@
                            AllowZoom="False"
                            AllowAutoHighLightSelectionByte="False"
                            />
-            <TreeView Name="TagsTreeView" Width="250" SelectedItemChanged="TagsTreeView_OnSelectedItemChanged" ItemsSource="{Binding Path=Model.Message.Tags}">
-                <TreeView.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Decode tag" Name="DecodeTagMenuItem" Click="DecodeTagMenuItem_OnClick" />
-                    </ContextMenu>
-                </TreeView.ContextMenu>
-            </TreeView>
-            <Border Width="250" BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" BorderThickness="1">
-                <TextBox Name="GeneratedProtoTextBlock" Text="{Binding Path=Model.Message, Converter={StaticResource GeneratedProtoConverter}}" IsReadOnly="True"></TextBox>
-            </Border>
+            <Grid                         VerticalAlignment="Stretch"
+                        Grid.Column="1"
+                        Margin="8,0,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="300"/>
+                </Grid.RowDefinitions>
+                <TreeView x:Name="TagsTreeView" 
+                          SelectedItemChanged="TagsTreeView_OnSelectedItemChanged" 
+                          ItemsSource="{Binding Model.Message.Tags}"
+                          VerticalAlignment="Stretch"
+                          Grid.Row="0">
+                    <TreeView.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Decode tag" x:Name="DecodeTagMenuItem" Click="DecodeTagMenuItem_OnClick" />
+                        </ContextMenu>
+                    </TreeView.ContextMenu>
+                </TreeView>
+                <Border BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrush}}" 
+                        BorderThickness="0.5" 
+                        HorizontalAlignment=    "Stretch"
+                        VerticalAlignment="Stretch"
+                        Margin="0,4,0,0"
+                        Grid.Row="1">
+                    <TextBox x:Name="GeneratedProtoTextBlock" 
+                             Text="{Binding Model.Message, Converter={StaticResource GeneratedProtoConverter}}" 
+                             IsReadOnly="True"/>
+                </Border>
+            </Grid>
             <ListView Name="TagPropertiesListBox" 
-                      Width="250" 
-                      ItemsSource="{Binding Source={StaticResource GroupedViewSource}}">
+                      ItemsSource="{Binding Source={StaticResource GroupedViewSource}}"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch"
+                      Margin="8,0,0,0"
+                      Grid.Column="2">
                 <ListView.View>
                     <GridView>
                         <GridView.Columns>
-                            <GridViewColumn Header="Name" Width="125" DisplayMemberBinding="{Binding Path=Name}" />
-                            <GridViewColumn Header="Value" Width="125" DisplayMemberBinding="{Binding Path=Value}"/>
+                            <GridViewColumn Header="Name" Width="80" DisplayMemberBinding="{Binding Path=Name}" />
+                            <GridViewColumn Header="Value" DisplayMemberBinding="{Binding Path=Value}"/>
                         </GridView.Columns>
                     </GridView>
                 </ListView.View>
@@ -111,6 +139,6 @@
                     </GroupStyle>
                 </ListView.GroupStyle>
             </ListView>
-        </StackPanel>
+        </Grid>
     </DockPanel>
 </Window>
