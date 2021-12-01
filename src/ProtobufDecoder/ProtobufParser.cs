@@ -30,16 +30,38 @@ namespace ProtobufDecoder
 
                 while (index < input.Length)
                 {
+                    ReadOnlySpan<byte> tagBytes;
+
+                    // Because a tag field number can potentially be 29 bits
+                    // and we know that it's encoded as a Varint it may
+                    // happen that the field number needs 2 bytes to be 
+                    // stored. 
+                    // So we need to treat the tag as a proper varint (which
+                    // it is) and then grab the field number and wire type
+                    // from the resulting decoded Varint.
+                    // See: https://stackoverflow.com/questions/57520857/maximum-field-number-in-protobuf-message
+                    if ((input[index] & 0x80) != 0)
+                    {
+                        tagBytes = input.Slice(index, 2);
+                        index++;
+                    }
+                    else
+                    {
+                        tagBytes = input.Slice(index, 1);
+                    }
+
+                    var tagAndWireType = (uint)VarintValue.ToTarget(tagBytes, 32).Item1.Value;
+
                     var tag = new ProtobufTagSingle
                     {
-                        Index = WireFormat.GetTagFieldNumber(input[index]),
-                        WireType = WireFormat.GetTagWireType(input[index]),
+                        Index = WireFormat.GetTagFieldNumber(tagAndWireType),
+                        WireType = WireFormat.GetTagWireType(tagAndWireType),
                         StartOffset = index
                     };
 
                     protobufTags.Add(tag);
-
-                    index += 1; // This is the tag + wire type byte
+                    
+                    index += 1; // Advance to the content of the tag
 
                     switch (tag.WireType)
                     {
@@ -65,12 +87,6 @@ namespace ProtobufDecoder
                             tag.Value = parseResultL.Value;
                             tag.DataOffset = parseResultL.DataOffset;
                             tag.DataLength = parseResultL.DataLength;
-
-                            // Let's have a look at the first byte
-                            // of the data to see if we can figure
-                            // out a wire type
-
-
                             break;
                         case WireFormat.WireType.StartGroup:
                             break;
@@ -84,7 +100,7 @@ namespace ProtobufDecoder
                             tag.DataLength = parseResultF32.DataLength;
                             break;
                         default:
-                            throw new InvalidOperationException($"Invalid wire type {input[index]}");
+                            throw new InvalidOperationException($"Invalid wire type {tag.WireType}");
                     }
 
                     tag.EndOffset = index - 1; // Subtract 1 because index is pointing at the start byte of the tag after the current one
@@ -204,9 +220,9 @@ namespace ProtobufDecoder
             while (true)
             {
                 var b = input[index + length];
-                
+
                 // Check if MSB is set, according to https://developers.google.com/protocol-buffers/docs/encoding#varints
-                // the byte with MSB set indicates the last byte of a Base 128 Varint.
+                // the byte without MSB set indicates the last byte of a Base 128 Varint.
                 if ((b & 0x80) == 0)
                 {
                     break;

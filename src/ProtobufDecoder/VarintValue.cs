@@ -124,8 +124,8 @@ namespace ProtobufDecoder
 
             return new Tuple<long?, string>((long)(value >> 1), null);
         }
-        
-        private static Tuple<ulong?, string> ToTarget(byte[] bytes, int sizeBits)
+
+        public static Tuple<ulong?, string> ToTarget(ReadOnlySpan<byte> bytes, int sizeBits)
         {
             var shift = 0;
             ulong result = 0;
@@ -143,11 +143,6 @@ namespace ProtobufDecoder
 
                 if ((byteValue & 0x80) != 0x80)
                 {
-                    //if (((index + 1) * 2) < (sizeBits / 8))
-                    //{
-                    //    return new Tuple<ulong?, string>(null,  "More bits were specified than there are bytes");
-                    //}
-
                     return new Tuple<ulong?, string>(result, null);
                 }
 
