@@ -110,12 +110,21 @@ namespace ProtobufDecoder
 
                         var firstTag = values.First();
 
-                        return new ProtobufTagRepeated
+                        var protobufTagRepeated = new ProtobufTagRepeated
                         {
                             Index = key,
-                            WireType = firstTag.WireType,
-                            Items = values.ToArray()
+                            WireType = firstTag.WireType
                         };
+
+                        protobufTagRepeated.Items = values
+                            .Select(t =>
+                            {
+                                t.Parent = protobufTagRepeated;
+                                return t;
+                            })
+                            .ToList();
+
+                        return protobufTagRepeated;
                     })
                 .ToList();
 
