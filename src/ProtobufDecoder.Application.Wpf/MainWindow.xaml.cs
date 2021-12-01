@@ -13,7 +13,6 @@ namespace ProtobufDecoder.Application.Wpf
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly Random _random = new Random();
         private readonly List<SolidColorBrush> _selectionColors = new()
         {
             Brushes.LightGreen,
@@ -147,16 +146,24 @@ namespace ProtobufDecoder.Application.Wpf
                 {
                     if(singleTag.Value.CanDecode)
                     {
-                        var parsedMessage = ProtobufParser.Parse(singleTag.Value.RawValue);
-                        var embeddedMessageTag = new ProtobufTagEmbeddedMessage(singleTag, parsedMessage.Tags.ToArray())
+                        try
                         {
-                            Name = $"EmbeddedMessage{tag.Index}"
-                        };
+                            var parsedMessage = ProtobufParser.Parse(singleTag.Value.RawValue);
+                            var embeddedMessageTag = new ProtobufTagEmbeddedMessage(singleTag, parsedMessage.Tags.ToArray())
+                            {
+                                Name = $"EmbeddedMessage{tag.Index}"
+                            };
 
-                        // Replace the existing tag with the expanded tag
-                        var parentTag = singleTag.Parent as ProtobufTagRepeated;
-                        parentTag.Items.Remove(singleTag);
-                        parentTag.Items.Add(embeddedMessageTag);
+                            // Replace the existing tag with the expanded tag
+                            var parentTag = singleTag.Parent as ProtobufTagRepeated;
+                            var tagIndex = parentTag.Items.IndexOf(singleTag);
+                            parentTag.Items.RemoveAt(tagIndex);
+                            parentTag.Items.Insert(tagIndex, embeddedMessageTag);
+                        }
+                        catch (Exception exception)
+                        {
+                            Debug.WriteLine(exception);
+                        }
                     }
                 }
             }
