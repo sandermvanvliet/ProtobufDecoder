@@ -14,6 +14,9 @@ It can be used for _reverse engineering_ but bear in mind that this may not be l
   - Wire type
   - Contents (raw bytes, values) 
 - Display the location and size of a specific tag in the binary payload (select a tag in the tree view and it highlights the bytes)
+- Generate a Protobuf spec from the decoded payload (work in progress)
+- Save the generated Protobuf spec to a `.proto` file
+- Copy the value of a tag as a C# byte array
 
 ![animated application demo](./app-demo.gif)
 
