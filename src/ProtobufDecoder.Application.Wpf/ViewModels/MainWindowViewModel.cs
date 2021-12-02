@@ -57,11 +57,11 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 var bytes = File.ReadAllBytes(inputFilePath);
                 Model.InputFileByteStream = new MemoryStream(bytes);
                 Model.Message = ProtobufParser.Parse(bytes);
-                Model.StatusBarInfo("File loaded successfully");
+                Model.StatusBarInfo(Strings.FileLoadedSuccessfully);
             }
             catch (Exception e)
             {
-                Model.StatusBarError($"Failed to load file: {e.Message}");
+                Model.StatusBarError(Strings.FileFailedToLoad, e.Message);
             }
         }
 
@@ -93,7 +93,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                     RestoreDirectory = true,
                     AddExtension = true,
                     DefaultExt = ".proto",
-                    Filter = "Protobuf files (.proto)|*.proto"
+                    Filter = Strings.ProtoFileType
                 };
 
                 var result = dialog.ShowDialog();
@@ -109,11 +109,11 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             try
             {
                 File.WriteAllText(Model.OutputFilePath, ProtobufWriter.ToString(Model.Message));
-                Model.StatusBarInfo("Proto file saved successfully");
+                Model.StatusBarInfo(Strings.ProtoFileSavedSuccessfully);
             }
             catch (Exception e)
             {
-                Model.StatusBarError($"Failed to save file: {e.Message}");
+                Model.StatusBarError(Strings.ProtoFileFailedToSave, e.Message);
             }
         }
 
@@ -124,7 +124,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 RestoreDirectory = true,
                 AddExtension = true,
                 DefaultExt = ".proto",
-                Filter = "Protobuf files (.proto)|*.proto"
+                Filter = Strings.ProtoFileType
             };
 
             var result = dialog.ShowDialog();
@@ -137,11 +137,11 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             try
             {
                 File.WriteAllText(dialog.FileName, ProtobufWriter.ToString(Model.Message));
-                Model.StatusBarInfo($"Proto file saved successfully as {dialog.FileName}");
+                Model.StatusBarInfo(Strings.ProtoFileSavedAs, dialog.FileName);
             }
             catch (Exception e)
             {
-                Model.StatusBarError($"Failed to save file: {e.Message}");
+                Model.StatusBarError(Strings.ProtoFileFailedToSave, e.Message);
             }
         }
 
@@ -154,7 +154,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
                 Clipboard.SetText(csharpArray);
 
-                Model.StatusBarInfo("Tag value copied to clipboard");
+                Model.StatusBarInfo(Strings.TagCopiedToClipboard);
             }
         }
 
@@ -165,12 +165,12 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 if (singleTag.Value.CanDecode)
                 {
                     Model.DecodeTag(selectedTag);
-                    Model.StatusBarInfo("Tag decoded successfully");
+                    Model.StatusBarInfo(Strings.TagDecodedSuccessfully);
                     return;
                 }
             }
 
-            Model.StatusBarWarning("Cannot decode selected tag");
+            Model.StatusBarWarning(Strings.CannotDecodeTag);
         }
     }
 }

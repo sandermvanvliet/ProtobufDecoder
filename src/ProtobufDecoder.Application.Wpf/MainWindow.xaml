@@ -7,6 +7,7 @@
         xmlns:hex="clr-namespace:WpfHexaEditor;assembly=WPFHexaEditor"
         xmlns:viewModels="clr-namespace:ProtobufDecoder.Application.Wpf.ViewModels"
         xmlns:converters="clr-namespace:ProtobufDecoder.Application.Wpf.Converters"
+        xmlns:s="clr-namespace:ProtobufDecoder.Application.Wpf"
         mc:Ignorable="d"
         Title="{Binding Path=Model.WindowTitle}"
         Height="600"
@@ -22,7 +23,7 @@
                                   ItemsSource="{Binding Path=Items}">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding Path=Name}" />
-                <TextBlock Text="(repeated)" Margin="4, 0, 0, 0" />
+                <TextBlock Text="{x:Static s:Strings.TagRepeated}" Margin="4, 0, 0, 0" />
             </StackPanel>
         </HierarchicalDataTemplate>
 
@@ -54,18 +55,18 @@
     </Window.InputBindings>
     <DockPanel>
         <Menu DockPanel.Dock="Top" IsMainMenu="True" Margin="0,0,0,0" Height="20">
-            <MenuItem Header="_File">
-                <MenuItem Header="_Open" Name="OpenFileMenuItem" Command="{Binding Path=OpenFileCommand}" InputGestureText="Ctrl+O" />
+            <MenuItem Header="{x:Static s:Strings.MenuFile}">
+                <MenuItem Header="{x:Static s:Strings.MenuFileOpen}" Name="OpenFileMenuItem" Command="{Binding Path=OpenFileCommand}" InputGestureText="Ctrl+O" />
                 <Separator />
-                <MenuItem Header="_Save generated proto" Name="SaveGeneratedProto"
+                <MenuItem Header="{x:Static s:Strings.MenuFileSaveGeneratedProto}" Name="SaveGeneratedProto"
                           Command="{Binding Path=SaveGeneratedProtoCommand}" InputGestureText="Ctrl+S"/>
-                <MenuItem Header="_Save generated proto as..." Name="SaveGeneratedProtoAs"
+                <MenuItem Header="{x:Static s:Strings.MenuFileSaveGeneratedProtoAs}" Name="SaveGeneratedProtoAs"
                               Command="{Binding Path=SaveGeneratedProtoAsCommand}" />
                 <Separator />
-                <MenuItem Header="_Exit" Name="ExitMenuItem" Click="ExitMenuItem_OnClick" InputGestureText="Alt+F4" />
+                <MenuItem Header="{x:Static s:Strings.MenuFileExit}" Name="ExitMenuItem" Click="ExitMenuItem_OnClick" InputGestureText="Alt+F4" />
             </MenuItem>
-            <MenuItem Header="_Help">
-                <MenuItem Header="_About" Name="AboutMenuItem" Click="AboutMenuItem_OnClick" />
+            <MenuItem Header="{x:Static s:Strings.MenuHelp}">
+                <MenuItem Header="{x:Static s:Strings.MenuHelpAbout}" Name="AboutMenuItem" Click="AboutMenuItem_OnClick" />
             </MenuItem>
         </Menu>
         <StackPanel Orientation="Horizontal" 
@@ -74,7 +75,7 @@
                         Height="22" 
                         VerticalAlignment="Center" 
                         Margin="0,0,0,0">
-            <TextBlock Margin="6,2,0,0" Text="{Binding Path=Model.StatusBarText, FallbackValue=Ready}"
+            <TextBlock Margin="6,2,0,0" Text="{Binding Path=Model.StatusBarText, FallbackValue={x:Static s:Strings.StatusBarReadyText},TargetNullValue={x:Static s:Strings.StatusBarReadyText}}"
                            Foreground="{Binding Path=Model.StatusBarForeground,FallbackValue={x:Static Brushes.White}}"/>
         </StackPanel>
         <Grid Margin="0,0,0,0"
@@ -110,11 +111,11 @@
                           Grid.Row="0">
                     <TreeView.ContextMenu>
                         <ContextMenu>
-                            <MenuItem Header="Decode tag" x:Name="DecodeTagMenuItem"
+                            <MenuItem Header="{x:Static s:Strings.ContextMenuDecodeTag}" x:Name="DecodeTagMenuItem"
                                       Command="{Binding Path=DecodeTagCommand}"
                                       CommandParameter="{Binding PlacementTarget, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
                                       InputGestureText="Ctrl+D" />
-                            <MenuItem Header="Copy value as C# bytes" x:Name="CopyValueAsBytes" 
+                            <MenuItem Header="{x:Static s:Strings.ContextMenuCopyValue}" x:Name="CopyValueAsBytes" 
                                       Command="{Binding Path=CopyTagValueCommand}" 
                                       CommandParameter="{Binding PlacementTarget, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
                                       InputGestureText="Ctrl+C" />
@@ -141,8 +142,8 @@
                 <ListView.View>
                     <GridView>
                         <GridView.Columns>
-                            <GridViewColumn Header="Name" Width="80" DisplayMemberBinding="{Binding Path=Name}" />
-                            <GridViewColumn Header="Value" DisplayMemberBinding="{Binding Path=Value}" />
+                            <GridViewColumn Header="{x:Static s:Strings.TagPropertiesName}" Width="80" DisplayMemberBinding="{Binding Path=Name}" />
+                            <GridViewColumn Header="{x:Static s:Strings.TagPropertiesValue}" DisplayMemberBinding="{Binding Path=Value}" />
                         </GridView.Columns>
                     </GridView>
                 </ListView.View>
@@ -154,7 +155,7 @@
                                 <Border BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrush}}"
                                         Background="{DynamicResource {x:Static SystemColors.ControlBrush}}"
                                         BorderThickness="1">
-                                    <TextBlock FontWeight="Bold" Text="{Binding Path=Name, TargetNullValue=Common}" />
+                                    <TextBlock FontWeight="Bold" Text="{Binding Path=Name, TargetNullValue={x:Static s:Strings.CommonTagProperties}}" />
                                 </Border>
                             </DataTemplate>
                         </GroupStyle.HeaderTemplate>

@@ -22,7 +22,7 @@ namespace ProtobufDecoder.Application.Wpf {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Strings {
+    public class Strings {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace ProtobufDecoder.Application.Wpf {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ProtobufDecoder.Application.Wpf.Strings", typeof(Strings).Assembly);
@@ -51,7 +51,7 @@ namespace ProtobufDecoder.Application.Wpf {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,9 +61,18 @@ namespace ProtobufDecoder.Application.Wpf {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to _Close.
+        /// </summary>
+        public static string AboutButtonClose {
+            get {
+                return ResourceManager.GetString("AboutButtonClose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to About Protobuf Decoder.
         /// </summary>
-        internal static string AboutTitle {
+        public static string AboutTitle {
             get {
                 return ResourceManager.GetString("AboutTitle", resourceCulture);
             }
@@ -72,124 +81,70 @@ namespace ProtobufDecoder.Application.Wpf {
         /// <summary>
         ///   Looks up a localized string similar to Version:.
         /// </summary>
-        internal static string AboutVersion {
+        public static string AboutVersion {
             get {
                 return ResourceManager.GetString("AboutVersion", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Clear.
+        ///   Looks up a localized string similar to Cannot decode selected tag.
         /// </summary>
-        internal static string ButtonClear {
+        public static string CannotDecodeTag {
             get {
-                return ResourceManager.GetString("ButtonClear", resourceCulture);
+                return ResourceManager.GetString("CannotDecodeTag", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Decode.
+        ///   Looks up a localized string similar to Common.
         /// </summary>
-        internal static string ButtonDecode {
+        public static string CommonTagProperties {
             get {
-                return ResourceManager.GetString("ButtonDecode", resourceCulture);
+                return ResourceManager.GetString("CommonTagProperties", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Decode in-place.
+        ///   Looks up a localized string similar to Copy value as C# bytes.
         /// </summary>
-        internal static string ButtonDecodeInPlace {
+        public static string ContextMenuCopyValue {
             get {
-                return ResourceManager.GetString("ButtonDecodeInPlace", resourceCulture);
+                return ResourceManager.GetString("ContextMenuCopyValue", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Decode in new window.
+        ///   Looks up a localized string similar to _Decode tag.
         /// </summary>
-        internal static string ButtonDecodeTag {
+        public static string ContextMenuDecodeTag {
             get {
-                return ResourceManager.GetString("ButtonDecodeTag", resourceCulture);
+                return ResourceManager.GetString("ContextMenuDecodeTag", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot decode tag.
+        ///   Looks up a localized string similar to File failed to load: {0}.
         /// </summary>
-        internal static string CannotDecodeTag_Caption {
+        public static string FileFailedToLoad {
             get {
-                return ResourceManager.GetString("CannotDecodeTag_Caption", resourceCulture);
+                return ResourceManager.GetString("FileFailedToLoad", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot decode this tag because it isn&apos;t a length-delimited tag.
+        ///   Looks up a localized string similar to File loaded successfully.
         /// </summary>
-        internal static string CannotDecodeTag_Text {
+        public static string FileLoadedSuccessfully {
             get {
-                return ResourceManager.GetString("CannotDecodeTag_Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Failed to decode tag value.
-        /// </summary>
-        internal static string FailedToDecodeTag_Caption {
-            get {
-                return ResourceManager.GetString("FailedToDecodeTag_Caption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Decoding failed because: {0}.
-        /// </summary>
-        internal static string FailedToDecodeTag_Text {
-            get {
-                return ResourceManager.GetString("FailedToDecodeTag_Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Failed to parse input file.
-        /// </summary>
-        internal static string FailedToParseInput_Caption {
-            get {
-                return ResourceManager.GetString("FailedToParseInput_Caption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Parsing the input file failed because: {0}.
-        /// </summary>
-        internal static string FailedToParseInput_Text {
-            get {
-                return ResourceManager.GetString("FailedToParseInput_Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Failed to read input file.
-        /// </summary>
-        internal static string FailedToReadInput_Caption {
-            get {
-                return ResourceManager.GetString("FailedToReadInput_Caption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Reading the input file failed because: {0}.
-        /// </summary>
-        internal static string FailedToReadInput_Text {
-            get {
-                return ResourceManager.GetString("FailedToReadInput_Text", resourceCulture);
+                return ResourceManager.GetString("FileLoadedSuccessfully", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Parameters.
         /// </summary>
-        internal static string InputCaption {
+        public static string InputCaption {
             get {
                 return ResourceManager.GetString("InputCaption", resourceCulture);
             }
@@ -198,7 +153,7 @@ namespace ProtobufDecoder.Application.Wpf {
         /// <summary>
         ///   Looks up a localized string similar to Please check the path to the input file.
         /// </summary>
-        internal static string InputFileDoesNotExist_Text {
+        public static string InputFileDoesNotExist_Text {
             get {
                 return ResourceManager.GetString("InputFileDoesNotExist_Text", resourceCulture);
             }
@@ -207,63 +162,162 @@ namespace ProtobufDecoder.Application.Wpf {
         /// <summary>
         ///   Looks up a localized string similar to Input file:.
         /// </summary>
-        internal static string InputSourcePath {
+        public static string InputSourcePath {
             get {
                 return ResourceManager.GetString("InputSourcePath", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &amp;File.
+        ///   Looks up a localized string similar to _File.
         /// </summary>
-        internal static string MenuFile {
+        public static string MenuFile {
             get {
                 return ResourceManager.GetString("MenuFile", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to E&amp;xit.
+        ///   Looks up a localized string similar to E_xit.
         /// </summary>
-        internal static string MenuFileExit {
+        public static string MenuFileExit {
             get {
                 return ResourceManager.GetString("MenuFileExit", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &amp;Help.
+        ///   Looks up a localized string similar to _Open.
         /// </summary>
-        internal static string MenuHelp {
+        public static string MenuFileOpen {
+            get {
+                return ResourceManager.GetString("MenuFileOpen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Save proto file.
+        /// </summary>
+        public static string MenuFileSaveGeneratedProto {
+            get {
+                return ResourceManager.GetString("MenuFileSaveGeneratedProto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save proto file _As....
+        /// </summary>
+        public static string MenuFileSaveGeneratedProtoAs {
+            get {
+                return ResourceManager.GetString("MenuFileSaveGeneratedProtoAs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Help.
+        /// </summary>
+        public static string MenuHelp {
             get {
                 return ResourceManager.GetString("MenuHelp", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &amp;About.
+        ///   Looks up a localized string similar to _About.
         /// </summary>
-        internal static string MenuHelpAbout {
+        public static string MenuHelpAbout {
             get {
                 return ResourceManager.GetString("MenuHelpAbout", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No input file selected.
+        ///   Looks up a localized string similar to Failed to save proto file: {0}.
         /// </summary>
-        internal static string NoInputSelected_Caption {
+        public static string ProtoFileFailedToSave {
             get {
-                return ResourceManager.GetString("NoInputSelected_Caption", resourceCulture);
+                return ResourceManager.GetString("ProtoFileFailedToSave", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please select a file to decode.
+        ///   Looks up a localized string similar to Proto file saved as: {0}.
         /// </summary>
-        internal static string NoInputSelected_Text {
+        public static string ProtoFileSavedAs {
             get {
-                return ResourceManager.GetString("NoInputSelected_Text", resourceCulture);
+                return ResourceManager.GetString("ProtoFileSavedAs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Proto file saved.
+        /// </summary>
+        public static string ProtoFileSavedSuccessfully {
+            get {
+                return ResourceManager.GetString("ProtoFileSavedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Protobuf files (.proto)|*.proto.
+        /// </summary>
+        public static string ProtoFileType {
+            get {
+                return ResourceManager.GetString("ProtoFileType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ready.
+        /// </summary>
+        public static string StatusBarReadyText {
+            get {
+                return ResourceManager.GetString("StatusBarReadyText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tag value copied to clipboard.
+        /// </summary>
+        public static string TagCopiedToClipboard {
+            get {
+                return ResourceManager.GetString("TagCopiedToClipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tag decoded successfully.
+        /// </summary>
+        public static string TagDecodedSuccessfully {
+            get {
+                return ResourceManager.GetString("TagDecodedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string TagPropertiesName {
+            get {
+                return ResourceManager.GetString("TagPropertiesName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value.
+        /// </summary>
+        public static string TagPropertiesValue {
+            get {
+                return ResourceManager.GetString("TagPropertiesValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (repeated).
+        /// </summary>
+        public static string TagRepeated {
+            get {
+                return ResourceManager.GetString("TagRepeated", resourceCulture);
             }
         }
     }

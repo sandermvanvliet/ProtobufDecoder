@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProtobufDecoder.Application.Wpf"
         mc:Ignorable="d"
-        Title="About Protobuf Decoder" Height="143" Width="368">
+        Title="{x:Static local:Strings.AboutTitle}" Height="143" Width="368">
     <Grid Margin="0,0,0,0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -17,7 +17,7 @@
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-            <Label Width="60" HorizontalContentAlignment="Right" VerticalAlignment="Center">Version:</Label>
+            <Label Width="60" HorizontalContentAlignment="Right" VerticalAlignment="Center" Content="{x:Static local:Strings.AboutVersion}"/>
             <TextBlock Name="VersionTextBlock" VerticalAlignment="Center" />
         </StackPanel>
 
@@ -29,7 +29,7 @@
         </StackPanel>
 
         <StackPanel Grid.Row="2" HorizontalAlignment="Right" Margin="8,8,8,8">
-            <Button Name="OkButton" Click="OkButton_OnClick" Content="_Close"></Button>
+            <Button Name="OkButton" Click="OkButton_OnClick" Content="{x:Static local:Strings.AboutButtonClose}"></Button>
         </StackPanel>
     </Grid>
 </Window>

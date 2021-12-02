@@ -15,7 +15,7 @@ namespace ProtobufDecoder.Application.Wpf.Models
         private string _windowTitle = "ProtobufDecoder";
         private Stream _inputFileByteStream;
         private string _outputFilePath;
-        private string _statusBarText = "Ready";
+        private string _statusBarText;
         private Brush _statusBarBackground = Brushes.DodgerBlue;
         private Brush _statusBarForeground = Brushes.White;
         public event PropertyChangedEventHandler PropertyChanged;
@@ -116,23 +116,23 @@ namespace ProtobufDecoder.Application.Wpf.Models
             }
         }
 
-        public void StatusBarInfo(string message)
+        public void StatusBarInfo(string format, params object[] args)
         {
-            StatusBarText = message;
+            StatusBarText = string.Format(format, args);
             StatusBarBackground = Brushes.DodgerBlue;
             StatusBarForeground = Brushes.White;
         }
 
-        public void StatusBarWarning(string message)
+        public void StatusBarWarning(string format, params object[] args)
         {
-            StatusBarText = message;
+            StatusBarText = string.Format(format, args);
             StatusBarBackground = Brushes.DarkOrange;
             StatusBarForeground = Brushes.White;
         }
 
-        public void StatusBarError(string message)
+        public void StatusBarError(string format, params object[] args)
         {
-            StatusBarText = message;
+            StatusBarText = string.Format(format, args);
             StatusBarBackground = Brushes.Red;
             StatusBarForeground = Brushes.White;
         }
