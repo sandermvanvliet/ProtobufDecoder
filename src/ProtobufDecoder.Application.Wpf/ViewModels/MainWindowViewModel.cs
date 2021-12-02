@@ -35,6 +35,10 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             CopyTagValueCommand = new RelayCommand(
                 _ => CopyTagValueToCsharpArray((_ as  TreeView)?.SelectedItem as ProtobufTag),
                 _ => (_ as TreeView)?.SelectedItem != null);
+
+            DecodeTagCommand = new RelayCommand(
+                _ => DecodeTag((_ as TreeView)?.SelectedItem as ProtobufTag),
+                _ => (_ as TreeView)?.SelectedItem != null);
         }
 
         public ICommand LoadFileCommand { get; }
@@ -42,6 +46,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
         public ICommand SaveGeneratedProtoCommand { get; }
         public ICommand SaveGeneratedProtoAsCommand { get; }
         public ICommand CopyTagValueCommand { get; set; }
+        public ICommand DecodeTagCommand { get; set; }
 
         public MainWindowModel Model { get; set; }
 
@@ -142,7 +147,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
         private void CopyTagValueToCsharpArray(ProtobufTag selectedTag)
         {
-            if (selectedTag is ProtobufTagSingle singleTag)
+            if (selectedTag is ProtobufTagSingle singleTag and not ProtobufTagEmbeddedMessage)
             {
                 var bytes = string.Join(", ", singleTag.Value.RawValue.Select(x => "0x" + x.ToString("X2").ToLower()));
                 var csharpArray = $"var tagValueBytes = new byte[] {{{bytes}}};";
@@ -151,6 +156,21 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
                 Model.StatusBarInfo("Tag value copied to clipboard");
             }
+        }
+
+        private void DecodeTag(ProtobufTag selectedTag)
+        {
+            if (selectedTag is ProtobufTagSingle singleTag and not ProtobufTagEmbeddedMessage)
+            {
+                if (singleTag.Value.CanDecode)
+                {
+                    Model.DecodeTag(selectedTag);
+                    Model.StatusBarInfo("Tag decoded successfully");
+                    return;
+                }
+            }
+
+            Model.StatusBarWarning("Cannot decode selected tag");
         }
     }
 }

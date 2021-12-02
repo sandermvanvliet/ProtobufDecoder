@@ -137,13 +137,5 @@ namespace ProtobufDecoder.Application.Wpf
                 ViewModel.LoadFileCommand.Execute(ViewModel.Model.InputFilePath);
             }
         }
-
-        private void DecodeTagMenuItem_OnClick(object sender, RoutedEventArgs e)
-        {
-            if (TagsTreeView.SelectedItem is ProtobufTag tag)
-            {
-                ViewModel.Model.DecodeTag(tag);
-            }
-        }
     }
 }
