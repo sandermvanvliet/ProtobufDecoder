@@ -20,10 +20,36 @@ It can be used for _reverse engineering_ but bear in mind that this may not be l
 
 ![animated application demo](./app-demo.gif)
 
+## Building
+
+Currently there is no packaged release of the application which means you will need to compile the application yourself.
+
+1. Clone this repository
+2. `cd` into the cloned directory
+3. `cd src/ProtobufDecoder.Application.Wpf`
+4. `dotnet run -c Release`
+
+That will restore the necessary packages, build the application and start it.
+
+To make running the application easier after step 3 run:
+
+4. `dotnet publish -c Release`
+5. Double-click the executable `ProtobufDecoder.Application.Wpf.exe` in the `src/ProtobufDecoder.Application.Wpf/bin/Release/net5.0-windows/publish` folder
+
+You can create a shortcut to that executable in the Start Menu or wherever you wish.
+
+## Usage
+
+When the application starts, open a file that contains a Protobuf payload. 
+
+Please note that at this time the ProtobufDecoder only supports the a file that contains _only_ a single raw Protobuf message. Any leading or trailing delimiters must be stripped before loading the file.
+
 ## Todo
 
 - [X] ~~Decode length-delimited tag values that could be strings, packed repeated values or embedded messages~~
-- [ ] Generate `.proto` file from decoded payload
+- [ ] Generate `.proto` file from decoded payload (work in progress)
+- [ ] Package application for download
+- [ ] Set up release build for git tags
 - [ ] Load a `.proto` file and apply it to the decoded payload (to verify the `.proto` file and payload match)
 - [ ] Decode groups
 
