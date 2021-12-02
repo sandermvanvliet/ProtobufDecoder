@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -43,13 +44,20 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
         public ICommand CopyTagValueCommand { get; set; }
 
         public MainWindowModel Model { get; set; }
-        public ProtobufTag SelectedTag { get; set; }
 
         private void LoadAndDecode(string inputFilePath)
         {
-            var bytes = File.ReadAllBytes(inputFilePath);
-            Model.InputFileByteStream = new MemoryStream(bytes);
-            Model.Message = ProtobufParser.Parse(bytes);
+            try
+            {
+                var bytes = File.ReadAllBytes(inputFilePath);
+                Model.InputFileByteStream = new MemoryStream(bytes);
+                Model.Message = ProtobufParser.Parse(bytes);
+                Model.StatusBarInfo("File loaded successfully");
+            }
+            catch (Exception e)
+            {
+                Model.StatusBarError($"Failed to load file: {e.Message}");
+            }
         }
 
         private void OpenFile()
@@ -93,7 +101,15 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 Model.OutputFilePath = dialog.FileName;
             }
 
-            File.WriteAllText(Model.OutputFilePath, ProtobufWriter.ToString(Model.Message));
+            try
+            {
+                File.WriteAllText(Model.OutputFilePath, ProtobufWriter.ToString(Model.Message));
+                Model.StatusBarInfo("Proto file saved successfully");
+            }
+            catch (Exception e)
+            {
+                Model.StatusBarError($"Failed to save file: {e.Message}");
+            }
         }
 
         private void SaveGeneratedProtoFileAs()
@@ -113,10 +129,18 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 return;
             }
 
-            File.WriteAllText(dialog.FileName, ProtobufWriter.ToString(Model.Message));
+            try
+            {
+                File.WriteAllText(dialog.FileName, ProtobufWriter.ToString(Model.Message));
+                Model.StatusBarInfo($"Proto file saved successfully as {dialog.FileName}");
+            }
+            catch (Exception e)
+            {
+                Model.StatusBarError($"Failed to save file: {e.Message}");
+            }
         }
 
-        private static void CopyTagValueToCsharpArray(ProtobufTag selectedTag)
+        private void CopyTagValueToCsharpArray(ProtobufTag selectedTag)
         {
             if (selectedTag is ProtobufTagSingle singleTag)
             {
@@ -124,6 +148,8 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 var csharpArray = $"var tagValueBytes = new byte[] {{{bytes}}};";
 
                 Clipboard.SetText(csharpArray);
+
+                Model.StatusBarInfo("Tag value copied to clipboard");
             }
         }
     }

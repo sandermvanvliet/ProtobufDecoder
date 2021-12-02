@@ -60,16 +60,18 @@
                 <MenuItem Header="_About" Name="AboutMenuItem" Click="AboutMenuItem_OnClick" />
             </MenuItem>
         </Menu>
-        <Border DockPanel.Dock="Bottom" Height="18" VerticalAlignment="Bottom" Margin="0,0,0,0"
-                BorderThickness="0,1,0,0" BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}">
-            <StackPanel Orientation="Horizontal" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
-                <TextBlock Margin="4,0,0,0">
-                    <Run Text="Loaded OK" />
-                </TextBlock>
-            </StackPanel>
-        </Border>
+        <StackPanel Orientation="Horizontal" 
+                        Background="{Binding Path=Model.StatusBarBackground,FallbackValue={x:Static Brushes.DodgerBlue}}"
+                        DockPanel.Dock="Bottom" 
+                        Height="22" 
+                        VerticalAlignment="Center" 
+                        Margin="0,0,0,0">
+            <TextBlock Margin="6,2,0,0" Text="{Binding Path=Model.StatusBarText, FallbackValue=Ready}"
+                           Foreground="{Binding Path=Model.StatusBarForeground,FallbackValue={x:Static Brushes.White}}"/>
+        </StackPanel>
         <Grid Margin="0,0,0,0"
-              HorizontalAlignment="Stretch">
+              HorizontalAlignment="Stretch"
+              Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="580" />
                 <ColumnDefinition Width="300" />

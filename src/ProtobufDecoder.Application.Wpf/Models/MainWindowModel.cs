@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Windows.Media;
 using ProtobufDecoder.Application.Wpf.Annotations;
 
 namespace ProtobufDecoder.Application.Wpf.Models
@@ -14,6 +15,9 @@ namespace ProtobufDecoder.Application.Wpf.Models
         private string _windowTitle = "ProtobufDecoder";
         private Stream _inputFileByteStream;
         private string _outputFilePath;
+        private string _statusBarText = "Ready";
+        private Brush _statusBarBackground = Brushes.DodgerBlue;
+        private Brush _statusBarForeground = Brushes.White;
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
@@ -77,6 +81,60 @@ namespace ProtobufDecoder.Application.Wpf.Models
                 _outputFilePath = value;
                 OnPropertyChanged();
             }
+        }
+
+        public string StatusBarText
+        {
+            get => _statusBarText;
+            set
+            {
+                if (value == _statusBarText) return;
+                _statusBarText = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Brush StatusBarBackground
+        {
+            get => _statusBarBackground;
+            set
+            {
+                if (Equals(value, _statusBarBackground)) return;
+                _statusBarBackground = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Brush StatusBarForeground
+        {
+            get => _statusBarForeground;
+            set
+            {
+                if (Equals(value, _statusBarForeground)) return;
+                _statusBarForeground = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public void StatusBarInfo(string message)
+        {
+            StatusBarText = message;
+            StatusBarBackground = Brushes.DodgerBlue;
+            StatusBarForeground = Brushes.White;
+        }
+
+        public void StatusBarWarning(string message)
+        {
+            StatusBarText = message;
+            StatusBarBackground = Brushes.DarkOrange;
+            StatusBarForeground = Brushes.White;
+        }
+
+        public void StatusBarError(string message)
+        {
+            StatusBarText = message;
+            StatusBarBackground = Brushes.Red;
+            StatusBarForeground = Brushes.White;
         }
 
         public void DecodeTag(ProtobufTag tag)
