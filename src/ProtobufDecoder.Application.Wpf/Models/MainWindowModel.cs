@@ -86,7 +86,7 @@ namespace ProtobufDecoder.Application.Wpf.Models
         public string StatusBarText
         {
             get => _statusBarText;
-            set
+            private set
             {
                 if (value == _statusBarText) return;
                 _statusBarText = value;
@@ -97,7 +97,7 @@ namespace ProtobufDecoder.Application.Wpf.Models
         public Brush StatusBarBackground
         {
             get => _statusBarBackground;
-            set
+            private set
             {
                 if (Equals(value, _statusBarBackground)) return;
                 _statusBarBackground = value;
@@ -108,7 +108,7 @@ namespace ProtobufDecoder.Application.Wpf.Models
         public Brush StatusBarForeground
         {
             get => _statusBarForeground;
-            set
+            private set
             {
                 if (Equals(value, _statusBarForeground)) return;
                 _statusBarForeground = value;
