@@ -2,7 +2,7 @@
 {
     public class ProtobufTagPropertyDescriptor
     {
-        public ProtobufTagPropertyDescriptor(string name, string? value, string category)
+        public ProtobufTagPropertyDescriptor(string name, string value, string category)
         {
             Name = name;
             Value = value;
