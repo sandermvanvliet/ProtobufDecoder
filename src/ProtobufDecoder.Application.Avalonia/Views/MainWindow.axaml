@@ -103,11 +103,11 @@
                         <ContextMenu>
                             <MenuItem Header="{x:Static s:Strings.ContextMenuDecodeTag}" x:Name="DecodeTagMenuItem"
                                       Command="{Binding Path=DecodeTagCommand}"
-                                      CommandParameter="{Binding PlacementTarget, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
+                                      CommandParameter="{Binding ElementName=TagsTreeView}"
                                       InputGesture="Ctrl+D" />
                             <MenuItem Header="{x:Static s:Strings.ContextMenuCopyValue}" x:Name="CopyValueAsBytes" 
                                       Command="{Binding Path=CopyTagValueCommand}" 
-                                      CommandParameter="{Binding PlacementTarget, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
+                                      CommandParameter="{Binding ElementName=TagsTreeView}"
                                       InputGesture="Ctrl+C" />
                         </ContextMenu>
                     </TreeView.ContextMenu>
