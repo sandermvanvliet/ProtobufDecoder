@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -84,36 +85,39 @@ namespace ProtobufDecoder.Application.Avalonia.ViewModels
 
         private void SaveGeneratedProtoFile()
         {
-            if (string.IsNullOrEmpty(Model.OutputFilePath))
+            Task.Run(async () =>
             {
-                var dialog = new SaveFileDialog
+                if (string.IsNullOrEmpty(Model.OutputFilePath))
                 {
-                    DefaultExtension = ".proto"
-                };
+                    var dialog = new SaveFileDialog
+                    {
+                        DefaultExtension = ".proto"
+                    };
 
-                dialog.Filters.Add(new FileDialogFilter{ Extensions = new List<string>{".proto"}, Name = Strings.ProtoFileType});
+                    dialog.Filters.Add(new FileDialogFilter
+                        { Extensions = new List<string> { ".proto" }, Name = Strings.ProtoFileType });
+                    var result = await dialog.ShowAsync(GetMainWindow());
 
-                var result = dialog.ShowAsync(GetMainWindow()).GetAwaiter().GetResult();
-
-                if (!string.IsNullOrEmpty(result))
-                {
-                    Model.OutputFilePath = result;
+                    if (!string.IsNullOrEmpty(result))
+                    {
+                        Model.OutputFilePath = result;
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
-                else
-                {
-                    return;
-                }
-            }
 
-            try
-            {
-                File.WriteAllText(Model.OutputFilePath, ProtobufWriter.ToString(Model.Message));
-                Model.StatusBarInfo(Strings.ProtoFileSavedSuccessfully);
-            }
-            catch (Exception e)
-            {
-                Model.StatusBarError(Strings.ProtoFileFailedToSave, e.Message);
-            }
+                try
+                {
+                    File.WriteAllText(Model.OutputFilePath, ProtobufWriter.ToString(Model.Message));
+                    Model.StatusBarInfo(Strings.ProtoFileSavedSuccessfully);
+                }
+                catch (Exception e)
+                {
+                    Model.StatusBarError(Strings.ProtoFileFailedToSave, e.Message);
+                }
+            });
         }
 
         private void SaveGeneratedProtoFileAs()
@@ -125,20 +129,23 @@ namespace ProtobufDecoder.Application.Avalonia.ViewModels
 
             dialog.Filters.Add(new FileDialogFilter{ Extensions = new List<string>{".proto"}, Name = Strings.ProtoFileType});
 
-            var result = dialog.ShowAsync(GetMainWindow()).GetAwaiter().GetResult();
-
-            if (!string.IsNullOrEmpty(result))
+            Task.Run(async () =>
             {
-                try
+                var result = await dialog.ShowAsync(GetMainWindow());
+
+                if (!string.IsNullOrEmpty(result))
                 {
-                    File.WriteAllText(result, ProtobufWriter.ToString(Model.Message));
-                    Model.StatusBarInfo(Strings.ProtoFileSavedAs, result);
+                    try
+                    {
+                        File.WriteAllText(result, ProtobufWriter.ToString(Model.Message));
+                        Model.StatusBarInfo(Strings.ProtoFileSavedAs, result);
+                    }
+                    catch (Exception e)
+                    {
+                        Model.StatusBarError(Strings.ProtoFileFailedToSave, e.Message);
+                    }
                 }
-                catch (Exception e)
-                {
-                    Model.StatusBarError(Strings.ProtoFileFailedToSave, e.Message);
-                }
-            }
+            });
         }
 
         private void CopyTagValueToCsharpArray(ProtobufTag selectedTag)
