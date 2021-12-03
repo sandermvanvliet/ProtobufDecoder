@@ -88,7 +88,8 @@
                           VerticalAlignment="Stretch"
                           Grid.Row="0"
                           BorderThickness="1"
-                          BorderBrush="{DynamicResource ButtonBorderBrush}">
+                          BorderBrush="{DynamicResource ButtonBorderBrush}"
+                          SelectionMode="Single">
                     <TreeView.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="{x:Static s:Strings.ContextMenuDecodeTag}" x:Name="DecodeTagMenuItem"

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -56,40 +57,42 @@ namespace ProtobufDecoder.Application.Avalonia.Views
 
         private void TagsTreeView_OnSelectedItemChanged(object sender, SelectionChangedEventArgs e)
         {
-            //if (TagsTreeView.SelectedItem is ProtobufTagSingle singleTag)
-            //{
-            //    var byteViewOffset = GetOffsetOf(singleTag);
+            var tagsTreeView = sender as TreeView;
 
-            //    try
-            //    {
-            //        if (singleTag.Parent is ProtobufTagEmbeddedMessage embeddedMessage)
-            //        {
-            //            var parentOffset = GetOffsetOf(embeddedMessage);
+            if (tagsTreeView?.SelectedItem is ProtobufTagSingle singleTag)
+            {
+                var byteViewOffset = GetOffsetOf(singleTag);
 
-            //            var embeddedMessageStartOffset = embeddedMessage.StartOffset + parentOffset;
+                try
+                {
+                    if (singleTag.Parent is ProtobufTagEmbeddedMessage embeddedMessage)
+                    {
+                        var parentOffset = GetOffsetOf(embeddedMessage);
 
-            //            var block = HexEditor.GetCustomBackgroundBlock(embeddedMessageStartOffset);
+                        var embeddedMessageStartOffset = embeddedMessage.StartOffset + parentOffset;
 
-            //            if (block == null)
-            //            {
-            //                // Only add a background block when it doesn't
-            //                // already exist.
-            //                HexEditor.CustomBackgroundBlockItems.Add(
-            //                    new CustomBackgroundBlock(
-            //                        embeddedMessageStartOffset,
-            //                        embeddedMessage.Length,
-            //                        GetNextSelectionColor()));
-            //            }
-            //        }
-            //    }
-            //    catch (Exception exception)
-            //    {
-            //        Debug.WriteLine(exception);
-            //    }
+                        //var block = HexEditor.GetCustomBackgroundBlock(embeddedMessageStartOffset);
 
-            //    HexEditor.SelectionStart = singleTag.StartOffset + byteViewOffset;
-            //    HexEditor.SelectionStop = singleTag.EndOffset + byteViewOffset;
-            //}
+                        //if (block == null)
+                        //{
+                        //    // Only add a background block when it doesn't
+                        //    // already exist.
+                        //    HexEditor.CustomBackgroundBlockItems.Add(
+                        //        new CustomBackgroundBlock(
+                        //            embeddedMessageStartOffset,
+                        //            embeddedMessage.Length,
+                        //            GetNextSelectionColor()));
+                        //}
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Debug.WriteLine(exception);
+                }
+
+                //HexEditor.SelectionStart = singleTag.StartOffset + byteViewOffset;
+                //HexEditor.SelectionStop = singleTag.EndOffset + byteViewOffset;
+            }
         }
 
         private ISolidColorBrush GetNextSelectionColor()
