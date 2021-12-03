@@ -86,9 +86,11 @@ namespace ProtobufDecoder.Application.Avalonia.ViewModels
         {
             if (string.IsNullOrEmpty(Model.OutputFilePath))
             {
-                var dialog = new SaveFileDialog();
-                
-                dialog.DefaultExtension = ".proto";
+                var dialog = new SaveFileDialog
+                {
+                    DefaultExtension = ".proto"
+                };
+
                 dialog.Filters.Add(new FileDialogFilter{ Extensions = new List<string>{".proto"}, Name = Strings.ProtoFileType});
 
                 var result = dialog.ShowAsync(GetMainWindow()).GetAwaiter().GetResult();
@@ -116,9 +118,11 @@ namespace ProtobufDecoder.Application.Avalonia.ViewModels
 
         private void SaveGeneratedProtoFileAs()
         {
-            var dialog = new SaveFileDialog();
-                
-            dialog.DefaultExtension = ".proto";
+            var dialog = new SaveFileDialog
+            {
+                DefaultExtension = ".proto"
+            };
+
             dialog.Filters.Add(new FileDialogFilter{ Extensions = new List<string>{".proto"}, Name = Strings.ProtoFileType});
 
             var result = dialog.ShowAsync(GetMainWindow()).GetAwaiter().GetResult();
