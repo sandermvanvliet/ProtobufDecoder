@@ -29,7 +29,8 @@
                     CommandParameter="{Binding ElementName=TagsTreeView}"/>
     </Window.KeyBindings>
     <DockPanel>
-        <Menu DockPanel.Dock="Top" Margin="0,0,0,0" Height="20">
+        <Menu DockPanel.Dock="Top" Margin="0,0,0,0" Height="22"
+              Background="#eeeeee">
             <MenuItem Header="{x:Static s:Strings.MenuFile}">
                 <MenuItem Header="{x:Static s:Strings.MenuFileOpen}" Name="OpenFileMenuItem" Command="{Binding Path=OpenFileCommand}" InputGesture="Ctrl+O" />
                 <Separator />
@@ -57,13 +58,19 @@
         </StackPanel>
         <Grid Margin="0,0,0,0"
               HorizontalAlignment="Stretch"
-              Background="{DynamicResource SystemColorWindowColor}">
+              Background="#eeeeee">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="580" />
                 <ColumnDefinition Width="300" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <TextBlock Text="No HEX yet..." Grid.Column="0" Margin="4,0,0,0"></TextBlock>
+            <Border Grid.Column="0"
+                    Background="White"
+                    BorderThickness="1"
+                    BorderBrush="Gray" 
+                    Margin="4,0,0,0">
+                <TextBlock Text="No HEX yet..."/>
+            </Border>
             <!--<hex:HexEditor Name="HexEditor"
                            Grid.Column="0"
                            ReadOnlyMode="True"
@@ -88,8 +95,10 @@
                           VerticalAlignment="Stretch"
                           Grid.Row="0"
                           BorderThickness="1"
-                          BorderBrush="{DynamicResource ButtonBorderBrush}"
-                          SelectionMode="Single">
+                          BorderBrush="Gray"
+                          SelectionMode="Single"
+                          Background="White"
+                          FontSize="12">
                     <TreeView.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="{x:Static s:Strings.ContextMenuDecodeTag}" x:Name="DecodeTagMenuItem"
@@ -105,7 +114,9 @@
                     <TreeView.DataTemplates>
                         <DataTemplate
                             DataType="{x:Type protobufDecoder:ProtobufTagSingle}">
-                            <TextBlock Text="{Binding Path=Name}" />
+                            <TextBlock Text="{Binding Path=Name}"
+                                       Padding="0"
+                                       Margin="0"/>
                         </DataTemplate>
 
                         <TreeDataTemplate  DataType="{x:Type protobufDecoder:ProtobufTagRepeated}"
@@ -121,30 +132,54 @@
                             <TextBlock Text="{Binding Path=Name}" />
                         </TreeDataTemplate>
                     </TreeView.DataTemplates>
+                    <TreeView.Styles>
+                        <Style Selector="TextBlock">
+                            <Setter Property="FontSize" Value="12"/>
+                        </Style>
+                        <Style Selector="TreeViewItem">
+                            <Setter Property="MinHeight" Value="20" />
+                        </Style>
+                    </TreeView.Styles>
                 </TreeView>
                 <Border BorderBrush="{DynamicResource ButtonBorderBrush}"
                         BorderThickness="0.5"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         Margin="0,4,0,0"
-                        Grid.Row="1">
+                        Grid.Row="1"
+                        Background="White">
                     <TextBox x:Name="GeneratedProtoTextBlock"
                              Text="{Binding Model.Message, Converter={StaticResource GeneratedProtoConverter},Mode=OneWay}"
-                             IsReadOnly="True" />
+                             IsReadOnly="True"
+                             FontSize="12" />
                 </Border>
             </Grid>
-            <DataGrid Name="TagPropertiesListBox"
-                      HorizontalAlignment="Stretch"
-                      VerticalAlignment="Stretch"
-                      Margin="4,0,4,0"
-                      Grid.Column="2"
-                      Items="{Binding ElementName=TagsTreeView, Path=SelectedItem, Converter={StaticResource ProtobufTagConverter},Mode=OneWay}"
-                      AutoGenerateColumns="False">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="{x:Static s:Strings.TagPropertiesName}" Width="80" Binding="{Binding Path=Name}" />
-                    <DataGridTextColumn Header="{x:Static s:Strings.TagPropertiesValue}" Binding="{Binding Path=Value}" />
-                </DataGrid.Columns>
-            </DataGrid>
+            <Border
+                Grid.Column="2"
+                Margin="4,0,4,0"
+                BorderThickness="1"
+                BorderBrush="Gray"
+                Background="White">
+                <DataGrid Name="TagPropertiesListBox"
+                          HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch"
+                          Items="{Binding ElementName=TagsTreeView, Path=SelectedItem, Converter={StaticResource ProtobufTagConverter},Mode=OneWay}"
+                          AutoGenerateColumns="False"
+                          ColumnHeaderHeight="32">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="{x:Static s:Strings.TagPropertiesName}" 
+                                            Width="100"
+                                            Binding="{Binding Path=Name}" />
+                        <DataGridTextColumn Header="{x:Static s:Strings.TagPropertiesValue}"
+                                            Binding="{Binding Path=Value}" />
+                    </DataGrid.Columns>
+                    <DataGrid.Styles>
+                        <Style Selector="TextBlock">
+                            <Setter Property="FontSize" Value="12"/>
+                        </Style>
+                    </DataGrid.Styles>
+                </DataGrid>
+            </Border>
         </Grid>
     </DockPanel>
 </Window>
