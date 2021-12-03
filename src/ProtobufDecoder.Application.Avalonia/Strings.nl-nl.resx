@@ -1,0 +1,101 @@
+﻿  <root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+    <data name="InputFileDoesNotExist_Text" xml:space="preserve">
+    <value>Controleer het pad naar het bronbestand</value>
+  </data>
+    <data name="MenuFile" xml:space="preserve">
+    <value>_Bestand</value>
+  </data>
+    <data name="MenuHelp" xml:space="preserve">
+      <value>_Help</value>
+    </data>
+    <data name="MenuFileExit" xml:space="preserve">
+      <value>_Afsluiten</value>
+    </data>
+    <data name="MenuHelpAbout" xml:space="preserve">
+      <value>_Over</value>
+    </data>
+    <data name="InputSourcePath" xml:space="preserve">
+    <value>Bronbestand:</value>
+  </data>
+  <data name="InputCaption" xml:space="preserve">
+    <value>Parameters</value>
+  </data>
+  <data name="AboutVersion" xml:space="preserve">
+    <value>Versie:</value>
+  </data>
+  <data name="AboutTitle" xml:space="preserve">
+    <value>Over Protobuf Decoder</value>
+  </data>
+    <data name="MenuFileOpen" xml:space="preserve">
+      <value>_Openen</value>
+    </data>
+    <data name="MenuFileSaveGeneratedProto" xml:space="preserve">
+      <value>Proto bestand _opslaan</value>
+    </data>
+    <data name="MenuFileSaveGeneratedProtoAs" xml:space="preserve">
+      <value>Proto bestand opslaan _als...</value>
+    </data>
+    <data name="ContextMenuDecodeTag" xml:space="preserve">
+      <value>Tag _decoderen</value>
+    </data>
+    <data name="ContextMenuCopyValue" xml:space="preserve">
+      <value>Kopieer tag waarde als C# bytes</value>
+    </data>
+    <data name="CommonTagProperties" xml:space="preserve">
+      <value>Algemeen</value>
+    </data>
+    <data name="TagPropertiesName" xml:space="preserve">
+      <value>Naam</value>
+    </data>
+    <data name="TagPropertiesValue" xml:space="preserve">
+      <value>Waarde</value>
+    </data>
+    <data name="StatusBarReadyText" xml:space="preserve">
+      <value>Opgestart</value>
+    </data>
+    <data name="TagRepeated" xml:space="preserve">
+      <value>(herhaald)</value>
+    </data>
+    <data name="FileLoadedSuccessfully" xml:space="preserve">
+      <value>Bestand succesvol geladen</value>
+    </data>
+    <data name="FileFailedToLoad" xml:space="preserve">
+      <value>Bestand kon niet geladen worden: {0}</value>
+    </data>
+    <data name="ProtoFileSavedSuccessfully" xml:space="preserve">
+      <value>Proto bestand opgeslagen</value>
+    </data>
+    <data name="ProtoFileFailedToSave" xml:space="preserve">
+      <value>Proto bestand kon niet worden opgeslagen: {0}</value>
+    </data>
+    <data name="ProtoFileSavedAs" xml:space="preserve">
+      <value>Proto bestand opgeslagen als: {0}</value>
+    </data>
+    <data name="CannotDecodeTag" xml:space="preserve">
+      <value>Tag kan niet gedecodeerd worden</value>
+    </data>
+    <data name="ProtoFileType" xml:space="preserve">
+      <value>Protobuf bestand (.proto)|*.proto</value>
+    </data>
+    <data name="TagCopiedToClipboard" xml:space="preserve">
+      <value>Tag waarde naar klembord gekopieerd</value>
+    </data>
+    <data name="TagDecodedSuccessfully" xml:space="preserve">
+      <value>Tag gedecodeerd</value>
+    </data>
+    <data name="AboutButtonClose" xml:space="preserve">
+      <value>_Sluiten</value>
+    </data>
+  </root>
