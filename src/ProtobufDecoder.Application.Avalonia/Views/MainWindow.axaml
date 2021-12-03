@@ -16,8 +16,6 @@
     <Design.DataContext>
         <vm:MainWindowViewModel/>
     </Design.DataContext>
-    <Window.DataTemplates>
-    </Window.DataTemplates>
     <Window.Resources>
         <converters:ProtobufTagConverter x:Key="ProtobufTagConverter" />
         <converters:ProtobufMessageConverter x:Key="GeneratedProtoConverter" />
@@ -52,8 +50,10 @@
                         Height="22" 
                         VerticalAlignment="Center" 
                         Margin="0,0,0,0">
-            <TextBlock Margin="6,2,0,0" Text="{Binding Path=Model.StatusBarText, FallbackValue={x:Static s:Strings.StatusBarReadyText},TargetNullValue={x:Static s:Strings.StatusBarReadyText}}"
-                           Foreground="{Binding Path=Model.StatusBarForeground,FallbackValue={x:Static Brushes.White}}"/>
+            <TextBlock Margin="6,4,0,0" 
+                       Text="{Binding Path=Model.StatusBarText, FallbackValue={x:Static s:Strings.StatusBarReadyText},TargetNullValue={x:Static s:Strings.StatusBarReadyText}}"
+                       Foreground="{Binding Path=Model.StatusBarForeground,FallbackValue={x:Static Brushes.White}}"
+                       FontSize="12"/>
         </StackPanel>
         <Grid Margin="0,0,0,0"
               HorizontalAlignment="Stretch"
