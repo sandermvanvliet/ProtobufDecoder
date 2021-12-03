@@ -165,7 +165,7 @@
                           VerticalAlignment="Stretch"
                           Items="{Binding ElementName=TagsTreeView, Path=SelectedItem, Converter={StaticResource ProtobufTagConverter},Mode=OneWay}"
                           AutoGenerateColumns="False"
-                          ColumnHeaderHeight="32">
+                          ColumnHeaderHeight="24">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="{x:Static s:Strings.TagPropertiesName}" 
                                             Width="100"
@@ -176,6 +176,9 @@
                     <DataGrid.Styles>
                         <Style Selector="TextBlock">
                             <Setter Property="FontSize" Value="12"/>
+                        </Style>
+                        <Style Selector="DataGridColumnHeader">
+                            <Setter Property="MinHeight" Value="24" />
                         </Style>
                     </DataGrid.Styles>
                 </DataGrid>
