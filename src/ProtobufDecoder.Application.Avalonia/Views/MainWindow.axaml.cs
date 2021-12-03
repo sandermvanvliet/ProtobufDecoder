@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using ProtobufDecoder.Application.Avalonia.ViewModels;
 
 namespace ProtobufDecoder.Application.Avalonia.Views
@@ -41,13 +42,9 @@ namespace ProtobufDecoder.Application.Avalonia.Views
 
         private void AboutMenuItem_OnClick(object sender, RoutedEventArgs e)
         {
-            //var aboutWindow = new About
-            //{
-            //    Owner = this,
-            //    WindowStartupLocation = WindowStartupLocation.CenterOwner
-            //};
-
-            //aboutWindow.ShowDialog();
+            var about = new About();
+            about.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            about.ShowDialog(this);
         }
 
         private void ExitMenuItem_OnClick(object sender, RoutedEventArgs e)

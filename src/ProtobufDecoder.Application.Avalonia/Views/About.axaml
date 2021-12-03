@@ -1,0 +1,32 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProtobufDecoder.Application.Avalonia"
+        mc:Ignorable="d"
+        x:Class="ProtobufDecoder.Application.Avalonia.Views.About"
+        Title="{x:Static local:Strings.AboutTitle}" 
+        Height="143" 
+        Width="450">
+    <Grid Margin="0,0,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <Label Width="60" HorizontalContentAlignment="Right" VerticalAlignment="Center" Content="{x:Static local:Strings.AboutVersion}"/>
+            <TextBlock Name="VersionTextBlock" VerticalAlignment="Center" Text="{Binding Path=Model.Version}" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Label Width="60" HorizontalContentAlignment="Right" VerticalAlignment="Center">GitHub:</Label>
+            <TextBlock VerticalAlignment="Center" Text="https://github.com/sandermvanvliet/ProtobufDecoder"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" HorizontalAlignment="Right" Margin="8,8,8,8">
+            <Button Name="OkButton" Click="OkButton_OnClick" Content="{x:Static local:Strings.AboutButtonClose}"></Button>
+        </StackPanel>
+    </Grid>
+</Window>
