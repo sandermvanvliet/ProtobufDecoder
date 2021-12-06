@@ -339,5 +339,66 @@ namespace ProtobufDecoder.Test.Unit
 }
 ");
         }
+
+        [Fact]
+        public void GivenMessageWithEmbeddedMessageWhichContainsEmbeddedMessage()
+        {
+            var message = new ProtobufMessage
+            {
+                Name = "TestMessage",
+                Tags =
+                {
+                   new ProtobufTagEmbeddedMessage(
+                       new ProtobufTagSingle
+                       {
+                           Index = 10,
+                           WireType = WireFormat.WireType.LengthDelimited
+                       },
+                       new ProtobufTag[]
+                       {
+                           new ProtobufTagEmbeddedMessage(
+                               new ProtobufTagSingle
+                               {
+                                   Index = 1,
+                                   WireType = WireFormat.WireType.Fixed64
+                               },
+                               new ProtobufTag[]
+                               {
+                                   new ProtobufTagSingle
+                                   {
+                                       Index = 1,
+                                       WireType = WireFormat.WireType.Fixed64
+                                   }
+                               })
+                           {
+                               Name = "EmbeddedMessage1"
+                           }
+                       })
+                   {
+                       Name = "EmbeddedMessage"
+                   }
+                }
+            };
+
+            var proto = ProtobufWriter.ToString(message);
+
+            proto
+                .Should()
+                .Be(@"message TestMessage
+{
+    message EmbeddedMessage
+    {
+        message EmbeddedMessage1
+        {
+            double tag1 = 1;
+        }
+
+        EmbeddedMessage1 tag1 = 1;
+    }
+
+    EmbeddedMessage tag10 = 10;
+}
+");
+        }
     }
 }

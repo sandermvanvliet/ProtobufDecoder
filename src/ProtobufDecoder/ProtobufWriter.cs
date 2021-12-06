@@ -86,9 +86,19 @@ namespace ProtobufDecoder
             builder.AppendLine($"{indent}{{");
             foreach (var embeddedTag in embeddedMessage.Tags)
             {
-                var embeddedTagName = string.IsNullOrEmpty(embeddedTag.Name) ? "tag" + embeddedTag.Index : embeddedTag.Name;
+                if (embeddedTag is ProtobufTagEmbeddedMessage nestedMessageTag)
+                {
+                    RenderEmbeddedMessage(nestedMessageTag, builder, embeddedTag, indent + "    ");
+                }
+                else
+                {
+                    var embeddedTagName = string.IsNullOrEmpty(embeddedTag.Name)
+                        ? "tag" + embeddedTag.Index
+                        : embeddedTag.Name;
 
-                builder.AppendLine($"{indent}    {(embeddedTag.IsOptional ? "optional " : "")}{FormatWireTypeForProto(embeddedTag)} {embeddedTagName} = {embeddedTag.Index};");
+                    builder.AppendLine(
+                        $"{indent}    {(embeddedTag.IsOptional ? "optional " : "")}{FormatWireTypeForProto(embeddedTag)} {embeddedTagName} = {embeddedTag.Index};");
+                }
             }
 
             builder.AppendLine($"{indent}}}");
