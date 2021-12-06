@@ -32,10 +32,9 @@ namespace ProtobufDecoder
                 }
                 else if(tag is ProtobufTagRepeated repeatedTag && repeatedTag.Items.Any(t => t is ProtobufTagEmbeddedMessage))
                 {
-                    var embeddedMessages = repeatedTag.Items.OfType<ProtobufTagEmbeddedMessage>().ToList();
-                    var embeddedMessageOccurrenceCount = embeddedMessages.Count;
+                    var messageInstances = repeatedTag.Items.OfType<ProtobufTagEmbeddedMessage>().ToList();
 
-                    var groupedTags = embeddedMessages
+                    var groupedTags = messageInstances
                         .SelectMany(e => e.Tags)
                         .GroupBy(
                             t => t.Index,
@@ -48,17 +47,16 @@ namespace ProtobufDecoder
                                     Index = key,
                                     Name = firstTag.Name,
                                     WireType = firstTag.WireType,
-                                    IsOptional = values.Count() != embeddedMessageOccurrenceCount
+                                    IsOptional = values.Count() != messageInstances.Count // Tag is required if it appears in all message instances
                                 };
                             })
-                        .ToList();
+                        .ToArray();
 
-                    var t = embeddedMessages.First();
-                    t.Tags.Clear();
-                    foreach (var gtag in groupedTags)
+                    // Create new tag instance to prevent nuking the original
+                    var t = new ProtobufTagEmbeddedMessage(messageInstances.First(), groupedTags)
                     {
-                        t.Tags.Add(gtag);
-                    }
+                        Name = messageInstances.First().Name
+                    };
 
                     RenderEmbeddedMessage(t, builder, tag, "    ", true);
                 }

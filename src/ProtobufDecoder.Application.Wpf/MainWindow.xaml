@@ -20,7 +20,7 @@
         </DataTemplate>
 
         <HierarchicalDataTemplate DataType="{x:Type protobufDecoder:ProtobufTagRepeated}"
-                                  ItemsSource="{Binding Path=Items}">
+                                  ItemsSource="{Binding Path=Items,Mode=OneWay}">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding Path=Name}" />
                 <TextBlock Text="{x:Static s:Strings.TagRepeated}" Margin="4, 0, 0, 0" />
@@ -28,7 +28,7 @@
         </HierarchicalDataTemplate>
 
         <HierarchicalDataTemplate DataType="{x:Type protobufDecoder:ProtobufTagEmbeddedMessage}"
-                                  ItemsSource="{Binding Path=Tags}">
+                                  ItemsSource="{Binding Path=Tags,Mode=OneWay}">
             <TextBlock Text="{Binding Path=Name}" />
         </HierarchicalDataTemplate>
         <converters:ProtobufTagConverter x:Key="ProtobufTagConverter" />
@@ -36,7 +36,7 @@
         <CollectionViewSource
             x:Key="GroupedViewSource"
             IsLiveGroupingRequested="True"
-            Source="{Binding ElementName=TagsTreeView, Path=SelectedItem, Converter={StaticResource ProtobufTagConverter}}">
+            Source="{Binding ElementName=TagsTreeView, Path=SelectedItem, Converter={StaticResource ProtobufTagConverter},Mode=OneWay}">
             <CollectionViewSource.LiveGroupingProperties>
                 Category
             </CollectionViewSource.LiveGroupingProperties>
@@ -106,7 +106,7 @@
                 </Grid.RowDefinitions>
                 <TreeView x:Name="TagsTreeView"
                           SelectedItemChanged="TagsTreeView_OnSelectedItemChanged"
-                          ItemsSource="{Binding Model.Message.Tags}"
+                          ItemsSource="{Binding Model.Message.Tags,Mode=OneWay}"
                           VerticalAlignment="Stretch"
                           Grid.Row="0">
                     <TreeView.ContextMenu>
