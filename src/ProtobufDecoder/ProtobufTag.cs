@@ -44,6 +44,10 @@ namespace ProtobufDecoder
             }
             set => _name = value;
         }
+
+        [Browsable(true)]
+        [Description("Indicates whether this tag is optional (value is true) or required (value is false)")]
+        public bool IsOptional { get; set; } = false;
     }
 
     public class ProtobufTagSingle : ProtobufTag

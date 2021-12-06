@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Collections.ObjectModel;
+using FluentAssertions;
 using Google.Protobuf;
 using Xunit;
 
@@ -198,6 +199,143 @@ namespace ProtobufDecoder.Test.Unit
     }
 
     EmbeddedMessage tag10 = 10;
+}
+");
+        }
+
+        [Fact]
+        public void GivenMessageWithTwoInstancesOfEmbeddedMessage()
+        {
+            var message = new ProtobufMessage
+            {
+                Name = "TestMessage",
+                Tags =
+                {
+                    new ProtobufTagRepeated
+                    {
+                        Index = 10,
+                        WireType = WireFormat.WireType.LengthDelimited,
+                        Items = new ObservableCollection<ProtobufTagSingle>
+                        {
+                            new ProtobufTagEmbeddedMessage(new ProtobufTagSingle
+                                {
+                                    Index = 10,
+                                    WireType = WireFormat.WireType.LengthDelimited
+                                },
+                                new ProtobufTag[]
+                                {
+                                    new ProtobufTagSingle
+                                    {
+                                        Index = 1,
+                                        WireType = WireFormat.WireType.Fixed64
+                                    }
+                                })
+                            {
+                                Name = "EmbeddedMessage"
+                            },
+                            
+                            new ProtobufTagEmbeddedMessage(new ProtobufTagSingle
+                                {
+                                    Index = 10,
+                                    WireType = WireFormat.WireType.LengthDelimited
+                                },
+                                new ProtobufTag[]
+                                {
+                                    new ProtobufTagSingle
+                                    {
+                                        Index = 1,
+                                        WireType = WireFormat.WireType.Fixed64
+                                    }
+                                })
+                            {
+                                Name = "EmbeddedMessage"
+                            }
+                        }
+                    }
+                }
+            };
+
+            var proto = ProtobufWriter.ToString(message);
+
+            proto
+                .Should()
+                .Be(@"message TestMessage
+{
+    message EmbeddedMessage
+    {
+        double tag1 = 1;
+    }
+
+    repeated EmbeddedMessage tag10 = 10;
+}
+");
+        }
+
+        [Fact]
+        public void GivenMessageWithTwoInstancesOfEmbeddedMessageWithDifferentTagsInEachInstance()
+        {
+            var message = new ProtobufMessage
+            {
+                Name = "TestMessage",
+                Tags =
+                {
+                    new ProtobufTagRepeated
+                    {
+                        Index = 10,
+                        WireType = WireFormat.WireType.LengthDelimited,
+                        Items = new ObservableCollection<ProtobufTagSingle>
+                        {
+                            new ProtobufTagEmbeddedMessage(new ProtobufTagSingle
+                                {
+                                    Index = 10,
+                                    WireType = WireFormat.WireType.LengthDelimited
+                                },
+                                new ProtobufTag[]
+                                {
+                                    new ProtobufTagSingle
+                                    {
+                                        Index = 1,
+                                        WireType = WireFormat.WireType.Fixed64
+                                    }
+                                })
+                            {
+                                Name = "EmbeddedMessage"
+                            },
+                            
+                            new ProtobufTagEmbeddedMessage(new ProtobufTagSingle
+                                {
+                                    Index = 10,
+                                    WireType = WireFormat.WireType.LengthDelimited
+                                },
+                                new ProtobufTag[]
+                                {
+                                    new ProtobufTagSingle
+                                    {
+                                        Index = 2,
+                                        WireType = WireFormat.WireType.Varint
+                                    }
+                                })
+                            {
+                                Name = "EmbeddedMessage"
+                            }
+                        }
+                    }
+                }
+            };
+
+            var proto = ProtobufWriter.ToString(message);
+
+            proto
+                .Should()
+                .Be(@"message TestMessage
+{
+    message EmbeddedMessage
+    {
+        optional double tag1 = 1;
+        optional uint32 tag2 = 2;
+    }
+
+    repeated EmbeddedMessage tag10 = 10;
 }
 ");
         }

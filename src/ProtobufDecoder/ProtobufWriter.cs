@@ -32,10 +32,35 @@ namespace ProtobufDecoder
                 }
                 else if(tag is ProtobufTagRepeated repeatedTag && repeatedTag.Items.Any(t => t is ProtobufTagEmbeddedMessage))
                 {
-                    foreach (var t in repeatedTag.Items.OfType<ProtobufTagEmbeddedMessage>())
+                    var embeddedMessages = repeatedTag.Items.OfType<ProtobufTagEmbeddedMessage>().ToList();
+                    var embeddedMessageOccurrenceCount = embeddedMessages.Count;
+
+                    var groupedTags = embeddedMessages
+                        .SelectMany(e => e.Tags)
+                        .GroupBy(
+                            t => t.Index,
+                            t => t,
+                            (key, values) =>
+                            {
+                                var firstTag = values.First();
+                                return new ProtobufTagSingle
+                                {
+                                    Index = key,
+                                    Name = firstTag.Name,
+                                    WireType = firstTag.WireType,
+                                    IsOptional = values.Count() != embeddedMessageOccurrenceCount
+                                };
+                            })
+                        .ToList();
+
+                    var t = embeddedMessages.First();
+                    t.Tags.Clear();
+                    foreach (var gtag in groupedTags)
                     {
-                        RenderEmbeddedMessage(t, builder, tag, "    ");
+                        t.Tags.Add(gtag);
                     }
+
+                    RenderEmbeddedMessage(t, builder, tag, "    ", true);
                 }
                 else
                 {
@@ -54,7 +79,8 @@ namespace ProtobufDecoder
             ProtobufTagEmbeddedMessage embeddedMessage, 
             StringBuilder builder,
             ProtobufTag tag,
-            string indent)
+            string indent,
+            bool isRepeated = false)
         {
             var name = "tag" + embeddedMessage.Index;
 
@@ -64,13 +90,13 @@ namespace ProtobufDecoder
             {
                 var embeddedTagName = string.IsNullOrEmpty(embeddedTag.Name) ? "tag" + embeddedTag.Index : embeddedTag.Name;
 
-                builder.AppendLine($"{indent}    {FormatWireTypeForProto(embeddedTag)} {embeddedTagName} = {embeddedTag.Index};");
+                builder.AppendLine($"{indent}    {(embeddedTag.IsOptional ? "optional " : "")}{FormatWireTypeForProto(embeddedTag)} {embeddedTagName} = {embeddedTag.Index};");
             }
 
             builder.AppendLine($"{indent}}}");
             builder.AppendLine();
 
-            builder.AppendLine($"{indent}{embeddedMessage.Name} {name} = {tag.Index};");
+            builder.AppendLine($"{indent}{(isRepeated ? "repeated ": "")}{embeddedMessage.Name} {name} = {tag.Index};");
         }
 
         private static string FormatWireTypeForProto(ProtobufTag tag)
