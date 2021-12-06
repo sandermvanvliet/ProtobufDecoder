@@ -41,6 +41,11 @@ namespace ProtobufDecoder
                             t => t,
                             (key, values) =>
                             {
+                                if (values.Count() == 1 && values.First() is ProtobufTagEmbeddedMessage)
+                                {
+                                    return values.First();
+                                }
+
                                 var firstTag = values.First();
                                 return new ProtobufTagSingle
                                 {
