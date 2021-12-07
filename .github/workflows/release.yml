@@ -19,10 +19,10 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore -c Release
-    - name: Test
-      run: dotnet test --no-build --verbosity normal -c Release
+    # - name: Test
+    #   run: dotnet test --no-build --verbosity normal -c Release
     - name: Build MSI
-      run: msbuild .\packaging\ProtobufDecoder.Installer\ProtobufDecoder.Installer.wixproj
+      run: dotnet msbuild .\packaging\ProtobufDecoder.Installer\ProtobufDecoder.Installer.wixproj
     # - name: Create Release
     #   id: create_release
     #   uses: actions/create-release@v1
