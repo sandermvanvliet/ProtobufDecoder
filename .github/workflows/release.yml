@@ -17,14 +17,12 @@ jobs:
         dotnet-version: 5.0.x
     - name: Restore dependencies
       run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore -c Release .\ProtobufDecoder.sln
-    - name: Test
-      run: dotnet test --no-build --verbosity normal -c Release
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v1.1
     - name: Build MSI
       run: msbuild .\packaging\ProtobufDecoder.Installer\ProtobufDecoder.Installer.wixproj -property:Configuration=Release
+    - name: Test
+      run: dotnet test --no-build --no-restore --verbosity normal -c Release
     # - name: Create Release
     #   id: create_release
     #   uses: actions/create-release@v1
