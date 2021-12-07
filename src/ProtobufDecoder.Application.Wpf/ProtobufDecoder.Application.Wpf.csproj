@@ -21,7 +21,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="WPFHexaEditor" Version="2.1.7" />
+    <PackageReference Include="WPFHexaEditor" Version="2.1.7" GeneratePathProperty="True" />
   </ItemGroup>
 
   <ItemGroup>
@@ -58,11 +58,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Resources\EBCDIC-NoSpecialChar.tbl">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <Content Update="$(PkgWPFHexaEditor)\contentFiles\any\net5.0-windows7.0\Resources\EBCDIC-NoSpecialChar.tbl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Update="Resources\EBCDIC.tbl">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <Content Update="$(PkgWPFHexaEditor)\contentFiles\any\net5.0-windows7.0\Resources\EBCDIC.tbl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
