@@ -4,11 +4,11 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
-    <PackageId>ProtobufDecoder</PackageId>
+    <PackageId>ProtobufDecoder.Application.Wpf</PackageId>
     <Version>0.1.0.0</Version>
     <Authors>Sander van Vliet</Authors>
     <Company>Codenizer BV</Company>
-    <Product>ProtobufDecoder</Product>
+    <Product>ProtobufDecoder.Application.Wpf</Product>
     <Description>ProtobufDecoder helps with analyzing Google Protocol Buffers payloads where you don't have a corresponding .proto file. It reads a binary file and displays the discovered tags and provides functionality to further analyze the structure and generate a Protobuf specification file.</Description>
     <Copyright>2021 Sander van Vliet</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
