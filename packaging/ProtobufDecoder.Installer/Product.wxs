@@ -24,10 +24,10 @@
     <Media Id="1" Cabinet="$(var.CabName)" EmbedCab="yes" />
 
     <!--Application logo-->
-    <Icon Id="icon.png" SourceFile="$(var.ProtobufDecoder.Application.Wpf_TargetDir)icon.png" />
+    <Icon Id="icon.ico" SourceFile="icon.ico" />
 
     <!--Application logo for Control Panel-->
-    <Property Id="ARPPRODUCTICON" Value="icon.png" />
+    <Property Id="ARPPRODUCTICON" Value="icon.ico" />
 
     <Feature Id="ProductFeature" Title="$(var.Name)" Level="1">
       <ComponentGroupRef Id="ProductComponents" />
@@ -101,7 +101,7 @@
     <DirectoryRef Id="ApplicationProgramsFolder">
       <!--Create application shortcut in Program Menu-->
       <Component Id="ApplicationShortcut" Guid="*">
-        <Shortcut Id="ApplicationStartMenuShortcut" Name="$(var.Name)" Description="$(var.Description)" Icon="icon.png" Target="[#ProtobufDecoder.Application.Wpf.exe]" WorkingDirectory="INSTALLFOLDER" />
+        <Shortcut Id="ApplicationStartMenuShortcut" Name="$(var.Name)" Description="$(var.Description)" Icon="icon.ico" Target="[#ProtobufDecoder.Application.Wpf.exe]" WorkingDirectory="INSTALLFOLDER" />
         <!--Remove application shortcut from Program Menu on uninstall-->
         <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall" />
         <!--Create application registry entry-->
