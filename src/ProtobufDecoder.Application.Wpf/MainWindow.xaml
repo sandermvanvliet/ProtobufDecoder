@@ -13,7 +13,8 @@
         Height="600"
         Width="1200"
         Loaded="MainWindow_OnLoaded"
-        d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}">
+        d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}"
+        Icon="icon.png">
     <Window.Resources>
         <DataTemplate DataType="{x:Type protobufDecoder:ProtobufTagSingle}">
             <TextBlock Text="{Binding Path=Name}" />
