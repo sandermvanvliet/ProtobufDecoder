@@ -15,17 +15,19 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
-    - name: Set path for candle and light
-      run: echo "C:\Program Files (x86)\WiX Toolset v3.11\bin" >> $GITHUB_PATH
-      shell: bash
-    - name: Restore dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore -c Release
+    # - name: Set path for candle and light
+    #   run: echo "C:\Program Files (x86)\WiX Toolset v3.11\bin" >> $GITHUB_PATH
+    #   shell: bash
+    # - name: Restore dependencies
+    #   run: dotnet restore
+    # - name: Build
+    #   run: dotnet build --no-restore -c Release
     # - name: Test
     #   run: dotnet test --no-build --verbosity normal -c Release
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.1
     - name: Build MSI
-      run: dotnet msbuild .\packaging\ProtobufDecoder.Installer\ProtobufDecoder.Installer.wixproj
+      run: msbuild .\packaging\ProtobufDecoder.Installer\ProtobufDecoder.Installer.wixproj -verbosity:diag -property:Configuration=Release
     # - name: Create Release
     #   id: create_release
     #   uses: actions/create-release@v1
