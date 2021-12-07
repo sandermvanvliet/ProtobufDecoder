@@ -21,28 +21,56 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProtobufDecoder.Application
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProtobufDecoder.Application.Wpf.Test.Unit", "test\ProtobufDecoder.Application.Wpf.Test.Unit\ProtobufDecoder.Application.Wpf.Test.Unit.csproj", "{A1A4C045-2B27-4A94-83B8-9CA6C402845F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "packaging", "packaging", "{6BC5C58C-1AEE-4C25-9E36-B988AD596279}"
+EndProject
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "ProtobufDecoder.Installer", "packaging\ProtobufDecoder.Installer\ProtobufDecoder.Installer.wixproj", "{689C803A-A083-4020-85C9-9E918704C301}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{C0CA5E5C-4D0A-4FB8-9CB6-AE5F02897990}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C0CA5E5C-4D0A-4FB8-9CB6-AE5F02897990}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0CA5E5C-4D0A-4FB8-9CB6-AE5F02897990}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C0CA5E5C-4D0A-4FB8-9CB6-AE5F02897990}.Debug|x86.Build.0 = Debug|Any CPU
 		{C0CA5E5C-4D0A-4FB8-9CB6-AE5F02897990}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0CA5E5C-4D0A-4FB8-9CB6-AE5F02897990}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0CA5E5C-4D0A-4FB8-9CB6-AE5F02897990}.Release|x86.ActiveCfg = Release|Any CPU
+		{C0CA5E5C-4D0A-4FB8-9CB6-AE5F02897990}.Release|x86.Build.0 = Release|Any CPU
 		{337EF3D8-F123-4A1C-9C55-2609C03C0492}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{337EF3D8-F123-4A1C-9C55-2609C03C0492}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{337EF3D8-F123-4A1C-9C55-2609C03C0492}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{337EF3D8-F123-4A1C-9C55-2609C03C0492}.Debug|x86.Build.0 = Debug|Any CPU
 		{337EF3D8-F123-4A1C-9C55-2609C03C0492}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{337EF3D8-F123-4A1C-9C55-2609C03C0492}.Release|Any CPU.Build.0 = Release|Any CPU
+		{337EF3D8-F123-4A1C-9C55-2609C03C0492}.Release|x86.ActiveCfg = Release|Any CPU
+		{337EF3D8-F123-4A1C-9C55-2609C03C0492}.Release|x86.Build.0 = Release|Any CPU
 		{1B85D971-56E2-40C4-AC61-143B5FEC613E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1B85D971-56E2-40C4-AC61-143B5FEC613E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B85D971-56E2-40C4-AC61-143B5FEC613E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1B85D971-56E2-40C4-AC61-143B5FEC613E}.Debug|x86.Build.0 = Debug|Any CPU
 		{1B85D971-56E2-40C4-AC61-143B5FEC613E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B85D971-56E2-40C4-AC61-143B5FEC613E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B85D971-56E2-40C4-AC61-143B5FEC613E}.Release|x86.ActiveCfg = Release|Any CPU
+		{1B85D971-56E2-40C4-AC61-143B5FEC613E}.Release|x86.Build.0 = Release|Any CPU
 		{A1A4C045-2B27-4A94-83B8-9CA6C402845F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A1A4C045-2B27-4A94-83B8-9CA6C402845F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1A4C045-2B27-4A94-83B8-9CA6C402845F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A1A4C045-2B27-4A94-83B8-9CA6C402845F}.Debug|x86.Build.0 = Debug|Any CPU
 		{A1A4C045-2B27-4A94-83B8-9CA6C402845F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1A4C045-2B27-4A94-83B8-9CA6C402845F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1A4C045-2B27-4A94-83B8-9CA6C402845F}.Release|x86.ActiveCfg = Release|Any CPU
+		{A1A4C045-2B27-4A94-83B8-9CA6C402845F}.Release|x86.Build.0 = Release|Any CPU
+		{689C803A-A083-4020-85C9-9E918704C301}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{689C803A-A083-4020-85C9-9E918704C301}.Debug|x86.ActiveCfg = Debug|x86
+		{689C803A-A083-4020-85C9-9E918704C301}.Debug|x86.Build.0 = Debug|x86
+		{689C803A-A083-4020-85C9-9E918704C301}.Release|Any CPU.ActiveCfg = Release|x86
+		{689C803A-A083-4020-85C9-9E918704C301}.Release|x86.ActiveCfg = Release|x86
+		{689C803A-A083-4020-85C9-9E918704C301}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -52,6 +80,7 @@ Global
 		{337EF3D8-F123-4A1C-9C55-2609C03C0492} = {89391546-8B29-4EDA-B259-B561EB449CDD}
 		{1B85D971-56E2-40C4-AC61-143B5FEC613E} = {A0347729-2D8E-40F3-9F17-CB926CDA7325}
 		{A1A4C045-2B27-4A94-83B8-9CA6C402845F} = {89391546-8B29-4EDA-B259-B561EB449CDD}
+		{689C803A-A083-4020-85C9-9E918704C301} = {6BC5C58C-1AEE-4C25-9E36-B988AD596279}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DFDBC0E7-1037-4B35-B9AC-C5B3A2938326}

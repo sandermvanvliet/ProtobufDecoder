@@ -4,6 +4,20 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
+    <PackageId>ProtobufDecoder.Application.Wpf</PackageId>
+    <Version>0.1.0.0</Version>
+    <Authors>Sander van Vliet</Authors>
+    <Company>Codenizer BV</Company>
+    <Product>ProtobufDecoder.Application.Wpf</Product>
+    <Description>ProtobufDecoder helps with analyzing Google Protocol Buffers payloads where you don't have a corresponding .proto file. It reads a binary file and displays the discovered tags and provides functionality to further analyze the structure and generate a Protobuf specification file.</Description>
+    <Copyright>2021 Sander van Vliet</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/sandermvanvliet/ProtobufDecoder</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/sandermvanvliet/ProtobufDecoder.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>protobuf, protocol-buffers, grpc</PackageTags>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageIconUrl />
   </PropertyGroup>
 
   <ItemGroup>
@@ -31,6 +45,25 @@
       <LastGenOutput>Strings.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Resource Include="icon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="C:\Users\sande\.nuget\packages\wpfhexaeditor\2.1.7\contentFiles\any\net5.0-windows7.0\Resources\EBCDIC-NoSpecialChar.tbl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\sande\.nuget\packages\wpfhexaeditor\2.1.7\contentFiles\any\net5.0-windows7.0\Resources\EBCDIC.tbl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
