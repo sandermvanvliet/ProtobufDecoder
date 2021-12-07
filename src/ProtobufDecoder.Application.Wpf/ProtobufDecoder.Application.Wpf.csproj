@@ -58,10 +58,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="C:\Users\sande\.nuget\packages\wpfhexaeditor\2.1.7\contentFiles\any\net5.0-windows7.0\Resources\EBCDIC-NoSpecialChar.tbl">
+    <Content Update="Resources\EBCDIC-NoSpecialChar.tbl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="C:\Users\sande\.nuget\packages\wpfhexaeditor\2.1.7\contentFiles\any\net5.0-windows7.0\Resources\EBCDIC.tbl">
+    <Content Update="Resources\EBCDIC.tbl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
