@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- The name of the product -->
+<?define Name = "ProtobufDecoder" ?>
+<!-- The Description of the product -->
+<?define Description = "Google Protocol Buffers decoder and analyzer" ?>
+<!-- The manufacturer, for setup package publisher and folder info -->
+<?define Manufacturer = "Codenizer BV" ?>
+<!-- The version number of this setup package-->
+<?define Version = "0.1.0" ?>
+<!-- UpgradeCode must be unique and not changed once the first version of the program is installed. -->
+<?define UpgradeCode = "{4feac63a-39f3-45d8-ae85-491bc3f379e1}" ?>
+<!-- The name of the Cabinet -->
+<?define CabName = "ProtobufDecoder.cab" ?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <?define ProtobufDecoder.Application.Wpf_TargetDir=$(var.ProtobufDecoder.Application.Wpf.TargetDir)?>
+  <Product Id="377E18D3-40B7-4875-B618-279E210AAFC6" Name="$(var.Name)" Language="1033" Version="0.1.0.0" Manufacturer="$(var.Manufacturer)" UpgradeCode="$(var.UpgradeCode)">
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perUser" InstallPrivileges="limited" />
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+
+    <!--Embed Cabinet into single msi file-->
+    <Media Id="1" Cabinet="$(var.CabName)" EmbedCab="yes" />
+
+    <!--Application logo-->
+    <Icon Id="icon.png" SourceFile="$(var.ProtobufDecoder.Application.Wpf_TargetDir)icon.png" />
+
+    <!--Application logo for Control Panel-->
+    <Property Id="ARPPRODUCTICON" Value="icon.png" />
+
+    <Feature Id="ProductFeature" Title="$(var.Name)" Level="1">
+      <ComponentGroupRef Id="ProductComponents" />
+      <ComponentGroupRef Id="nlnl" />
+      <ComponentGroupRef Id="Resources" />
+      <ComponentRef Id="ApplicationShortcut" />
+    </Feature>
+  </Product>
+
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="LocalAppDataFolder">
+        <Directory Id="ROOTDIRECTORY" Name="$(var.Manufacturer)">
+          <Directory Id="INSTALLFOLDER" Name="$(var.Name)">
+            <Directory Id="nlnl" Name="nl-nl" />
+            <Directory Id="Resources" Name="Resources" />
+          </Directory>
+        </Directory>
+      </Directory>
+      <!--Create application folder in Program Menu-->
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ApplicationProgramsFolder" Name="$(var.Name)" />
+      </Directory>
+    </Directory>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <Component Id="ProtobufDecoder.Application.Wpf.exe" Guid="b3b47589-73ef-44c1-9044-70b9a9934a35">
+        <File Id="Google.Protobuf.dll" Name="Google.Protobuf.dll" Source="$(var.ProtobufDecoder.Application.Wpf_TargetDir)Google.Protobuf.dll" />
+        <File Id="ProtobufDecoder.Application.Wpf.deps.json" Name="ProtobufDecoder.Application.Wpf.deps.json" Source="$(var.ProtobufDecoder.Application.Wpf_TargetDir)ProtobufDecoder.Application.Wpf.deps.json" />
+        <File Id="ProtobufDecoder.Application.Wpf.dll" Name="ProtobufDecoder.Application.Wpf.dll" Source="$(var.ProtobufDecoder.Application.Wpf_TargetDir)ProtobufDecoder.Application.Wpf.dll" />
+        <File Id="ProtobufDecoder.Application.Wpf.exe" Name="ProtobufDecoder.Application.Wpf.exe" Source="$(var.ProtobufDecoder.Application.Wpf_TargetDir)ProtobufDecoder.Application.Wpf.exe" />
+        <File Id="ProtobufDecoder.Application.Wpf.pdb" Name="ProtobufDecoder.Application.Wpf.pdb" Source="$(var.ProtobufDecoder.Application.Wpf_TargetDir)ProtobufDecoder.Application.Wpf.pdb" />
+        <File Id="ProtobufDecoder.Application.Wpf.runtimeconfig.json" Name="ProtobufDecoder.Application.Wpf.runtimeconfig.json" Source="$(var.ProtobufDecoder.Application.Wpf_TargetDir)ProtobufDecoder.Application.Wpf.runtimeconfig.json" />
+        <File Id="ProtobufDecoder.dll" Name="ProtobufDecoder.dll" Source="$(var.ProtobufDecoder.Application.Wpf_TargetDir)ProtobufDecoder.dll" />
+        <File Id="ProtobufDecoder.pdb" Name="ProtobufDecoder.pdb" Source="$(var.ProtobufDecoder.Application.Wpf_TargetDir)ProtobufDecoder.pdb" />
+        <File Id="WPFHexaEditor.dll" Name="WPFHexaEditor.dll" Source="$(var.ProtobufDecoder.Application.Wpf_TargetDir)WPFHexaEditor.dll" />
+
+        <RegistryValue Root="HKCU" Key="Software\$(var.Manufacturer)\$(var.Name)" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+        <RemoveFolder Id="CleanUpInstallDir" Directory="INSTALLFOLDER" On="uninstall" />
+        <RemoveFolder Id="CleanupRootDir" Directory="ROOTDIRECTORY" On="uninstall"/>
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="nlnl" Directory="nlnl">
+      <Component Id="nlnl" Guid="4500a104-eb63-4a63-bb36-dc920fd590ea">
+        <File Id="ProtobufDecoder.Application.Wpf.resources.dll" Name="ProtobufDecoder.Application.Wpf.resources.dll" Source="$(var.ProtobufDecoder.Application.Wpf_TargetDir)nl-nl\ProtobufDecoder.Application.Wpf.resources.dll" />
+        
+        <RegistryValue Root="HKCU" Key="Software\$(var.Manufacturer)\$(var.Name)" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+        <RemoveFolder Id="CleanUpNlNlDir" Directory="nlnl" On="uninstall" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="Resources" Directory="Resources">
+      <Component Id="Resources" Guid="c1c597de-2ad8-4996-be41-8563c2e3ab89">
+        <File Id="EBCDIC.tbl" Name="EBCDIC.tbl" Source="$(var.ProtobufDecoder.Application.Wpf_TargetDir)Resources\EBCDIC.tbl" />
+        <File Id="EBCDICNoSpecialChar.tbl" Name="EBCDIC-NoSpecialChar.tbl" Source="$(var.ProtobufDecoder.Application.Wpf_TargetDir)Resources\EBCDIC-NoSpecialChar.tbl" />
+        
+        <RegistryValue Root="HKCU" Key="Software\$(var.Manufacturer)\$(var.Name)" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+        <RemoveFolder Id="CleanUpResourcesDir" Directory="Resources" On="uninstall" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <DirectoryRef Id="ApplicationProgramsFolder">
+      <!--Create application shortcut in Program Menu-->
+      <Component Id="ApplicationShortcut" Guid="*">
+        <Shortcut Id="ApplicationStartMenuShortcut" Name="$(var.Name)" Description="$(var.Description)" Icon="icon.png" Target="[#ProtobufDecoder.Application.Wpf.exe]" WorkingDirectory="INSTALLFOLDER" />
+        <!--Remove application shortcut from Program Menu on uninstall-->
+        <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall" />
+        <!--Create application registry entry-->
+        <RegistryValue Root="HKCU" Key="Software\Microsoft\$(var.Manufacturer)\$(var.Name)" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+</Wix>

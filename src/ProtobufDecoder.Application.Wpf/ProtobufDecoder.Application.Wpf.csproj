@@ -48,15 +48,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\icon.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
+    <None Include="icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <Resource Include="icon.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="C:\Users\sande\.nuget\packages\wpfhexaeditor\2.1.7\contentFiles\any\net5.0-windows7.0\Resources\EBCDIC-NoSpecialChar.tbl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\sande\.nuget\packages\wpfhexaeditor\2.1.7\contentFiles\any\net5.0-windows7.0\Resources\EBCDIC.tbl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
