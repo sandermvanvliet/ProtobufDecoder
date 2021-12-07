@@ -38,16 +38,23 @@ You can create a shortcut to that executable in the Start Menu or wherever you w
 
 ## Usage
 
-When the application starts, open a file that contains a Protobuf payload. 
+Download the latest installer from the [Releases page](https://github.com/sandermvanvliet/ProtobufDecoder/releases).
+
+
+When the application starts, open a file that contains a Protobuf payload either via File -> Open or using the keyboard shortcut <kbd>Ctrl</kbd> + <kbd>O</kbd>.
 
 Please note that at this time the ProtobufDecoder only supports the a file that contains _only_ a single raw Protobuf message. Any leading or trailing delimiters must be stripped before loading the file.
 
 ## Todo
 
 - [X] ~~Decode length-delimited tag values that could be strings, packed repeated values or embedded messages~~
-- [ ] Generate `.proto` file from decoded payload (work in progress)
-- [ ] Package application for download
-- [ ] Set up release build for git tags
+- [ ] Generate `.proto` file from decoded payload
+  - [x] Single tags
+  - [x] Optional vs required tags
+  - [ ] Nested messages **(work in progress)**
+  - [ ] Repeated value tags
+- [x] Package application for download
+- [x] Set up release build for git tags
 - [ ] Load a `.proto` file and apply it to the decoded payload (to verify the `.proto` file and payload match)
 - [ ] Decode groups
 
