@@ -19,8 +19,8 @@ jobs:
       run: dotnet restore
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v1.1
-    - name: Build MSI
-      run: msbuild .\packaging\ProtobufDecoder.Installer\ProtobufDecoder.Installer.wixproj -property:Configuration=ReleaseFull
+    - name: Build solution
+      run: msbuild .\ProtobufDecoder.sln -property:Configuration=ReleaseFull
     - name: Test
       run: dotnet test --no-build --no-restore --verbosity normal -c Release
     # - name: Create Release
