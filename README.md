@@ -18,6 +18,25 @@ It can be used for _reverse engineering_ but bear in mind that this may not be l
 
 ![animated application demo](./app-demo.gif)
 
+## Usage
+
+Download the latest installer from the [Releases page](https://github.com/sandermvanvliet/ProtobufDecoder/releases).
+
+
+When the application starts, open a file that contains a Protobuf payload either via File -> Open or using the keyboard shortcut <kbd>Ctrl</kbd> + <kbd>O</kbd>.
+
+Please note that at this time the ProtobufDecoder only supports the a file that contains _only_ a single raw Protobuf message. Any leading or trailing delimiters must be stripped before loading the file.
+
+### Integrating with other tools
+
+ProtobufDecoder supports opening a file directly by passing in a command line argument:
+
+```PowerShell
+C:\users\johndoe> ProtobufDecoder.Application.Wpf.exe <path to binary>
+```
+
+This will start ProtobufDecoder and immediately opens the specified file. If the file does not exist or can't be opened the error will be displayed in the status bar.
+
 ## Building
 
 Currently there is no packaged release of the application which means you will need to compile the application yourself.
@@ -35,15 +54,6 @@ To make running the application easier after step 3 run:
 5. Double-click the executable `ProtobufDecoder.Application.Wpf.exe` in the `src/ProtobufDecoder.Application.Wpf/bin/Release/net5.0-windows/publish` folder
 
 You can create a shortcut to that executable in the Start Menu or wherever you wish.
-
-## Usage
-
-Download the latest installer from the [Releases page](https://github.com/sandermvanvliet/ProtobufDecoder/releases).
-
-
-When the application starts, open a file that contains a Protobuf payload either via File -> Open or using the keyboard shortcut <kbd>Ctrl</kbd> + <kbd>O</kbd>.
-
-Please note that at this time the ProtobufDecoder only supports the a file that contains _only_ a single raw Protobuf message. Any leading or trailing delimiters must be stripped before loading the file.
 
 ## Todo
 
