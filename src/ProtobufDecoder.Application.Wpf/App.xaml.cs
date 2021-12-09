@@ -1,6 +1,8 @@
-﻿using System;
-using System.Linq;
+﻿#if SCREEN_RECORDING
+using System;
 using System.Reflection;
+#endif
+using System.Linq;
 using System.Windows;
 using ProtobufDecoder.Application.Wpf.Models;
 using ProtobufDecoder.Application.Wpf.ViewModels;
@@ -16,9 +18,17 @@ namespace ProtobufDecoder.Application.Wpf
         {
 #if SCREEN_RECORDING
             var menuDropAlignmentField = typeof(SystemParameters).GetField("_menuDropAlignment", BindingFlags.NonPublic | BindingFlags.Static);
-            Action setAlignmentValue = () => {
-                if (SystemParameters.MenuDropAlignment && menuDropAlignmentField != null) menuDropAlignmentField.SetValue(null, false);};
+
+            Action setAlignmentValue = () => 
+            {
+                if (SystemParameters.MenuDropAlignment && menuDropAlignmentField != null)
+                {
+                    menuDropAlignmentField.SetValue(null, false);
+                }
+            };
+
             setAlignmentValue();
+            
             SystemParameters.StaticPropertyChanged += (sender, e) => { setAlignmentValue(); };
 #endif
 
