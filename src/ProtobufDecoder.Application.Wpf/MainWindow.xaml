@@ -45,6 +45,30 @@
                 <PropertyGroupDescription PropertyName="Category" />
             </CollectionViewSource.GroupDescriptions>
         </CollectionViewSource>
+        <Style TargetType="TextBox" x:Key="GridViewTextBoxStyle">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=IsReadOnly}" d:DataContext="{d:DesignInstance s:ProtobufTagPropertyDescriptor}" Value="True">
+                    <DataTrigger.Setters>
+                        <Setter Property="BorderThickness" Value="0" />
+                    </DataTrigger.Setters>
+                </DataTrigger>
+            </Style.Triggers>
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+        </Style>
+        <Style TargetType="CheckBox" x:Key="GridViewCheckBoxStyle">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=IsReadOnly}" d:DataContext="{d:DesignInstance s:ProtobufTagPropertyDescriptor}" Value="True">
+                    <DataTrigger.Setters>
+                        <Setter Property="IsEnabled" Value="False"/>
+                    </DataTrigger.Setters>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=IsReadOnly}" d:DataContext="{d:DesignInstance s:ProtobufTagPropertyDescriptor}" Value="False">
+                    <DataTrigger.Setters>
+                        <Setter Property="IsEnabled" Value="True"/>
+                    </DataTrigger.Setters>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
     <Window.InputBindings>
         <KeyBinding Command="{Binding Path=OpenFileCommand}" Key="O" Modifiers="Control" />
@@ -140,11 +164,33 @@
                       VerticalAlignment="Stretch"
                       Margin="4,0,4,0"
                       Grid.Column="2">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListViewItem}">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
                 <ListView.View>
                     <GridView>
                         <GridView.Columns>
                             <GridViewColumn Header="{x:Static s:Strings.TagPropertiesName}" Width="80" DisplayMemberBinding="{Binding Path=Name}" />
-                            <GridViewColumn Header="{x:Static s:Strings.TagPropertiesValue}" DisplayMemberBinding="{Binding Path=Value}" />
+                            <GridViewColumn Header="{x:Static s:Strings.TagPropertiesValue}">
+                                <GridViewColumn.CellTemplateSelector>
+                                    <s:PropertyGridViewTemplateSelector>
+                                        <s:PropertyGridViewTemplateSelector.String>
+                                            <DataTemplate DataType="s:ProtobufTagPropertyDescriptor">
+                                                <TextBox Text="{Binding Path=Value}" IsReadOnly="{Binding Path=IsReadOnly}"
+                                                         Style="{StaticResource GridViewTextBoxStyle}"/>
+                                            </DataTemplate>
+                                        </s:PropertyGridViewTemplateSelector.String>
+
+                                        <s:PropertyGridViewTemplateSelector.Boolean>
+                                            <DataTemplate DataType="s:ProtobufTagPropertyDescriptor">
+                                                <CheckBox IsChecked="{Binding Path=Value}" Style="{StaticResource GridViewCheckBoxStyle}" />
+                                            </DataTemplate>
+                                        </s:PropertyGridViewTemplateSelector.Boolean>
+                                    </s:PropertyGridViewTemplateSelector>
+                                </GridViewColumn.CellTemplateSelector>
+                            </GridViewColumn>
                         </GridView.Columns>
                     </GridView>
                 </ListView.View>
@@ -152,7 +198,7 @@
                 <ListView.GroupStyle>
                     <GroupStyle>
                         <GroupStyle.HeaderTemplate>
-                            <DataTemplate>
+                            <DataTemplate DataType="{x:Type s:ProtobufTagPropertyDescriptor}">
                                 <Border BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrush}}"
                                         Background="{DynamicResource {x:Static SystemColors.ControlBrush}}"
                                         BorderThickness="1">

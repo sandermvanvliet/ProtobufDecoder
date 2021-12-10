@@ -21,14 +21,16 @@ namespace ProtobufDecoder.Application.Wpf.Converters
 
                 foreach (PropertyDescriptor p in properties)
                 {
-                    if (p.Attributes.OfType<BrowsableAttribute>().Any(a => a.Browsable == false))
+                    if (HasAttribute<BrowsableAttribute>(p.Attributes,a => a.Browsable == false))
                     {
                         continue;
                     }
 
-                    var category = GetCategoryOf(p);
-
-                    list.Add(new ProtobufTagPropertyDescriptor(p.Name, p.GetValue(tag)?.ToString(), category));
+                    list.Add(new ProtobufTagPropertyDescriptor(
+                        p, 
+                        tag, 
+                        GetCategoryOf(p), 
+                        HasAttribute<ReadOnlyAttribute>(p.Attributes, a => a.IsReadOnly)));
                 }
             }
 
@@ -37,14 +39,23 @@ namespace ProtobufDecoder.Application.Wpf.Converters
 
         private static string GetCategoryOf(PropertyDescriptor propertyDescriptor)
         {
-            var category = propertyDescriptor.Attributes.OfType<CategoryAttribute>().SingleOrDefault();
-
-            return category?.Category;
+            return propertyDescriptor
+                .Attributes
+                .OfType<CategoryAttribute>()
+                .SingleOrDefault()?
+                .Category;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return DependencyProperty.UnsetValue;
+        }
+
+        private static bool HasAttribute<TAttribute>(
+            AttributeCollection attributes,
+            Func<TAttribute, bool> predicate)
+        {
+            return attributes.OfType<TAttribute>().Any(predicate);
         }
     }
 }
