@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -47,6 +46,7 @@ namespace ProtobufDecoder
 
         [Browsable(true)]
         [Description("Indicates whether this tag is optional (value is true) or required (value is false)")]
+        [ReadOnly(true)]
         public bool IsOptional { get; set; } = false;
     }
 
@@ -101,7 +101,7 @@ namespace ProtobufDecoder
     /// <remarks>Protobuf allows a tag number to appear multiple times, this type acts as a collection of those types and isn't a "real" tag itself</remarks>
     public class ProtobufTagRepeated : ProtobufTag
     {
-        [Browsable(true)]
+        [Browsable(false)]
         [Description("The instances of this tag in the payload")]
         [ReadOnly(true)]
         public ObservableCollection<ProtobufTagSingle> Items { get; set; } = new ObservableCollection<ProtobufTagSingle>();
@@ -132,7 +132,7 @@ namespace ProtobufDecoder
                 .ToList());
         }
 
-        [Browsable(true)]
+        [Browsable(false)]
         [Description("The tags of this embedded message")]
         [ReadOnly(true)]
         public ObservableCollection<ProtobufTag> Tags { get; }
