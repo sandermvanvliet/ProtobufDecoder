@@ -35,6 +35,12 @@
       <ComponentGroupRef Id="Resources" />
       <ComponentRef Id="ApplicationShortcut" />
     </Feature>
+
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+    <UIRef Id="WixUI_Minimal" />
+    <WixVariable Id="WixUILicenseRtf" Value="License.rtf" />
+    <WixVariable Id="WixUIBannerBmp" Value="banner.bmp" />
+    <WixVariable Id="WixUIDialogBmp" Value="dialog.bmp" />
   </Product>
 
   <Fragment>
