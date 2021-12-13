@@ -34,7 +34,10 @@ namespace ProtobufDecoder.Application.Wpf.Converters
                 }
             }
 
-            return list;
+            return list
+                .OrderBy(d => d.Category)
+                .ThenBy(d => d.Name)
+                .ToList();
         }
 
         private static string GetCategoryOf(PropertyDescriptor propertyDescriptor)

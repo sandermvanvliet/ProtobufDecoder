@@ -74,7 +74,7 @@ namespace ProtobufDecoder.Test.Unit
         }
 
         [Fact]
-        public void RepeatedLengthDelimited_ItemsSingleTags()
+        public void RepeatedLengthDelimited_ItemsAreLengthDelimitedTags()
         {
             var input = new byte[] { 0x0a, 0x01, 0x03, 0x0a, 0x01, 0x03, 0x0a, 0x01, 0x03 };
 
@@ -86,7 +86,7 @@ namespace ProtobufDecoder.Test.Unit
                 .As<ProtobufTagRepeated>()
                 .Items
                 .Should()
-                .AllBeOfType<ProtobufTagSingle>();
+                .AllBeOfType<ProtobufTagLengthDelimited>();
         }
 
         [Fact]
@@ -102,7 +102,7 @@ namespace ProtobufDecoder.Test.Unit
                 .As<ProtobufTagRepeated>()
                 .Items
                 .Should()
-                .AllBeOfType<ProtobufTagSingle>()
+                .AllBeOfType<ProtobufTagLengthDelimited>()
                 .Which
                 .First()
                 .Value

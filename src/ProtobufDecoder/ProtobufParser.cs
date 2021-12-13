@@ -142,6 +142,11 @@ namespace ProtobufDecoder
                         protobufTagRepeated.Items = new ObservableCollection<ProtobufTagSingle>(values
                             .Select(t =>
                             {
+                                if (t is ProtobufTagSingle singleTag && singleTag.WireType == WireFormat.WireType.LengthDelimited)
+                                {
+                                    t = ProtobufTagLengthDelimited.From(singleTag);
+                                }
+
                                 t.Parent = protobufTagRepeated;
                                 return t;
                             })
@@ -149,6 +154,19 @@ namespace ProtobufDecoder
 
                         return protobufTagRepeated;
                     })
+                .ToList();
+
+            // Change ProtobufTagSingle to ProtobufTagLengthDelimited for length-delimited tags
+            groupedTags = groupedTags
+                .Select(t =>
+                {
+                    if (t is ProtobufTagSingle singleTag && singleTag.WireType == WireFormat.WireType.LengthDelimited)
+                    {
+                        return ProtobufTagLengthDelimited.From(singleTag);
+                    }
+
+                    return t;
+                })
                 .ToList();
 
             protobufMessage.Tags.Clear();
