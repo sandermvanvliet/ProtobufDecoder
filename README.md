@@ -5,6 +5,8 @@ This application helps with analyzing [Google Protocol Buffers](https://develope
 Scenarios where you might want to use this is to inspect the result of serialization or when you need to interoperate with a system talking Protobuf but which does not provide a `.proto` file. 
 It can be used for _reverse engineering_ but bear in mind that this may not be legal in your jurisdiction.
 
+A changelog can be found [here](Changelog.md)
+
 ## Features
 
 - List fields in the captured payload and display information on:
@@ -62,6 +64,7 @@ You can create a shortcut to that executable in the Start Menu or wherever you w
   - [x] Single tags
   - [x] Optional vs required tags
   - [ ] Nested messages **(work in progress)**
+  - [ ] Length-delimited tag type hinting (is it a string or a message?) **(work in progress)**
   - [ ] Repeated value tags
 - [x] Package application for download
 - [x] Set up release build for git tags
