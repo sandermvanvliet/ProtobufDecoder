@@ -1,13 +1,16 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Google.Protobuf;
+using ProtobufDecoder.Annotations;
 
 namespace ProtobufDecoder
 {
-    public abstract class ProtobufTag
+    public abstract class ProtobufTag : INotifyPropertyChanged
     {
         private string _name;
+        private bool _isOptional = false;
 
         [Browsable(true)]
         [Description("The Protobuf wire type")]
@@ -41,13 +44,42 @@ namespace ProtobufDecoder
 
                 return _name;
             }
-            set => _name = value;
+            set
+            {
+                if (_name == value)
+                {
+                    return;
+                }
+
+                _name = value;
+                OnPropertyChanged();
+            }
         }
 
         [Browsable(true)]
         [Description("Indicates whether this tag is optional (value is true) or required (value is false)")]
         [ReadOnly(true)]
-        public bool IsOptional { get; set; } = false;
+        public bool IsOptional
+        {
+            get => _isOptional;
+            set
+            {
+                if (value == _isOptional)
+                {
+                    return;
+                }
+                _isOptional = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 
     public class ProtobufTagSingle : ProtobufTag

@@ -174,5 +174,20 @@ namespace ProtobufDecoder.Application.Wpf.Models
                 }
             }
         }
+
+        public void SetTagProperty(ProtobufTag tag, string propertyName, object value)
+        {
+            switch (propertyName)
+            {
+                case nameof(ProtobufTag.Name):
+                    tag.Name = (string)value;
+                    OnPropertyChanged(nameof(Message));
+                    break;
+                case nameof(ProtobufTag.IsOptional):
+                    tag.IsOptional = (bool)value;
+                    OnPropertyChanged(nameof(Message));
+                    break;
+            }
+        }
     }
 }

@@ -172,5 +172,10 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
             Model.StatusBarWarning(Strings.CannotDecodeTag);
         }
+
+        public void SetSelectedTagProperty(ProtobufTag tag, string propertyName, object value)
+        {
+            Model.SetTagProperty(tag, propertyName, value);
+        }
     }
 }
