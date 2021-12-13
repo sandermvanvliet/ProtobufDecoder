@@ -5,6 +5,9 @@ This application helps with analyzing [Google Protocol Buffers](https://develope
 Scenarios where you might want to use this is to inspect the result of serialization or when you need to interoperate with a system talking Protobuf but which does not provide a `.proto` file. 
 It can be used for _reverse engineering_ but bear in mind that this may not be legal in your jurisdiction.
 
+ProtobufDecoder will read and decode binary data that you capture from either a debugger or a tool like Wireshark and parses the tags from the data.
+You can then analyze the payload to see which tags are present, what their types are (number, strings etc) and if there are embedded messages.
+
 A changelog can be found [here](Changelog.md)
 
 ## Features
