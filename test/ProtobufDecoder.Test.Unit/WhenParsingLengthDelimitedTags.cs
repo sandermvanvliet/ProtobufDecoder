@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using FluentAssertions;
 using Google.Protobuf;
+using ProtobufDecoder.Tags;
 using ProtobufDecoder.Values;
 using Xunit;
 

@@ -1,7 +1,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
-namespace ProtobufDecoder
+namespace ProtobufDecoder.Tags
 {
     /// <summary>
     /// A virtual tag that contains all occurences of a tag number

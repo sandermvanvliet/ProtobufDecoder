@@ -5,6 +5,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows.Media;
 using ProtobufDecoder.Application.Wpf.Annotations;
+using ProtobufDecoder.Tags;
 
 namespace ProtobufDecoder.Application.Wpf.Models
 {

@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using Google.Protobuf;
 using ProtobufDecoder.Annotations;
 
-namespace ProtobufDecoder
+namespace ProtobufDecoder.Tags
 {
     public abstract class ProtobufTag : INotifyPropertyChanged
     {

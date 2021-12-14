@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using ProtobufDecoder.Application.Wpf.ViewModels;
+using ProtobufDecoder.Tags;
 using WpfHexaEditor.Core;
 
 namespace ProtobufDecoder.Application.Wpf

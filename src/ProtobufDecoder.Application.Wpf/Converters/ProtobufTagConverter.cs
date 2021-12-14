@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
+using ProtobufDecoder.Tags;
 
 namespace ProtobufDecoder.Application.Wpf.Converters
 {

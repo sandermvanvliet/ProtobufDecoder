@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using FluentAssertions;
 using Google.Protobuf;
+using ProtobufDecoder.Tags;
 using ProtobufDecoder.Values;
 using Xunit;
 

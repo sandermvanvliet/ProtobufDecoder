@@ -7,6 +7,7 @@ using System.Windows.Input;
 using Microsoft.Win32;
 using ProtobufDecoder.Application.Wpf.Commands;
 using ProtobufDecoder.Application.Wpf.Models;
+using ProtobufDecoder.Tags;
 
 namespace ProtobufDecoder.Application.Wpf.ViewModels
 {

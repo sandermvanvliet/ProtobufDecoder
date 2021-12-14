@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 using Google.Protobuf;
+using ProtobufDecoder.Tags;
 
 namespace ProtobufDecoder
 {

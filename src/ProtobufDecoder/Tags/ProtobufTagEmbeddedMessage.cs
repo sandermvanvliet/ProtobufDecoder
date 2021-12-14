@@ -2,7 +2,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 
-namespace ProtobufDecoder
+namespace ProtobufDecoder.Tags
 {
     /// <summary>
     /// A Protobuf tag that is an embedded message

@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Linq;
 using FluentAssertions;
 using ProtobufDecoder.Application.Wpf.Converters;
+using ProtobufDecoder.Tags;
 using Xunit;
 
 namespace ProtobufDecoder.Application.Wpf.Test.Unit

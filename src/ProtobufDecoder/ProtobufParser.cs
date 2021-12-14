@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Google.Protobuf;
+using ProtobufDecoder.Tags;
 using ProtobufDecoder.Values;
 
 namespace ProtobufDecoder

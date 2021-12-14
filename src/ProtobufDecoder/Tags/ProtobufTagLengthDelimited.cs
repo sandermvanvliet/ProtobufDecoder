@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
-namespace ProtobufDecoder
+namespace ProtobufDecoder.Tags
 {
     /// <summary>
     /// A Protobuf tag that holds length-delimited data

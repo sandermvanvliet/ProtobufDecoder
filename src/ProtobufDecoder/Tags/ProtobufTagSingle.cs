@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using ProtobufDecoder.Values;
 
-namespace ProtobufDecoder
+namespace ProtobufDecoder.Tags
 {
     public class ProtobufTagSingle : ProtobufTag
     {

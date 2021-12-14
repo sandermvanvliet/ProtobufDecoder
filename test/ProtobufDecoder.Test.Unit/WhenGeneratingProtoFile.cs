@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using FluentAssertions;
 using Google.Protobuf;
+using ProtobufDecoder.Tags;
 using Xunit;
 
 namespace ProtobufDecoder.Test.Unit

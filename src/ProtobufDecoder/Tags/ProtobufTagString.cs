@@ -2,7 +2,7 @@ using System.ComponentModel;
 using System.Text;
 using ProtobufDecoder.Values;
 
-namespace ProtobufDecoder
+namespace ProtobufDecoder.Tags
 {
     /// <summary>
     /// A Protobuf tag that holds a string

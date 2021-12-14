@@ -8,6 +8,7 @@
         xmlns:viewModels="clr-namespace:ProtobufDecoder.Application.Wpf.ViewModels"
         xmlns:converters="clr-namespace:ProtobufDecoder.Application.Wpf.Converters"
         xmlns:s="clr-namespace:ProtobufDecoder.Application.Wpf"
+        xmlns:tags="clr-namespace:ProtobufDecoder.Tags;assembly=ProtobufDecoder"
         mc:Ignorable="d"
         Title="{Binding Path=Model.WindowTitle}"
         Height="600"
@@ -16,11 +17,11 @@
         d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}"
         Icon="icon.png">
     <Window.Resources>
-        <DataTemplate DataType="{x:Type protobufDecoder:ProtobufTagSingle}">
+        <DataTemplate DataType="{x:Type tags:ProtobufTagSingle}">
             <TextBlock Text="{Binding Path=Name}" />
         </DataTemplate>
 
-        <HierarchicalDataTemplate DataType="{x:Type protobufDecoder:ProtobufTagRepeated}"
+        <HierarchicalDataTemplate DataType="{x:Type tags:ProtobufTagRepeated}"
                                   ItemsSource="{Binding Path=Items,Mode=OneWay}">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{Binding Path=Name}" />
@@ -28,7 +29,7 @@
             </StackPanel>
         </HierarchicalDataTemplate>
 
-        <HierarchicalDataTemplate DataType="{x:Type protobufDecoder:ProtobufTagEmbeddedMessage}"
+        <HierarchicalDataTemplate DataType="{x:Type tags:ProtobufTagEmbeddedMessage}"
                                   ItemsSource="{Binding Path=Tags,Mode=OneWay}">
             <TextBlock Text="{Binding Path=Name}" />
         </HierarchicalDataTemplate>
