@@ -1,4 +1,4 @@
-namespace ProtobufDecoder
+namespace ProtobufDecoder.Values
 {
     public class StringValue : ProtobufValue<string>
     {

@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace ProtobufDecoder
+namespace ProtobufDecoder.Values
 {
     public abstract class ProtobufValue
     {

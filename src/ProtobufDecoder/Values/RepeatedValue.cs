@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace ProtobufDecoder
+namespace ProtobufDecoder.Values
 {
     public class RepeatedValue : ProtobufValue<IEnumerable<ProtobufValue>>
     {

@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Globalization;
 
-namespace ProtobufDecoder
+namespace ProtobufDecoder.Values
 {
     public class VarintValue : ProtobufValue
     {

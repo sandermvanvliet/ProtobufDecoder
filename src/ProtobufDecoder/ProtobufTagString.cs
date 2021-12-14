@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Text;
+using ProtobufDecoder.Values;
 
 namespace ProtobufDecoder
 {

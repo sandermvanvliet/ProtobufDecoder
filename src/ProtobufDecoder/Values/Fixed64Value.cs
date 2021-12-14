@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel;
 
-namespace ProtobufDecoder
+namespace ProtobufDecoder.Values
 {
     public class Fixed64Value : ProtobufValue<double>
     {

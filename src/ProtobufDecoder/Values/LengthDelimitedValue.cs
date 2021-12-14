@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.Text;
 
-namespace ProtobufDecoder
+namespace ProtobufDecoder.Values
 {
     public class LengthDelimitedValue : ProtobufValue<byte[]>
     {
