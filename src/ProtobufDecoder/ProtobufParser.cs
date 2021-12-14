@@ -60,20 +60,20 @@ namespace ProtobufDecoder
                     };
 
                     protobufTags.Add(tag);
-                    
+
                     index += 1; // Advance to the content of the tag
 
                     switch (tag.WireType)
                     {
                         case WireFormat.WireType.Varint:
-                        {
-                            var parseResult = ParseVarint(input, index);
-                            index += parseResult.Length;
-                            tag.Value = parseResult.Value;
-                            tag.DataOffset = parseResult.DataOffset;
-                            tag.DataLength = parseResult.DataLength;
-                            break;
-                        }
+                            {
+                                var parseResult = ParseVarint(input, index);
+                                index += parseResult.Length;
+                                tag.Value = parseResult.Value;
+                                tag.DataOffset = parseResult.DataOffset;
+                                tag.DataLength = parseResult.DataLength;
+                                break;
+                            }
                         case WireFormat.WireType.Fixed64:
                             var parseResultF = ParseFixed64(input, index);
                             index += parseResultF.Length;
@@ -142,9 +142,11 @@ namespace ProtobufDecoder
                         protobufTagRepeated.Items = new ObservableCollection<ProtobufTagSingle>(values
                             .Select(t =>
                             {
-                                if (t is ProtobufTagSingle singleTag && singleTag.WireType == WireFormat.WireType.LengthDelimited)
+                                if (t is { WireType: WireFormat.WireType.LengthDelimited } singleTag)
                                 {
-                                    t = ProtobufTagLengthDelimited.From(singleTag);
+                                    t = ProtobufTagLengthDelimited.IsProbableString(t.Value.RawValue) 
+                                        ? ProtobufTagString.From(singleTag) 
+                                        : ProtobufTagLengthDelimited.From(singleTag);
                                 }
 
                                 t.Parent = protobufTagRepeated;

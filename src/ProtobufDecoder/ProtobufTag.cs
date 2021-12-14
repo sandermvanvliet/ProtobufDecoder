@@ -140,6 +140,37 @@ namespace ProtobufDecoder
         [ReadOnly(true)]
         public ObservableCollection<ProtobufTagSingle> Items { get; set; } = new ObservableCollection<ProtobufTagSingle>();
     }
+    
+    /// <summary>
+    /// A Protobuf tag that holds a string
+    /// </summary>
+    public class ProtobufTagString : ProtobufTagSingle
+    {
+        public static ProtobufTagString From(ProtobufTagSingle source)
+        {
+            // This clones the values from the original tag.
+
+            return new ProtobufTagString
+            {
+                DataLength = source.DataLength,
+                DataOffset = source.DataOffset,
+                EndOffset = source.EndOffset,
+                IsOptional = source.IsOptional,
+                Index = source.Index,
+                Name = source.Name,
+                Parent = source.Parent,
+                StartOffset = source.StartOffset,
+                Value = new StringValue(Encoding.UTF8.GetString(source.Value.RawValue)),
+                WireType = source.WireType,
+            };
+        }
+
+        [Category("Tag value")]
+        [Browsable(true)]
+        [ReadOnly(true)]
+        [DisplayName("String value")]
+        public string StringValue => (Value as StringValue)?.Value;
+    }
 
     /// <summary>
     /// A Protobuf tag that holds length-delimited data
@@ -163,34 +194,58 @@ namespace ProtobufDecoder
                 Value = source.Value,
                 WireType = source.WireType
             };
-
-            try
+            
+            if (IsProbableString(tag.Value.RawValue))
             {
-                var decodedMessage = ProtobufParser.Parse(tag.Value.RawValue);
-
-                if (decodedMessage.Tags.Any(t => t.Index <= 0))
+                try
                 {
-                    // Valid tag indexes start at 1 to a very large number so
-                    // any zero or negative values are out.
+                    var decodedMessage = ProtobufParser.Parse(tag.Value.RawValue);
+
+                    if (decodedMessage.Tags.Any(t => t.Index <= 0))
+                    {
+                        // Valid tag indexes start at 1 to a very large number so
+                        // any zero or negative values are out.
+                        tag.PossibleEmbeddedMessage = false;
+                        tag.PossibleString = true;
+                        tag.StringValue = Encoding.UTF8.GetString(tag.Value.RawValue);
+                    }
+                    else
+                    {
+                        tag.PossibleEmbeddedMessage = true;
+                        tag.PossibleString = false;
+                    }
+                }
+                catch
+                {
+                    // Not an embedded protobuf message or it's malformed
                     tag.PossibleEmbeddedMessage = false;
                     tag.PossibleString = true;
                     tag.StringValue = Encoding.UTF8.GetString(tag.Value.RawValue);
                 }
-                else
-                {
-                    tag.PossibleEmbeddedMessage = true;
-                    tag.PossibleString = false;
-                }
             }
-            catch
+            else
             {
-                // Not an embedded protobuf message or it's malformed
                 tag.PossibleEmbeddedMessage = false;
                 tag.PossibleString = true;
                 tag.StringValue = Encoding.UTF8.GetString(tag.Value.RawValue);
             }
 
             return tag;
+        }
+
+        public static bool IsProbableString(byte[] input)
+        {
+            var controlCharCount = input.Count(b => b <= 0x20 || b == 0x7f);
+            var alnumCharCount = input.Count(b => Char.IsLetterOrDigit((char)b));
+
+            var isProbableString = controlCharCount / (float)input.Length < 0.1;
+            
+            if (isProbableString)
+            {
+                isProbableString = alnumCharCount / (float)input.Length > 0.5;
+            }
+
+            return isProbableString;
         }
         
         [Category("Tag value")]

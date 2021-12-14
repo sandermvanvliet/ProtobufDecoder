@@ -72,5 +72,45 @@ namespace ProtobufDecoder.Test.Unit
                 .Should()
                 .BeEquivalentTo(new[] { 0x03, 0x8e, 0x02, 0x9e, 0xa7, 0x05 });
         }
+
+        [Fact]
+        public void UsingProtobufSerializedMessage_ParsesTwoTags()
+        {
+            var testMessage = new TestMessage
+            {
+                RepeatedInt32 = { 1, 2, 3, 4 },
+                RepeatedString = { "a", "b", "cd", "efg" }
+            };
+
+            var bytes = testMessage.ToByteArray();
+
+            var message = ProtobufParser.Parse(bytes);
+
+            message
+                .Tags
+                .Should()
+                .HaveCount(2);
+        }
+
+        [Fact]
+        public void UsingProtobufSerializedMessage_SecondTagIsRepeatedString()
+        {
+            var testMessage = new TestMessage
+            {
+                RepeatedInt32 = { 1, 2, 3, 4 },
+                RepeatedString = { "a", "b", "cd", "efg" }
+            };
+
+            var bytes = testMessage.ToByteArray();
+            var message = ProtobufParser.Parse(bytes);
+
+            message
+                .Tags
+                .Single(t => t.Index == 2)
+                .As<ProtobufTagRepeated>()
+                .Items
+                .Should()
+                .AllBeOfType<ProtobufTagString>();
+        }
     }
 }

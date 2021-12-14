@@ -1,0 +1,9 @@
+﻿syntax="proto3";
+package ProtobufDecoder_Test_Unit;
+option csharp_namespace="ProtobufDecoder.Test.Unit";
+
+message TestMessage
+{
+	repeated int32 repeatedInt32 = 1;
+	repeated string repeatedString = 2;
+}
