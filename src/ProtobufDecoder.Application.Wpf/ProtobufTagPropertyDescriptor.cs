@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using ProtobufDecoder.Application.Wpf.Annotations;
 
@@ -23,6 +24,7 @@ namespace ProtobufDecoder.Application.Wpf
             PropertyType = propertyDescriptor.PropertyType;
             Category = category;
             IsReadOnly = isReadOnly;
+            Description = propertyDescriptor.Attributes.OfType<DescriptionAttribute>().SingleOrDefault()?.Description;
         }
 
         public string Name { get; }
@@ -48,6 +50,7 @@ namespace ProtobufDecoder.Application.Wpf
         public Type PropertyType { get; set; }
         public string Category { get; }
         public bool IsReadOnly { get; }
+        public string Description { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

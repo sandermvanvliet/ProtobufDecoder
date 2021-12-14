@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using System.Text;
 using ProtobufDecoder.Values;
 
@@ -27,11 +26,5 @@ namespace ProtobufDecoder.Tags
                 WireType = source.WireType,
             };
         }
-
-        [Category("Tag value")]
-        [Browsable(true)]
-        [ReadOnly(true)]
-        [DisplayName("String value")]
-        public string StringValue => (Value as StringValue)?.Value;
     }
 }

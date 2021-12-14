@@ -18,6 +18,13 @@ namespace ProtobufDecoder.Application.Wpf.Converters
 
             if (value is ProtobufTag tag)
             {
+                // Ensure that the type of the tag always appears in the list of properties
+                list.Add(new ProtobufTagPropertyDescriptor(
+                    new ManualPropertyDescriptor("Type", tag.GetType().Name),
+                    tag,
+                    null,
+                    true));
+
                 var properties = TypeDescriptor.GetProperties(tag);
 
                 foreach (PropertyDescriptor p in properties)

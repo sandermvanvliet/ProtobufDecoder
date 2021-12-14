@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:protobufDecoder="clr-namespace:ProtobufDecoder;assembly=ProtobufDecoder"
         xmlns:hex="clr-namespace:WpfHexaEditor;assembly=WPFHexaEditor"
         xmlns:viewModels="clr-namespace:ProtobufDecoder.Application.Wpf.ViewModels"
         xmlns:converters="clr-namespace:ProtobufDecoder.Application.Wpf.Converters"
@@ -48,7 +47,7 @@
         </CollectionViewSource>
         <Style TargetType="TextBox" x:Key="GridViewTextBoxStyle">
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Path=IsReadOnly}" d:DataContext="{d:DesignInstance s:ProtobufTagPropertyDescriptor}" Value="True">
+                <DataTrigger Binding="{Binding Path=IsReadOnly}" Value="True">
                     <DataTrigger.Setters>
                         <Setter Property="BorderThickness" Value="0" />
                     </DataTrigger.Setters>
@@ -58,14 +57,14 @@
         </Style>
         <Style TargetType="CheckBox" x:Key="GridViewCheckBoxStyle">
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Path=IsReadOnly}" d:DataContext="{d:DesignInstance s:ProtobufTagPropertyDescriptor}" Value="True">
+                <DataTrigger Binding="{Binding Path=IsReadOnly}" Value="True">
                     <DataTrigger.Setters>
-                        <Setter Property="IsEnabled" Value="False"/>
+                        <Setter Property="IsEnabled" Value="False" />
                     </DataTrigger.Setters>
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Path=IsReadOnly}" d:DataContext="{d:DesignInstance s:ProtobufTagPropertyDescriptor}" Value="False">
+                <DataTrigger Binding="{Binding Path=IsReadOnly}" Value="False">
                     <DataTrigger.Setters>
-                        <Setter Property="IsEnabled" Value="True"/>
+                        <Setter Property="IsEnabled" Value="True" />
                     </DataTrigger.Setters>
                 </DataTrigger>
             </Style.Triggers>
@@ -74,35 +73,39 @@
     <Window.InputBindings>
         <KeyBinding Command="{Binding Path=OpenFileCommand}" Key="O" Modifiers="Control" />
         <KeyBinding Command="{Binding Path=SaveGeneratedProtoCommand}" Key="S" Modifiers="Control" />
-        <KeyBinding Command="{Binding Path=CopyTagValueCommand}" Key="C" Modifiers="Control" 
-                    CommandParameter="{Binding ElementName=TagsTreeView}"/>
-        <KeyBinding Command="{Binding Path=DecodeTagCommand}" Key="D" Modifiers="Control" 
-                    CommandParameter="{Binding ElementName=TagsTreeView}"/>
+        <KeyBinding Command="{Binding Path=CopyTagValueCommand}" Key="C" Modifiers="Control"
+                    CommandParameter="{Binding ElementName=TagsTreeView}" />
+        <KeyBinding Command="{Binding Path=DecodeTagCommand}" Key="D" Modifiers="Control"
+                    CommandParameter="{Binding ElementName=TagsTreeView}" />
     </Window.InputBindings>
     <DockPanel>
         <Menu DockPanel.Dock="Top" IsMainMenu="True" Margin="0,0,0,0" Height="20">
             <MenuItem Header="{x:Static s:Strings.MenuFile}">
-                <MenuItem Header="{x:Static s:Strings.MenuFileOpen}" Name="OpenFileMenuItem" Command="{Binding Path=OpenFileCommand}" InputGestureText="Ctrl+O" />
+                <MenuItem Header="{x:Static s:Strings.MenuFileOpen}" Name="OpenFileMenuItem"
+                          Command="{Binding Path=OpenFileCommand}" InputGestureText="Ctrl+O" />
                 <Separator />
                 <MenuItem Header="{x:Static s:Strings.MenuFileSaveGeneratedProto}" Name="SaveGeneratedProto"
-                          Command="{Binding Path=SaveGeneratedProtoCommand}" InputGestureText="Ctrl+S"/>
+                          Command="{Binding Path=SaveGeneratedProtoCommand}" InputGestureText="Ctrl+S" />
                 <MenuItem Header="{x:Static s:Strings.MenuFileSaveGeneratedProtoAs}" Name="SaveGeneratedProtoAs"
-                              Command="{Binding Path=SaveGeneratedProtoAsCommand}" />
+                          Command="{Binding Path=SaveGeneratedProtoAsCommand}" />
                 <Separator />
-                <MenuItem Header="{x:Static s:Strings.MenuFileExit}" Name="ExitMenuItem" Click="ExitMenuItem_OnClick" InputGestureText="Alt+F4" />
+                <MenuItem Header="{x:Static s:Strings.MenuFileExit}" Name="ExitMenuItem" Click="ExitMenuItem_OnClick"
+                          InputGestureText="Alt+F4" />
             </MenuItem>
             <MenuItem Header="{x:Static s:Strings.MenuHelp}">
-                <MenuItem Header="{x:Static s:Strings.MenuHelpAbout}" Name="AboutMenuItem" Click="AboutMenuItem_OnClick" />
+                <MenuItem Header="{x:Static s:Strings.MenuHelpAbout}" Name="AboutMenuItem"
+                          Click="AboutMenuItem_OnClick" />
             </MenuItem>
         </Menu>
-        <StackPanel Orientation="Horizontal" 
-                        Background="{Binding Path=Model.StatusBarBackground,FallbackValue={x:Static Brushes.DodgerBlue}}"
-                        DockPanel.Dock="Bottom" 
-                        Height="22" 
-                        VerticalAlignment="Center" 
-                        Margin="0,0,0,0">
-            <TextBlock Margin="6,2,0,0" Text="{Binding Path=Model.StatusBarText, FallbackValue={x:Static s:Strings.StatusBarReadyText},TargetNullValue={x:Static s:Strings.StatusBarReadyText}}"
-                           Foreground="{Binding Path=Model.StatusBarForeground,FallbackValue={x:Static Brushes.White}}"/>
+        <StackPanel Orientation="Horizontal"
+                    Background="{Binding Path=Model.StatusBarBackground,FallbackValue={x:Static Brushes.DodgerBlue}}"
+                    DockPanel.Dock="Bottom"
+                    Height="22"
+                    VerticalAlignment="Center"
+                    Margin="0,0,0,0">
+            <TextBlock Margin="6,2,0,0"
+                       Text="{Binding Path=Model.StatusBarText, FallbackValue={x:Static s:Strings.StatusBarReadyText},TargetNullValue={x:Static s:Strings.StatusBarReadyText}}"
+                       Foreground="{Binding Path=Model.StatusBarForeground,FallbackValue={x:Static Brushes.White}}" />
         </StackPanel>
         <Grid Margin="0,0,0,0"
               HorizontalAlignment="Stretch"
@@ -128,6 +131,7 @@
                   Margin="4,0,0,0">
                 <Grid.RowDefinitions>
                     <RowDefinition />
+                    <RowDefinition Height="4" />
                     <RowDefinition Height="300" />
                 </Grid.RowDefinitions>
                 <TreeView x:Name="TagsTreeView"
@@ -141,79 +145,120 @@
                                       Command="{Binding Path=DecodeTagCommand}"
                                       CommandParameter="{Binding PlacementTarget, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
                                       InputGestureText="Ctrl+D" />
-                            <MenuItem Header="{x:Static s:Strings.ContextMenuCopyValue}" x:Name="CopyValueAsBytes" 
-                                      Command="{Binding Path=CopyTagValueCommand}" 
+                            <MenuItem Header="{x:Static s:Strings.ContextMenuCopyValue}" x:Name="CopyValueAsBytes"
+                                      Command="{Binding Path=CopyTagValueCommand}"
                                       CommandParameter="{Binding PlacementTarget, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
                                       InputGestureText="Ctrl+C" />
                         </ContextMenu>
                     </TreeView.ContextMenu>
                 </TreeView>
-                <Border BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrush}}"
+                <GridSplitter Grid.Row="1"
+                              Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+                              ShowsPreview="True"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Center"
+                              Height="4" />
+                <Border BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"
                         BorderThickness="0.5"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         Margin="0,4,0,0"
-                        Grid.Row="1">
+                        Grid.Row="2">
                     <TextBox x:Name="GeneratedProtoTextBlock"
                              Text="{Binding Model.Message, Converter={StaticResource GeneratedProtoConverter}}"
                              IsReadOnly="True" />
                 </Border>
             </Grid>
-            <ListView Name="TagPropertiesListBox"
-                      ItemsSource="{Binding Source={StaticResource GroupedViewSource}}"
-                      HorizontalAlignment="Stretch"
-                      VerticalAlignment="Stretch"
-                      Margin="4,0,4,0"
-                      Grid.Column="2">
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="{x:Type ListViewItem}">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                    </Style>
-                </ListView.ItemContainerStyle>
-                <ListView.View>
-                    <GridView>
-                        <GridView.Columns>
-                            <GridViewColumn Header="{x:Static s:Strings.TagPropertiesName}" Width="80" DisplayMemberBinding="{Binding Path=Name}" />
-                            <GridViewColumn Header="{x:Static s:Strings.TagPropertiesValue}">
-                                <GridViewColumn.CellTemplateSelector>
-                                    <s:PropertyGridViewTemplateSelector>
-                                        <s:PropertyGridViewTemplateSelector.String>
-                                            <DataTemplate DataType="s:ProtobufTagPropertyDescriptor">
-                                                <TextBox Text="{Binding Path=Value, Mode=OneWay}" 
-                                                         IsReadOnly="{Binding Path=IsReadOnly}"
-                                                         Style="{StaticResource GridViewTextBoxStyle}" 
-                                                         TextChanged="TextBoxBase_OnTextChanged"
-                                                         Tag="{Binding Path=Name, Mode=OneTime}"/>
-                                            </DataTemplate>
-                                        </s:PropertyGridViewTemplateSelector.String>
+            <Grid VerticalAlignment="Stretch"
+                  Margin="4,0,4,0"
+                  Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="4" />
+                    <RowDefinition Height="80" />
+                </Grid.RowDefinitions>
+                <ListView Name="TagPropertiesListBox"
+                          ItemsSource="{Binding Source={StaticResource GroupedViewSource}}"
+                          HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch"
+                          Grid.Row="0"
+                          BorderThickness="1,1,1,0"
+                              BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListViewItem}">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.View>
+                        <GridView>
+                            <GridView.Columns>
+                                <GridViewColumn Header="{x:Static s:Strings.TagPropertiesName}" Width="80"
+                                                DisplayMemberBinding="{Binding Path=Name}" />
+                                <GridViewColumn Header="{x:Static s:Strings.TagPropertiesValue}">
+                                    <GridViewColumn.CellTemplateSelector>
+                                        <s:PropertyGridViewTemplateSelector>
+                                            <s:PropertyGridViewTemplateSelector.String>
+                                                <DataTemplate DataType="s:ProtobufTagPropertyDescriptor">
+                                                    <TextBox Text="{Binding Path=Value, Mode=OneWay}"
+                                                             IsReadOnly="{Binding Path=IsReadOnly}"
+                                                             Style="{StaticResource GridViewTextBoxStyle}"
+                                                             TextChanged="TextBoxBase_OnTextChanged"
+                                                             Tag="{Binding Path=Name, Mode=OneTime}" />
+                                                </DataTemplate>
+                                            </s:PropertyGridViewTemplateSelector.String>
 
-                                        <s:PropertyGridViewTemplateSelector.Boolean>
-                                            <DataTemplate DataType="s:ProtobufTagPropertyDescriptor">
-                                                <CheckBox IsChecked="{Binding Path=Value, Mode=OneWay}" 
-                                                          Style="{StaticResource GridViewCheckBoxStyle}" />
-                                            </DataTemplate>
-                                        </s:PropertyGridViewTemplateSelector.Boolean>
-                                    </s:PropertyGridViewTemplateSelector>
-                                </GridViewColumn.CellTemplateSelector>
-                            </GridViewColumn>
-                        </GridView.Columns>
-                    </GridView>
-                </ListView.View>
+                                            <s:PropertyGridViewTemplateSelector.Boolean>
+                                                <DataTemplate DataType="s:ProtobufTagPropertyDescriptor">
+                                                    <CheckBox IsChecked="{Binding Path=Value, Mode=OneWay}"
+                                                              Style="{StaticResource GridViewCheckBoxStyle}" />
+                                                </DataTemplate>
+                                            </s:PropertyGridViewTemplateSelector.Boolean>
+                                        </s:PropertyGridViewTemplateSelector>
+                                    </GridViewColumn.CellTemplateSelector>
+                                </GridViewColumn>
+                            </GridView.Columns>
+                        </GridView>
+                    </ListView.View>
 
-                <ListView.GroupStyle>
-                    <GroupStyle>
-                        <GroupStyle.HeaderTemplate>
-                            <DataTemplate DataType="{x:Type s:ProtobufTagPropertyDescriptor}">
-                                <Border BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrush}}"
-                                        Background="{DynamicResource {x:Static SystemColors.ControlBrush}}"
-                                        BorderThickness="1">
-                                    <TextBlock FontWeight="Bold" Text="{Binding Path=Name, TargetNullValue={x:Static s:Strings.CommonTagProperties}}" />
-                                </Border>
-                            </DataTemplate>
-                        </GroupStyle.HeaderTemplate>
-                    </GroupStyle>
-                </ListView.GroupStyle>
-            </ListView>
+                    <ListView.GroupStyle>
+                        <GroupStyle>
+                            <GroupStyle.HeaderTemplate>
+                                <DataTemplate DataType="{x:Type s:ProtobufTagPropertyDescriptor}">
+                                    <Border BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrush}}"
+                                            Background="{DynamicResource {x:Static SystemColors.ControlBrush}}"
+                                            BorderThickness="1">
+                                        <TextBlock FontWeight="Bold"
+                                                   Text="{Binding Path=Name, TargetNullValue={x:Static s:Strings.CommonTagProperties}}" />
+                                    </Border>
+                                </DataTemplate>
+                            </GroupStyle.HeaderTemplate>
+                        </GroupStyle>
+                    </ListView.GroupStyle>
+                </ListView>
+                <GridSplitter Grid.Row="1"
+                              Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+                              ShowsPreview="True"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Center"
+                              Height="4"
+                              BorderThickness="1,0,1,0"
+                              BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"/>
+                <Border Grid.Row="2"
+                        BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"
+                        BorderThickness="1,0,1,1"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Margin="0,0,0,0"
+                        Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">
+                    <StackPanel Orientation="Vertical"
+                                HorizontalAlignment="Stretch"
+                                Margin="4,0,0,0"
+                                DataContext="{Binding ElementName=TagPropertiesListBox, Path=SelectedItem}">
+                        <TextBlock Text="{Binding Path=Name}" FontWeight="Bold" />
+                        <TextBlock Text="{Binding Path=Description}" TextWrapping="Wrap" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
+                    </StackPanel>
+                </Border>
+            </Grid>
         </Grid>
     </DockPanel>
 </Window>

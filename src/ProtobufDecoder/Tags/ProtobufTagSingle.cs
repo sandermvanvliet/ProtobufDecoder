@@ -8,7 +8,7 @@ namespace ProtobufDecoder.Tags
         [Browsable(true)]
         [Description("The value of this tag")]
         [ReadOnly(true)]
-        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [Category("Tag value")]
         public ProtobufValue Value { get; set; }
         
         [Category("Offsets")]
