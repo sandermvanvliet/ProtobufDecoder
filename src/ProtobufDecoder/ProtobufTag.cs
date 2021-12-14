@@ -1,9 +1,5 @@
-using System;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using Google.Protobuf;
 using ProtobufDecoder.Annotations;
 
@@ -12,7 +8,7 @@ namespace ProtobufDecoder
     public abstract class ProtobufTag : INotifyPropertyChanged
     {
         private string _name;
-        private bool _isOptional = false;
+        private bool _isOptional;
 
         [Browsable(true)]
         [Description("The Protobuf wire type")]
@@ -35,6 +31,9 @@ namespace ProtobufDecoder
         /// <summary>
         /// Optional name of this tag
         /// </summary>
+        [Browsable(true)]
+        [Description("Name of this tag, defaults to tag{index}")]
+        [ReadOnly(false)]
         public string Name
         {
             get
@@ -61,6 +60,7 @@ namespace ProtobufDecoder
         [Browsable(true)]
         [Description("Indicates whether this tag is optional (value is true) or required (value is false)")]
         [ReadOnly(true)]
+        [DisplayName("Is optional")]
         public bool IsOptional
         {
             get => _isOptional;
@@ -82,222 +82,5 @@ namespace ProtobufDecoder
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-    }
-
-    public class ProtobufTagSingle : ProtobufTag
-    {
-        [Browsable(true)]
-        [Description("The value of this tag")]
-        [ReadOnly(true)]
-        [TypeConverter(typeof(ExpandableObjectConverter))]
-        public ProtobufValue Value { get; set; }
-        
-        [Category("Offsets")]
-        [Browsable(true)]
-        [Description("Position in the byte stream where this tag starts")]
-        [ReadOnly(true)]
-        public int StartOffset { get; set; }
-
-        [Category("Offsets")]
-        [Browsable(true)]
-        [Description("Position in the byte stream where this tag starts")]
-        [ReadOnly(true)]
-        public int TagOffset => StartOffset;
-        
-        [Category("Offsets")]
-        [Browsable(true)]
-        [Description("Position in the byte stream where the data of this tag starts")]
-        [ReadOnly(true)]
-        public int DataOffset { get; set; }
-        
-        [Category("Offsets")]
-        [Browsable(true)]
-        [Description("Length of the data of this tag")]
-        [ReadOnly(true)]
-        public int DataLength { get; set; }
-        
-        [Category("Offsets")]
-        [Browsable(true)]
-        [Description("Position in the byte stream where this tag ends")]
-        [ReadOnly(true)]
-        public int EndOffset { get; set; }
-
-        [Category("Offsets")]
-        [Browsable(true)]
-        [Description("Number of bytes of this entire tag")]
-        [ReadOnly(true)]
-        public int Length => (EndOffset - StartOffset) + 1;
-    }
-
-    /// <summary>
-    /// A virtual tag that contains all occurences of a tag number
-    /// </summary>
-    /// <remarks>Protobuf allows a tag number to appear multiple times, this type acts as a collection of those types and isn't a "real" tag itself</remarks>
-    public class ProtobufTagRepeated : ProtobufTag
-    {
-        [Browsable(false)]
-        [Description("The instances of this tag in the payload")]
-        [ReadOnly(true)]
-        public ObservableCollection<ProtobufTagSingle> Items { get; set; } = new ObservableCollection<ProtobufTagSingle>();
-    }
-    
-    /// <summary>
-    /// A Protobuf tag that holds a string
-    /// </summary>
-    public class ProtobufTagString : ProtobufTagSingle
-    {
-        public static ProtobufTagString From(ProtobufTagSingle source)
-        {
-            // This clones the values from the original tag.
-
-            return new ProtobufTagString
-            {
-                DataLength = source.DataLength,
-                DataOffset = source.DataOffset,
-                EndOffset = source.EndOffset,
-                IsOptional = source.IsOptional,
-                Index = source.Index,
-                Name = source.Name,
-                Parent = source.Parent,
-                StartOffset = source.StartOffset,
-                Value = new StringValue(Encoding.UTF8.GetString(source.Value.RawValue)),
-                WireType = source.WireType,
-            };
-        }
-
-        [Category("Tag value")]
-        [Browsable(true)]
-        [ReadOnly(true)]
-        [DisplayName("String value")]
-        public string StringValue => (Value as StringValue)?.Value;
-    }
-
-    /// <summary>
-    /// A Protobuf tag that holds length-delimited data
-    /// </summary>
-    /// <remarks>The value of this tag can be a string or embedded message (<see cref="ProtobufTagEmbeddedMessage"/>)</remarks>
-    public class ProtobufTagLengthDelimited : ProtobufTagSingle
-    {
-        public static ProtobufTagLengthDelimited From(ProtobufTagSingle source)
-        {
-            // This clones the values from the original tag.
-            var tag = new ProtobufTagLengthDelimited
-            {
-                DataLength = source.DataLength,
-                DataOffset = source.DataOffset,
-                EndOffset = source.EndOffset,
-                IsOptional = source.IsOptional,
-                Index = source.Index,
-                Name = source.Name,
-                Parent = source.Parent,
-                StartOffset = source.StartOffset,
-                Value = source.Value,
-                WireType = source.WireType
-            };
-            
-            if (IsProbableString(tag.Value.RawValue))
-            {
-                try
-                {
-                    var decodedMessage = ProtobufParser.Parse(tag.Value.RawValue);
-
-                    if (decodedMessage.Tags.Any(t => t.Index <= 0))
-                    {
-                        // Valid tag indexes start at 1 to a very large number so
-                        // any zero or negative values are out.
-                        tag.PossibleEmbeddedMessage = false;
-                        tag.PossibleString = true;
-                        tag.StringValue = Encoding.UTF8.GetString(tag.Value.RawValue);
-                    }
-                    else
-                    {
-                        tag.PossibleEmbeddedMessage = true;
-                        tag.PossibleString = false;
-                    }
-                }
-                catch
-                {
-                    // Not an embedded protobuf message or it's malformed
-                    tag.PossibleEmbeddedMessage = false;
-                    tag.PossibleString = true;
-                    tag.StringValue = Encoding.UTF8.GetString(tag.Value.RawValue);
-                }
-            }
-            else
-            {
-                tag.PossibleEmbeddedMessage = false;
-                tag.PossibleString = true;
-                tag.StringValue = Encoding.UTF8.GetString(tag.Value.RawValue);
-            }
-
-            return tag;
-        }
-
-        public static bool IsProbableString(byte[] input)
-        {
-            var controlCharCount = input.Count(b => b <= 0x20 || b == 0x7f);
-            var alnumCharCount = input.Count(b => Char.IsLetterOrDigit((char)b));
-
-            var isProbableString = controlCharCount / (float)input.Length < 0.1;
-            
-            if (isProbableString)
-            {
-                isProbableString = alnumCharCount / (float)input.Length > 0.5;
-            }
-
-            return isProbableString;
-        }
-        
-        [Category("Tag value")]
-        [Browsable(true)]
-        [ReadOnly(true)]
-        [Description("The possible string value of this tag, null if it's not a string")]
-        [DisplayName("String value")]
-        public string StringValue { get; private set; }
-        
-        [Category("Tag value")]
-        [Browsable(true)]
-        [Description("Indicates whether the value is possibly a string")]
-        [ReadOnly(true)]
-        [DisplayName("Possibly string")]
-        public bool PossibleString { get; private set; }
-        
-        [Category("Tag value")]
-        [Browsable(true)]
-        [Description("Indicates whether the value is possibly an embedded message")]
-        [ReadOnly(true)]
-        [DisplayName("Possibly embedded message")]
-        public bool PossibleEmbeddedMessage { get; private set; }
-    }
-
-    /// <summary>
-    /// A Protobuf tag that is an embedded message
-    /// </summary>
-    /// <remarks>This type holds the tags of the embedded message</remarks>
-    public class ProtobufTagEmbeddedMessage : ProtobufTagSingle
-    {
-        public ProtobufTagEmbeddedMessage(ProtobufTagSingle tag, ProtobufTag[] tags)
-        {
-            Index = tag.Index;
-            StartOffset = tag.StartOffset;
-            DataOffset = tag.DataOffset;
-            DataLength = tag.DataLength;
-            EndOffset = tag.EndOffset;
-            Parent = tag.Parent;
-
-            // Ensure parent is set on all child tags of this tag
-            Tags = new ObservableCollection<ProtobufTag>(tags
-                .Select(t =>
-                {
-                    t.Parent = this;
-                    return t;
-                })
-                .ToList());
-        }
-
-        [Browsable(false)]
-        [Description("The tags of this embedded message")]
-        [ReadOnly(true)]
-        public ObservableCollection<ProtobufTag> Tags { get; }
     }
 }
