@@ -109,7 +109,7 @@ namespace ProtobufDecoder.Test.Unit
         }
 
         [Fact]
-        public void CloneConstructorWorks()
+        public void GivenSingleTagWithTypeLengthDelimited_AllPropertiesAreSetOnLengthDelimitedTag()
         {
             var singleTag = new ProtobufTagSingle();
             var random = new Random();
@@ -141,6 +141,43 @@ namespace ProtobufDecoder.Test.Unit
             lengthDelimitedTag
                 .Should()
                 .BeEquivalentTo(singleTag);
+        }
+
+        [Fact]
+        public void GivenSingleTagWithStringConten_AllPropertiesAreSetOnStringTag()
+        {
+            var singleTag = new ProtobufTagSingle();
+            var random = new Random();
+            var properties = singleTag
+                .GetType()
+                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(p => p.SetMethod != null)
+                .ToList();
+
+            foreach (var p in properties)
+            {
+                if (p.PropertyType == typeof(string))
+                {
+                    p.SetValue(singleTag, "str" + random.Next(1, 1000));
+                }
+                else if (p.PropertyType == typeof(int) || p.PropertyType == typeof(short) ||
+                         p.PropertyType == typeof(long))
+                {
+                    p.SetValue(singleTag, random.Next(-1000, -1));
+                }
+                else if (p.PropertyType == typeof(ProtobufValue))
+                {
+                    p.SetValue(singleTag, new LengthDelimitedValue(new byte[] { (byte)random.Next(1001, 2000) }));
+                }
+            }
+
+            var lengthDelimitedTag = ProtobufTagString.From(singleTag);
+
+            lengthDelimitedTag
+                .Should()
+                .BeEquivalentTo(
+                    singleTag,
+                    options => options.Excluding(_ => _.Value.CanDecode)); // Exclude CanDecode because we're changing to a StringValue which can't be further decoded
         }
     }
 }
