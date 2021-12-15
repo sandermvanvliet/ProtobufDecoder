@@ -47,7 +47,7 @@ namespace ProtobufDecoder.Application.Wpf.Test.Unit
 
             Convert(input)
                 .As<List<ProtobufTagPropertyDescriptor>>()
-                .Single(p => p.Name == nameof(ProtobufTagSingle.StartOffset))
+                .Single(p => p.Name == "Start offset") // Note: use the value from the DisplayName attribute
                 .Category
                 .Should()
                 .Be("Offsets");

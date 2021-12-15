@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using Google.Protobuf;
 
 namespace ProtobufDecoder.Tags
 {
@@ -18,6 +19,10 @@ namespace ProtobufDecoder.Tags
             DataLength = tag.DataLength;
             EndOffset = tag.EndOffset;
             Parent = tag.Parent;
+
+            // Wire type for embedded messages is length-delimited,
+            // see https://developers.google.com/protocol-buffers/docs/encoding#structure
+            WireType = WireFormat.WireType.LengthDelimited;
 
             // Ensure parent is set on all child tags of this tag
             Tags = new ObservableCollection<ProtobufTag>(tags

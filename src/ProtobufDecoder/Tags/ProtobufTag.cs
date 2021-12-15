@@ -60,7 +60,7 @@ namespace ProtobufDecoder.Tags
         [Browsable(true)]
         [Description("Indicates whether this tag is optional (value is true) or required (value is false)")]
         [ReadOnly(true)]
-        [DisplayName("Is optional")]
+        [DisplayName("Optional")]
         public bool IsOptional
         {
             get => _isOptional;
