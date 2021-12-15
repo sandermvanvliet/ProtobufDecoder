@@ -1,4 +1,3 @@
-using System.Text;
 using ProtobufDecoder.Values;
 
 namespace ProtobufDecoder.Tags
@@ -22,7 +21,7 @@ namespace ProtobufDecoder.Tags
                 Name = source.Name,
                 Parent = source.Parent,
                 StartOffset = source.StartOffset,
-                Value = new StringValue(Encoding.UTF8.GetString(source.Value.RawValue)),
+                Value = new StringValue(source.Value.RawValue),
                 WireType = source.WireType,
             };
         }
