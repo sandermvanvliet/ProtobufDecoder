@@ -183,7 +183,10 @@ namespace ProtobufDecoder
                                 return ProtobufTagPackedFloat.From(singleTag);
                             }
 
-                            return ProtobufTagPackedVarint.From(singleTag);
+                            if (isProbablePackedVarint)
+                            {
+                                return ProtobufTagPackedVarint.From(singleTag);
+                            }
                         }
 
                         return ProtobufTagString.From(singleTag);
@@ -276,6 +279,11 @@ namespace ProtobufDecoder
                 }
 
                 length++;
+
+                if (length >= input.Length)
+                {
+                    throw new InvalidOperationException($"Did not find enough bytes to parse Varint");
+                }
             }
 
             length += 1;
