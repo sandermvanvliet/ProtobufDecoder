@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Google.Protobuf;
@@ -27,10 +28,27 @@ namespace ProtobufDecoder.Tags
             }
             catch
             {
+                // ignored
+            }
+
+            return false;
+        }
+
+        public static bool IsProbablePackedFloat(byte[] input)
+        {
+            if (input.Length < 4)
+            {
                 return false;
             }
 
-            return true;
+            // Multiples of 4 bytes
+            return input.Length > 4 && input.Length % 4 == 0;
+        }
+
+        public static bool IsProbablePackedDouble(byte[] input)
+        {
+            // Multiples of 8 bytes
+            return input.Length > 8 && input.Length % 8 == 0;
         }
     }
 
@@ -39,7 +57,7 @@ namespace ProtobufDecoder.Tags
     /// </summary>
     public class ProtobufTagPackedVarint : ProtobufTagPacked
     {
-        public static ProtobufTagPackedVarint PackedVarIntFrom(ProtobufTagSingle source)
+        public static ProtobufTagPackedVarint From(ProtobufTagSingle source)
         {
             // This clones the values from the original tag.
             return new ProtobufTagPackedVarint
@@ -76,5 +94,44 @@ namespace ProtobufDecoder.Tags
 
         [Browsable(false)]
         public VarintValue[] Values { get; set; }
+    }
+
+    public class ProtobufTagPackedFloat : ProtobufTagPacked
+    {
+        public static ProtobufTagPackedFloat From(ProtobufTagSingle source)
+        {
+            // This clones the values from the original tag.
+            return new ProtobufTagPackedFloat
+            {
+                IsOptional = source.IsOptional,
+                Index = source.Index,
+                Name = source.Name,
+                Parent = source.Parent,
+                WireType = WireFormat.WireType.Varint,
+                Values = ExplodeVarInts(source.Value.RawValue),
+                DataLength = source.DataLength,
+                DataOffset = source.DataOffset,
+                StartOffset = source.StartOffset,
+                EndOffset = source.EndOffset
+            };
+        }
+
+        private static Fixed32Value[] ExplodeVarInts(ReadOnlySpan<byte> input)
+        {
+            var list = new List<Fixed32Value>();
+            var index = 0;
+
+            while (index < input.Length)
+            {
+                list.Add(new Fixed32Value(input.Slice(index, 4).ToArray()));
+
+                index += 4;
+            }
+
+            return list.ToArray();
+        }
+
+        [Browsable(false)]
+        public Fixed32Value[] Values { get; set; }
     }
 }

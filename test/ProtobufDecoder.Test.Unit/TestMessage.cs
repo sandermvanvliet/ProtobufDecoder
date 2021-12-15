@@ -23,13 +23,13 @@ namespace ProtobufDecoder.Test.Unit {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "ChFUZXN0TWVzc2FnZS5wcm90bxIZUHJvdG9idWZEZWNvZGVyX1Rlc3RfVW5p",
-            "dCI8CgtUZXN0TWVzc2FnZRIVCg1yZXBlYXRlZEludDMyGAEgAygFEhYKDnJl",
-            "cGVhdGVkU3RyaW5nGAIgAygJQhyqAhlQcm90b2J1ZkRlY29kZXIuVGVzdC5V",
-            "bml0YgZwcm90bzM="));
+            "dCJTCgtUZXN0TWVzc2FnZRIVCg1yZXBlYXRlZEludDMyGAEgAygFEhYKDnJl",
+            "cGVhdGVkU3RyaW5nGAIgAygJEhUKDXJlcGVhdGVkRmxvYXQYAyADKAJCHKoC",
+            "GVByb3RvYnVmRGVjb2Rlci5UZXN0LlVuaXRiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::ProtobufDecoder.Test.Unit.TestMessage), global::ProtobufDecoder.Test.Unit.TestMessage.Parser, new[]{ "RepeatedInt32", "RepeatedString" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::ProtobufDecoder.Test.Unit.TestMessage), global::ProtobufDecoder.Test.Unit.TestMessage.Parser, new[]{ "RepeatedInt32", "RepeatedString", "RepeatedFloat" }, null, null, null)
           }));
     }
     #endregion
@@ -62,6 +62,7 @@ namespace ProtobufDecoder.Test.Unit {
     public TestMessage(TestMessage other) : this() {
       repeatedInt32_ = other.repeatedInt32_.Clone();
       repeatedString_ = other.repeatedString_.Clone();
+      repeatedFloat_ = other.repeatedFloat_.Clone();
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -89,6 +90,16 @@ namespace ProtobufDecoder.Test.Unit {
       get { return repeatedString_; }
     }
 
+    /// <summary>Field number for the "repeatedFloat" field.</summary>
+    public const int RepeatedFloatFieldNumber = 3;
+    private static readonly pb::FieldCodec<float> _repeated_repeatedFloat_codec
+        = pb::FieldCodec.ForFloat(26);
+    private readonly pbc::RepeatedField<float> repeatedFloat_ = new pbc::RepeatedField<float>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<float> RepeatedFloat {
+      get { return repeatedFloat_; }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as TestMessage);
@@ -104,6 +115,7 @@ namespace ProtobufDecoder.Test.Unit {
       }
       if(!repeatedInt32_.Equals(other.repeatedInt32_)) return false;
       if(!repeatedString_.Equals(other.repeatedString_)) return false;
+      if(!repeatedFloat_.Equals(other.repeatedFloat_)) return false;
       return true;
     }
 
@@ -112,6 +124,7 @@ namespace ProtobufDecoder.Test.Unit {
       int hash = 1;
       hash ^= repeatedInt32_.GetHashCode();
       hash ^= repeatedString_.GetHashCode();
+      hash ^= repeatedFloat_.GetHashCode();
       return hash;
     }
 
@@ -124,6 +137,7 @@ namespace ProtobufDecoder.Test.Unit {
     public void WriteTo(pb::CodedOutputStream output) {
       repeatedInt32_.WriteTo(output, _repeated_repeatedInt32_codec);
       repeatedString_.WriteTo(output, _repeated_repeatedString_codec);
+      repeatedFloat_.WriteTo(output, _repeated_repeatedFloat_codec);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -131,6 +145,7 @@ namespace ProtobufDecoder.Test.Unit {
       int size = 0;
       size += repeatedInt32_.CalculateSize(_repeated_repeatedInt32_codec);
       size += repeatedString_.CalculateSize(_repeated_repeatedString_codec);
+      size += repeatedFloat_.CalculateSize(_repeated_repeatedFloat_codec);
       return size;
     }
 
@@ -141,6 +156,7 @@ namespace ProtobufDecoder.Test.Unit {
       }
       repeatedInt32_.Add(other.repeatedInt32_);
       repeatedString_.Add(other.repeatedString_);
+      repeatedFloat_.Add(other.repeatedFloat_);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -158,6 +174,11 @@ namespace ProtobufDecoder.Test.Unit {
           }
           case 18: {
             repeatedString_.AddEntriesFrom(input, _repeated_repeatedString_codec);
+            break;
+          }
+          case 26:
+          case 29: {
+            repeatedFloat_.AddEntriesFrom(input, _repeated_repeatedFloat_codec);
             break;
           }
         }

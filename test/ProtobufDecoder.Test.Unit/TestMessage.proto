@@ -6,4 +6,5 @@ message TestMessage
 {
 	repeated int32 repeatedInt32 = 1;
 	repeated string repeatedString = 2;
+	repeated float repeatedFloat = 3;
 }

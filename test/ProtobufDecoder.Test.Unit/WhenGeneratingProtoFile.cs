@@ -190,6 +190,33 @@ namespace ProtobufDecoder.Test.Unit
         }
 
         [Fact]
+        public void GivenMessageWithPackedFloat()
+        {
+            var message = new ProtobufMessage
+            {
+                Name = "TestMessage",
+                Tags =
+                {
+                    new ProtobufTagPackedFloat
+                    {
+                        Index = 1,
+                        WireType = WireFormat.WireType.Fixed32
+                    }
+                }
+            };
+
+            var proto = ProtobufWriter.ToString(message);
+
+            proto
+                .Should()
+                .Be(@"message TestMessage
+{
+    repeated float tag1 = 1 [packed=true];
+}
+");
+        }
+
+        [Fact]
         public void GivenMessageWithSingleEmbeddedMessage()
         {
             var message = new ProtobufMessage

@@ -172,17 +172,21 @@ namespace ProtobufDecoder
                     if (t is ProtobufTagSingle singleTag && singleTag.WireType == WireFormat.WireType.LengthDelimited)
                     {
                         var isProbableString = ProtobufTagLengthDelimited.IsProbableString(singleTag.Value.RawValue);
-                        if (ProtobufTagPacked.IsProbablePackedVarint(singleTag.Value.RawValue) && !isProbableString)
+
+                        if (!isProbableString)
                         {
-                            return ProtobufTagPackedVarint.PackedVarIntFrom(singleTag);
-                        }
-                        
-                        if (isProbableString)
-                        {
-                            return ProtobufTagString.From(singleTag);
+                            var isProbablePackedFloat = ProtobufTagPacked.IsProbablePackedFloat(singleTag.Value.RawValue);
+                            var isProbablePackedVarint = ProtobufTagPacked.IsProbablePackedVarint(singleTag.Value.RawValue);
+                            
+                            if (isProbablePackedFloat)
+                            {
+                                return ProtobufTagPackedFloat.From(singleTag);
+                            }
+
+                            return ProtobufTagPackedVarint.From(singleTag);
                         }
 
-                        return ProtobufTagLengthDelimited.From(singleTag);
+                        return ProtobufTagString.From(singleTag);
                     }
 
                     return t;

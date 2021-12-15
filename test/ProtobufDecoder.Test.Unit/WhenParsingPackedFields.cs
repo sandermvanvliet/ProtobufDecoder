@@ -122,8 +122,7 @@ namespace ProtobufDecoder.Test.Unit
         {
             var testMessage = new TestMessage
             {
-                RepeatedInt32 = { 1, 2, 3, 4 },
-                //RepeatedString = { "a", "b", "cd", "efg" }
+                RepeatedInt32 = { 1, 2, 3, 4 }
             };
 
             var bytes = testMessage.ToByteArray();
@@ -165,6 +164,50 @@ namespace ProtobufDecoder.Test.Unit
         }
 
         [Fact]
+        public void UsingProtobufSerializedMessage_ThirdTagIsPackedFloat()
+        {
+            var testMessage = new TestMessage
+            {
+                RepeatedFloat = { (float)1, (float)2, (float)3.3 }
+            };
+
+            var bytes = testMessage.ToByteArray();
+            var message = ProtobufParser.Parse(bytes);
+
+            message
+                .Tags
+                .Single(t => t.Index == 3)
+                .Should()
+                .BeOfType<ProtobufTagPackedFloat>()
+                .Which
+                .Values
+                .Should()
+                .HaveCount(3);
+        }
+
+        [Fact]
+        public void UsingProtobufSerializedMessageWithSinglePackedFloat_ThirdTagIsPackedVarintBecauseWeCantTell()
+        {
+            var testMessage = new TestMessage
+            {
+                RepeatedFloat = { (float)1 }
+            };
+
+            var bytes = testMessage.ToByteArray();
+            var message = ProtobufParser.Parse(bytes);
+
+            message
+                .Tags
+                .Single(t => t.Index == 3)
+                .Should()
+                .BeOfType<ProtobufTagPackedVarint>()
+                .Which
+                .Values
+                .Should()
+                .HaveCount(3); // The four bytes result in 3 varints
+        }
+
+        [Fact]
         public void GivenSingleTagWithPackedVarints_AllPropertiesAreSetOnPackedTag()
         {
             var singleTag = new ProtobufTagSingle();
@@ -192,7 +235,7 @@ namespace ProtobufDecoder.Test.Unit
                 }
             }
 
-            var packedTag = ProtobufTagPackedVarint.PackedVarIntFrom(singleTag);
+            var packedTag = ProtobufTagPackedVarint.From(singleTag);
 
             packedTag
                 .Should()
