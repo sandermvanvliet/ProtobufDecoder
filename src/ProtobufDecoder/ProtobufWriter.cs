@@ -66,6 +66,12 @@ namespace ProtobufDecoder
 
                     RenderEmbeddedMessage(t, builder, tag, "    ", true);
                 }
+                else if (tag is ProtobufTagPacked packedTag)
+                {
+                    var name = string.IsNullOrEmpty(tag.Name) ? "tag" + tag.Index : tag.Name;
+
+                    builder.AppendLine($"    repeated {FormatWireTypeForProto(tag)} {name} = {tag.Index} [packed=true];");
+                }
                 else
                 {
                     var name = string.IsNullOrEmpty(tag.Name) ? "tag" + tag.Index : tag.Name;

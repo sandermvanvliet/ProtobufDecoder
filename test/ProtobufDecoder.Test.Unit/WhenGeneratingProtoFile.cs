@@ -2,6 +2,7 @@
 using FluentAssertions;
 using Google.Protobuf;
 using ProtobufDecoder.Tags;
+using ProtobufDecoder.Values;
 using Xunit;
 
 namespace ProtobufDecoder.Test.Unit
@@ -157,6 +158,33 @@ namespace ProtobufDecoder.Test.Unit
                 .Be(@"message TestMessage
 {
     repeated double tag1 = 1;
+}
+");
+        }
+
+        [Fact]
+        public void GivenMessageWithPackedVarint()
+        {
+            var message = new ProtobufMessage
+            {
+                Name = "TestMessage",
+                Tags =
+                {
+                    new ProtobufTagPackedVarint()
+                    {
+                        Index = 1,
+                        WireType = WireFormat.WireType.Varint
+                    }
+                }
+            };
+
+            var proto = ProtobufWriter.ToString(message);
+
+            proto
+                .Should()
+                .Be(@"message TestMessage
+{
+    repeated uint32 tag1 = 1 [packed=true];
 }
 ");
         }

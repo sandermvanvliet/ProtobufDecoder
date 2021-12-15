@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Reflection;
 using FluentAssertions;
 using Google.Protobuf;
 using ProtobufDecoder.Tags;
@@ -31,7 +33,7 @@ namespace ProtobufDecoder.Test.Unit
         }
 
         [Fact]
-        public void SinglePackedVarint_WireTypeIsLengthDelimited()
+        public void SinglePackedVarint_WireTypeIsVarint()
         {
             var input = new byte[] { 0x0a, 0x06, 0x03, 0x8e, 0x02, 0x9e, 0xa7, 0x05 };
 
@@ -40,11 +42,11 @@ namespace ProtobufDecoder.Test.Unit
             message
                 .Tags
                 .Should()
-                .OnlyContain(t => t.WireType == WireFormat.WireType.LengthDelimited);
+                .OnlyContain(t => t.WireType == WireFormat.WireType.Varint);
         }
 
         [Fact]
-        public void SinglePackedVarint_ValueIsOfTypeLengthDelimited()
+        public void SinglePackedVarint_TagIsOtTypePackedProtobufTag()
         {
             var input = new byte[] { 0x0a, 0x06, 0x03, 0x8e, 0x02, 0x9e, 0xa7, 0x05 };
 
@@ -52,13 +54,12 @@ namespace ProtobufDecoder.Test.Unit
 
             message
                 .Tags
-                .OfType<ProtobufTagSingle>()
                 .Should()
-                .OnlyContain(t => t.Value is LengthDelimitedValue);
+                .OnlyContain(t => t is ProtobufTagPackedVarint);
         }
 
         [Fact]
-        public void SinglePackedVarint_ValueIsOfTypeLengthDelimitedWithValue()
+        public void SinglePackedVarint_PackedTagHasThreeValues()
         {
             var input = new byte[] { 0x0a, 0x06, 0x03, 0x8e, 0x02, 0x9e, 0xa7, 0x05 };
 
@@ -66,13 +67,35 @@ namespace ProtobufDecoder.Test.Unit
 
             message
                 .Tags
-                .OfType<ProtobufTagSingle>()
+                .OfType<ProtobufTagPackedVarint>()
                 .Single()
-                .Value
-                .As<LengthDelimitedValue>()
-                .Value
+                .Values
                 .Should()
-                .BeEquivalentTo(new[] { 0x03, 0x8e, 0x02, 0x9e, 0xa7, 0x05 });
+                .HaveCount(3);
+        }
+
+        [Fact]
+        public void SinglePackedVarint_PackedTagLengthIsTotalLength()
+        {
+            var input = new byte[] { 0x0a, 0x06, 0x03, 0x8e, 0x02, 0x9e, 0xa7, 0x05 };
+
+            var message = ProtobufParser.Parse(input);
+
+            var tag = message.Tags.Single() as ProtobufTagPackedVarint;
+
+            tag.Length.Should().Be(8);
+        }
+
+        [Fact]
+        public void SinglePackedVarint_PackedTagDataLengthIsSix()
+        {
+            var input = new byte[] { 0x0a, 0x06, 0x03, 0x8e, 0x02, 0x9e, 0xa7, 0x05 };
+
+            var message = ProtobufParser.Parse(input);
+
+            var tag = message.Tags.Single() as ProtobufTagPackedVarint;
+
+            tag.DataLength.Should().Be(6);
         }
 
         [Fact]
@@ -95,6 +118,30 @@ namespace ProtobufDecoder.Test.Unit
         }
 
         [Fact]
+        public void UsingProtobufSerializedMessage_FirstTagIsRepeatedVarInt()
+        {
+            var testMessage = new TestMessage
+            {
+                RepeatedInt32 = { 1, 2, 3, 4 },
+                //RepeatedString = { "a", "b", "cd", "efg" }
+            };
+
+            var bytes = testMessage.ToByteArray();
+
+            var message = ProtobufParser.Parse(bytes);
+
+            message
+                .Tags
+                .Single(t => t.Index == 1)
+                .Should()
+                .BeOfType<ProtobufTagPackedVarint>()
+                .Which
+                .Values
+                .Should()
+                .HaveCount(4);
+        }
+
+        [Fact]
         public void UsingProtobufSerializedMessage_SecondTagIsRepeatedString()
         {
             var testMessage = new TestMessage
@@ -112,7 +159,46 @@ namespace ProtobufDecoder.Test.Unit
                 .As<ProtobufTagRepeated>()
                 .Items
                 .Should()
-                .AllBeOfType<ProtobufTagString>();
+                .AllBeOfType<ProtobufTagString>()
+                .And
+                .HaveCount(4);
+        }
+
+        [Fact]
+        public void GivenSingleTagWithPackedVarints_AllPropertiesAreSetOnPackedTag()
+        {
+            var singleTag = new ProtobufTagSingle();
+            var random = new Random();
+            var properties = singleTag
+                .GetType()
+                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(p => p.SetMethod != null)
+                .ToList();
+
+            foreach (var p in properties)
+            {
+                if (p.PropertyType == typeof(string))
+                {
+                    p.SetValue(singleTag, "str" + random.Next(1, 1000));
+                }
+                else if (p.PropertyType == typeof(int) || p.PropertyType == typeof(short) ||
+                         p.PropertyType == typeof(long))
+                {
+                    p.SetValue(singleTag, random.Next(-1000, -1));
+                }
+                else if (p.PropertyType == typeof(ProtobufValue))
+                {
+                    p.SetValue(singleTag, new LengthDelimitedValue(new byte[] { 116 })); // This value needs to be fixed because it needs to be a valid Varint
+                }
+            }
+
+            var packedTag = ProtobufTagPackedVarint.PackedVarIntFrom(singleTag);
+
+            packedTag
+                .Should()
+                .BeEquivalentTo(
+                    singleTag,
+                    options => options.Excluding(_ => _.Value)); // Exclude CanDecode because we're changing to a StringValue which can't be further decoded
         }
     }
 }

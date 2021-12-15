@@ -39,7 +39,7 @@ namespace ProtobufDecoder.Test.Unit
         }
 
         [Fact]
-        public void SingleString_TagClassTypeIsProtobufTagLengthDelimited()
+        public void SingleString_TagClassTypeIsProtobufTagString()
         {
             var input = new byte[] { 0x0a, 0x07, 0x74, 0x65, 0x73, 0x74, 0x69, 0x6e, 0x67 };
 
@@ -48,11 +48,11 @@ namespace ProtobufDecoder.Test.Unit
             message
                 .Tags
                 .Should()
-                .OnlyContain(t => t is ProtobufTagLengthDelimited);
+                .OnlyContain(t => t is ProtobufTagString);
         }
 
         [Fact]
-        public void SingleString_ValueIsOfTypeLengthDelimited()
+        public void SingleString_ValueIsOfTypeStringValue()
         {
             var input = new byte[] { 0x0a, 0x07, 0x74, 0x65, 0x73, 0x74, 0x69, 0x6e, 0x67 };
 
@@ -60,13 +60,13 @@ namespace ProtobufDecoder.Test.Unit
 
             message
                 .Tags
-                .OfType<ProtobufTagSingle>()
+                .OfType<ProtobufTagString>()
                 .Should()
-                .OnlyContain(t => t.Value is LengthDelimitedValue);
+                .OnlyContain(t => t.Value is StringValue);
         }
 
         [Fact]
-        public void SingleString_ValueIsOfTypeLengthDelimitedWithValueTesting()
+        public void SingleString_ValueIsTesting()
         {
             var input = new byte[] { 0x0a, 0x07, 0x74, 0x65, 0x73, 0x74, 0x69, 0x6e, 0x67 };
 
@@ -74,9 +74,13 @@ namespace ProtobufDecoder.Test.Unit
 
             message
                 .Tags
-                .OfType<ProtobufTagSingle>()
+                .OfType<ProtobufTagString>()
+                .Single()
+                .Value
+                .As<StringValue>()
+                .Value
                 .Should()
-                .OnlyContain(t => ((LengthDelimitedValue)t.Value).StringRepresentation == "testing");
+                .Be("testing");
         }
 
         [Fact]
@@ -105,7 +109,7 @@ namespace ProtobufDecoder.Test.Unit
                 .Tags
                 .OfType<ProtobufTagSingle>()
                 .Should()
-                .Contain(t => t.Index == 2 && t.WireType == WireFormat.WireType.LengthDelimited && ((LengthDelimitedValue)t.Value).StringRepresentation == "testing");
+                .Contain(t => t.Index == 2 && t.WireType == WireFormat.WireType.LengthDelimited && ((StringValue)t.Value).Value == "testing");
         }
 
         [Fact]

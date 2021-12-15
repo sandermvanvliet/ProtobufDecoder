@@ -146,9 +146,14 @@ namespace ProtobufDecoder
                             {
                                 if (t is { WireType: WireFormat.WireType.LengthDelimited } singleTag)
                                 {
-                                    t = ProtobufTagLengthDelimited.IsProbableString(t.Value.RawValue) 
-                                        ? ProtobufTagString.From(singleTag) 
-                                        : ProtobufTagLengthDelimited.From(singleTag);
+                                    if (ProtobufTagLengthDelimited.IsProbableString(t.Value.RawValue))
+                                    {
+                                        t = ProtobufTagString.From(singleTag);
+                                    }
+                                    else
+                                    {
+                                        t = ProtobufTagLengthDelimited.From(singleTag);
+                                    }
                                 }
 
                                 t.Parent = protobufTagRepeated;
@@ -166,6 +171,17 @@ namespace ProtobufDecoder
                 {
                     if (t is ProtobufTagSingle singleTag && singleTag.WireType == WireFormat.WireType.LengthDelimited)
                     {
+                        var isProbableString = ProtobufTagLengthDelimited.IsProbableString(singleTag.Value.RawValue);
+                        if (ProtobufTagPacked.IsProbablePackedVarint(singleTag.Value.RawValue) && !isProbableString)
+                        {
+                            return ProtobufTagPackedVarint.PackedVarIntFrom(singleTag);
+                        }
+                        
+                        if (isProbableString)
+                        {
+                            return ProtobufTagString.From(singleTag);
+                        }
+
                         return ProtobufTagLengthDelimited.From(singleTag);
                     }
 
@@ -235,7 +251,7 @@ namespace ProtobufDecoder
             };
         }
 
-        private static ParseResult<VarintValue> ParseVarint(ReadOnlySpan<byte> input, int index)
+        public static ParseResult<VarintValue> ParseVarint(ReadOnlySpan<byte> input, int index)
         {
             var length = 0;
 
