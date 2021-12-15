@@ -162,7 +162,7 @@
                         BorderThickness="0.5"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
-                        Margin="0,4,0,0"
+                        Margin="0"
                         Grid.Row="2">
                     <TextBox x:Name="GeneratedProtoTextBlock"
                              Text="{Binding Model.Message, Converter={StaticResource GeneratedProtoConverter}}"
@@ -183,7 +183,7 @@
                           VerticalAlignment="Stretch"
                           Grid.Row="0"
                           BorderThickness="1,1,1,0"
-                              BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
+                          BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="{x:Type ListViewItem}">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -192,7 +192,7 @@
                     <ListView.View>
                         <GridView>
                             <GridView.Columns>
-                                <GridViewColumn Header="{x:Static s:Strings.TagPropertiesName}" Width="80"
+                                <GridViewColumn Header="{x:Static s:Strings.TagPropertiesName}" Width="90"
                                                 DisplayMemberBinding="{Binding Path=Name}" />
                                 <GridViewColumn Header="{x:Static s:Strings.TagPropertiesValue}">
                                     <GridViewColumn.CellTemplateSelector>
@@ -242,7 +242,7 @@
                               VerticalAlignment="Center"
                               Height="4"
                               BorderThickness="1,0,1,0"
-                              BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"/>
+                              BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" />
                 <Border Grid.Row="2"
                         BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"
                         BorderThickness="1,0,1,1"
@@ -255,7 +255,8 @@
                                 Margin="4,0,0,0"
                                 DataContext="{Binding ElementName=TagPropertiesListBox, Path=SelectedItem}">
                         <TextBlock Text="{Binding Path=Name}" FontWeight="Bold" />
-                        <TextBlock Text="{Binding Path=Description}" TextWrapping="Wrap" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
+                        <TextBlock Text="{Binding Path=Description}" TextWrapping="Wrap" VerticalAlignment="Stretch"
+                                   HorizontalAlignment="Stretch" />
                     </StackPanel>
                 </Border>
             </Grid>
