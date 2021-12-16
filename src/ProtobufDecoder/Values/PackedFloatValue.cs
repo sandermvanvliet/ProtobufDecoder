@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 
 namespace ProtobufDecoder.Values
 {
@@ -27,11 +25,6 @@ namespace ProtobufDecoder.Values
             }
 
             return list.ToArray();
-        }
-
-        public override string ToString()
-        {
-            return string.Join(", ", Value.Select(v => v.ToString(CultureInfo.InvariantCulture)));
         }
     }
 }
