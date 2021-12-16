@@ -48,7 +48,7 @@
         </CollectionViewSource>
         <Style TargetType="TextBox" x:Key="GridViewTextBoxStyle">
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Path=IsReadOnly}" Value="True">
+                <DataTrigger Binding="{Binding Path=IsReadOnly}" Value="True" d:DataContext="{d:DesignInstance s:ProtobufTagPropertyDescriptor}">
                     <DataTrigger.Setters>
                         <Setter Property="BorderThickness" Value="0" />
                     </DataTrigger.Setters>
@@ -58,12 +58,12 @@
         </Style>
         <Style TargetType="CheckBox" x:Key="GridViewCheckBoxStyle">
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Path=IsReadOnly}" Value="True">
+                <DataTrigger Binding="{Binding Path=IsReadOnly}" Value="True" d:DataContext="{d:DesignInstance s:ProtobufTagPropertyDescriptor}">
                     <DataTrigger.Setters>
                         <Setter Property="IsEnabled" Value="False" />
                     </DataTrigger.Setters>
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Path=IsReadOnly}" Value="False">
+                <DataTrigger Binding="{Binding Path=IsReadOnly}" Value="False" d:DataContext="{d:DesignInstance s:ProtobufTagPropertyDescriptor}">
                     <DataTrigger.Setters>
                         <Setter Property="IsEnabled" Value="True" />
                     </DataTrigger.Setters>
@@ -223,7 +223,7 @@
                                                              Margin="0,0,4,0"
                                                              HorizontalAlignment="Left"
                                                              Width="140"
-                                                             HorizontalContentAlignment="Right"/>
+                                                             HorizontalContentAlignment="Right" />
                                                 </DataTemplate>
                                             </s:PropertyGridViewTemplateSelector.PackedFloat>
 
@@ -247,7 +247,8 @@
 
                                             <s:PropertyGridViewTemplateSelector.Varint>
                                                 <DataTemplate DataType="s:ProtobufTagPropertyDescriptor">
-                                                    <Grid>
+                                                    <Grid DataContext="{Binding Path=Value}"
+                                                          d:DataContext="{d:DesignInstance values:VarintValue}">
                                                         <Grid.Resources>
                                                             <Style TargetType="TextBlock">
                                                                 <Setter Property="Margin" Value="0,0,0,2"/>
@@ -268,25 +269,25 @@
                                                         </Grid.ColumnDefinitions>
                                                         
                                                         <TextBlock Grid.Column="0" Grid.Row="0" Text="Bool" FontWeight="Bold" />
-                                                        <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Path=Value.Bool, Mode=OneWay}" HorizontalAlignment="Stretch" />
+                                                        <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Path=Bool, Mode=OneWay}" HorizontalAlignment="Stretch" />
                                                         
                                                         <TextBlock Grid.Column="0" Grid.Row="1" Text="UInt16" FontWeight="Bold" />
-                                                        <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Path=Value.UInt16, Mode=OneWay}" HorizontalAlignment="Stretch" />
+                                                        <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Path=UInt16, Mode=OneWay}" HorizontalAlignment="Stretch" />
                                                         
                                                         <TextBlock Grid.Column="0" Grid.Row="2" Text="UInt32" FontWeight="Bold" />
-                                                        <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding Path=Value.UInt32, Mode=OneWay}" HorizontalAlignment="Stretch" />
+                                                        <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding Path=UInt32, Mode=OneWay}" HorizontalAlignment="Stretch" />
                                                         
                                                         <TextBlock Grid.Column="0" Grid.Row="3" Text="UInt64" FontWeight="Bold" />
-                                                        <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Path=Value.UInt64, Mode=OneWay}" HorizontalAlignment="Stretch" />
+                                                        <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Path=UInt64, Mode=OneWay}" HorizontalAlignment="Stretch" />
 
                                                         <TextBlock Grid.Column="0" Grid.Row="4" Text="Int16" FontWeight="Bold" />
-                                                        <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding Path=Value.Int16, Mode=OneWay}" HorizontalAlignment="Stretch" />
+                                                        <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding Path=Int16, Mode=OneWay}" HorizontalAlignment="Stretch" />
                                                         
                                                         <TextBlock Grid.Column="0" Grid.Row="5" Text="Int32" FontWeight="Bold" />
-                                                        <TextBlock Grid.Column="1" Grid.Row="5" Text="{Binding Path=Value.Int32, Mode=OneWay}" HorizontalAlignment="Stretch" />
+                                                        <TextBlock Grid.Column="1" Grid.Row="5" Text="{Binding Path=Int32, Mode=OneWay}" HorizontalAlignment="Stretch" />
 
                                                         <TextBlock Grid.Column="0" Grid.Row="6" Text="Int64" FontWeight="Bold" />
-                                                        <TextBlock Grid.Column="1" Grid.Row="6" Text="{Binding Path=Value.Int64, Mode=OneWay}" HorizontalAlignment="Stretch" />
+                                                        <TextBlock Grid.Column="1" Grid.Row="6" Text="{Binding Path=Int64, Mode=OneWay}" HorizontalAlignment="Stretch" />
                                                     </Grid>
                                                 </DataTemplate>
                                             </s:PropertyGridViewTemplateSelector.Varint>
@@ -330,7 +331,8 @@
                     <StackPanel Orientation="Vertical"
                                 HorizontalAlignment="Stretch"
                                 Margin="4,0,0,0"
-                                DataContext="{Binding ElementName=TagPropertiesListBox, Path=SelectedItem}">
+                                DataContext="{Binding ElementName=TagPropertiesListBox, Path=SelectedItem}"
+                                d:DataContext="{d:DesignInstance s:ProtobufTagPropertyDescriptor}">
                         <TextBlock Text="{Binding Path=Name}" FontWeight="Bold" />
                         <TextBlock Text="{Binding Path=Description}" TextWrapping="Wrap" VerticalAlignment="Stretch"
                                    HorizontalAlignment="Stretch" />
