@@ -1,3 +1,5 @@
+using Google.Protobuf;
+
 namespace ProtobufDecoder.Tags
 {
     public abstract class ProtobufTagPacked : ProtobufTagSingle
@@ -17,7 +19,7 @@ namespace ProtobufDecoder.Tags
 
                 if (index == input.Length)
                 {
-                    return true;
+                    return !StartsWithATag(input);
                 }
             }
             catch
@@ -36,13 +38,19 @@ namespace ProtobufDecoder.Tags
             }
 
             // Multiples of 4 bytes
-            return input.Length > 4 && input.Length % 4 == 0;
+            return input.Length > 4 && input.Length % 4 == 0 && !StartsWithATag(input);
         }
 
         public static bool IsProbablePackedDouble(byte[] input)
         {
             // Multiples of 8 bytes
-            return input.Length > 8 && input.Length % 8 == 0;
+            return input.Length > 8 && input.Length % 8 == 0 && !StartsWithATag(input);
+        }
+
+        private static bool StartsWithATag(byte[] input)
+        {
+            return WireFormat.GetTagFieldNumber(input[0]) > 0 &&
+                   (int)WireFormat.GetTagWireType(input[0]) is >= 0 and <= 5;
         }
     }
 }
