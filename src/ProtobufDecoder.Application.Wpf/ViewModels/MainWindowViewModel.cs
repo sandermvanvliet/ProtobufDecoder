@@ -39,7 +39,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
             DecodeTagCommand = new RelayCommand(
                 _ => DecodeTag((_ as TreeView)?.SelectedItem as ProtobufTag),
-                _ => (_ as TreeView)?.SelectedItem != null);
+                _ => (_ as TreeView)?.SelectedItem is ProtobufTagSingle singleTag && (singleTag.Value?.CanDecode ?? false));
         }
 
         public ICommand LoadFileCommand { get; }
