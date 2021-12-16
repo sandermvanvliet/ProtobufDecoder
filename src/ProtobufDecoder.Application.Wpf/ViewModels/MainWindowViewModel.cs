@@ -174,8 +174,16 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             {
                 if (singleTag.Value.CanDecode)
                 {
-                    Model.DecodeTag(selectedTag);
-                    Model.StatusBarInfo(Strings.TagDecodedSuccessfully);
+                    var parseResult = Model.DecodeTag(selectedTag);
+                    if (parseResult.Success)
+                    {
+                        Model.StatusBarInfo(Strings.TagDecodedSuccessfully);
+                    }
+                    else
+                    {
+                        Model.StatusBarError(Strings.FailedToDecodeTag, parseResult.FailureReason);
+                    }
+
                     return;
                 }
             }

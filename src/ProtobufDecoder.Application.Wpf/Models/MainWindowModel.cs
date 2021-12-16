@@ -138,15 +138,17 @@ namespace ProtobufDecoder.Application.Wpf.Models
             StatusBarForeground = Brushes.White;
         }
 
-        public void DecodeTag(ProtobufTag tag)
+        public MessageParseResult DecodeTag(ProtobufTag tag)
         {
+            var parseResult = MessageParseResult.Failed("Can only decode a single tag");
+
             if (tag is ProtobufTagSingle singleTag)
             {
                 if(singleTag.Value.CanDecode)
                 {
                     try
                     {
-                        var parseResult = ProtobufParser.Parse(singleTag.Value.RawValue);
+                        parseResult = ProtobufParser.Parse(singleTag.Value.RawValue);
 
                         if (parseResult.Success)
                         {
@@ -172,17 +174,19 @@ namespace ProtobufDecoder.Application.Wpf.Models
                                 OnPropertyChanged(nameof(Message));
                             }
                         }
-                        else
-                        {
-                            throw new Exception(parseResult.FailureReason);
-                        }
                     }
                     catch (Exception exception)
                     {
-                        Debug.WriteLine(exception);
+                        parseResult = MessageParseResult.Failed($"Unexpected error: {exception.Message}");
                     }
                 }
+                else
+                {
+                    parseResult = MessageParseResult.Failed($"Tag value can't be decoded");
+                }
             }
+
+            return parseResult;
         }
 
         public void SetTagProperty(ProtobufTag tag, string propertyName, object value)

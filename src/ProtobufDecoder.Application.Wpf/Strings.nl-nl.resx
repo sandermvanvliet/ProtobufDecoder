@@ -98,4 +98,7 @@
     <data name="AboutButtonClose" xml:space="preserve">
       <value>_Sluiten</value>
     </data>
+    <data name="FailedToDecodeTag" xml:space="preserve">
+      <value>Tag kon niet gedecodeerd worden: {0}</value>
+    </data>
   </root>

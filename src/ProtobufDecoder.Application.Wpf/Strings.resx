@@ -204,4 +204,7 @@
   <data name="AboutButtonClose" xml:space="preserve">
     <value>_Close</value>
   </data>
+  <data name="FailedToDecodeTag" xml:space="preserve">
+    <value>Decoding tag failed: {0}</value>
+  </data>
 </root>

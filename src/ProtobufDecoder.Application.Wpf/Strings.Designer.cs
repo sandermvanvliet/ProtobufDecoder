@@ -124,6 +124,15 @@ namespace ProtobufDecoder.Application.Wpf {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Decoding tag failed: {0}.
+        /// </summary>
+        public static string FailedToDecodeTag {
+            get {
+                return ResourceManager.GetString("FailedToDecodeTag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File failed to load: {0}.
         /// </summary>
         public static string FileFailedToLoad {
