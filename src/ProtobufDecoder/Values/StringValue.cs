@@ -10,5 +10,10 @@ namespace ProtobufDecoder.Values
         }
 
         public override bool CanDecode => false;
+
+        public override string ToString()
+        {
+            return Value;
+        }
     }
 }
