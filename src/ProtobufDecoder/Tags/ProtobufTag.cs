@@ -13,6 +13,7 @@ namespace ProtobufDecoder.Tags
         [Browsable(true)]
         [Description("The Protobuf wire type")]
         [ReadOnly(true)]
+        [DisplayName("Wire type")]
         public WireFormat.WireType WireType { get; set; }
         
         [Browsable(true)]
