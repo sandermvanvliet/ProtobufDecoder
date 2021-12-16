@@ -73,6 +73,8 @@ namespace ProtobufDecoder.Test.Unit
                 .Tags
                 .OfType<ProtobufTagPackedVarint>()
                 .Single()
+                .Value
+                .As<PackedVarintValue>()
                 .Values
                 .Should()
                 .HaveCount(3);
@@ -141,6 +143,8 @@ namespace ProtobufDecoder.Test.Unit
                 .Should()
                 .BeOfType<ProtobufTagPackedVarint>()
                 .Which
+                .Value
+                .As<PackedVarintValue>()
                 .Values
                 .Should()
                 .HaveCount(4);
@@ -188,7 +192,9 @@ namespace ProtobufDecoder.Test.Unit
                 .Should()
                 .BeOfType<ProtobufTagPackedFloat>()
                 .Which
-                .Values
+                .Value
+                .As<PackedFloatValue>()
+                .Value
                 .Should()
                 .HaveCount(3);
         }
@@ -211,6 +217,8 @@ namespace ProtobufDecoder.Test.Unit
                 .Should()
                 .BeOfType<ProtobufTagPackedVarint>()
                 .Which
+                .Value
+                .As<PackedVarintValue>()
                 .Values
                 .Should()
                 .HaveCount(3); // The four bytes result in 3 varints

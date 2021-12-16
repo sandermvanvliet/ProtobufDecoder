@@ -213,6 +213,26 @@
                                                               Style="{StaticResource GridViewCheckBoxStyle}" />
                                                 </DataTemplate>
                                             </s:PropertyGridViewTemplateSelector.Boolean>
+
+                                            <s:PropertyGridViewTemplateSelector.PackedFloat>
+                                                <DataTemplate DataType="s:ProtobufTagPropertyDescriptor">
+                                                    <TextBox Text="{Binding Path=Value, Mode=OneWay}"
+                                                             IsReadOnly="{Binding Path=IsReadOnly}"
+                                                             Style="{StaticResource GridViewTextBoxStyle}"
+                                                             TextChanged="TextBoxBase_OnTextChanged"
+                                                             Tag="{Binding Path=Name, Mode=OneTime}" />
+                                                </DataTemplate>
+                                            </s:PropertyGridViewTemplateSelector.PackedFloat>
+
+                                            <s:PropertyGridViewTemplateSelector.PackedVarint>
+                                                <DataTemplate DataType="s:ProtobufTagPropertyDescriptor">
+                                                    <TextBox Text="{Binding Path=Value, Mode=OneWay}"
+                                                             IsReadOnly="{Binding Path=IsReadOnly}"
+                                                             Style="{StaticResource GridViewTextBoxStyle}"
+                                                             TextChanged="TextBoxBase_OnTextChanged"
+                                                             Tag="{Binding Path=Name, Mode=OneTime}" />
+                                                </DataTemplate>
+                                            </s:PropertyGridViewTemplateSelector.PackedVarint>
                                         </s:PropertyGridViewTemplateSelector>
                                     </GridViewColumn.CellTemplateSelector>
                                 </GridViewColumn>

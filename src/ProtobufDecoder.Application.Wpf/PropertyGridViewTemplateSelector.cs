@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using ProtobufDecoder.Values;
 
 namespace ProtobufDecoder.Application.Wpf
 {
@@ -7,6 +8,8 @@ namespace ProtobufDecoder.Application.Wpf
     {
         public DataTemplate String { get; set; }
         public DataTemplate Boolean { get; set; }
+        public DataTemplate PackedFloat { get; set; }
+        public DataTemplate PackedVarint { get; set; }
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
@@ -15,6 +18,19 @@ namespace ProtobufDecoder.Application.Wpf
                 if (descriptor.PropertyType == typeof(bool))
                 {
                     return Boolean;
+                }
+
+                if (descriptor.PropertyType == typeof(ProtobufValue))
+                {
+                    if (descriptor.Value.GetType() == typeof(PackedFloatValue))
+                    {
+                        return PackedFloat;
+                    }
+
+                    if (descriptor.Value.GetType() == typeof(PackedVarintValue))
+                    {
+                        return PackedVarint;
+                    }
                 }
             }
 
