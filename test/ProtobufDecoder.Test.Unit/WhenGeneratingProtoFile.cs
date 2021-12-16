@@ -62,7 +62,7 @@ namespace ProtobufDecoder.Test.Unit
                 Name = "TestMessage",
                 Tags =
                 {
-                    new ProtobufTagSingle
+                    new ProtobufTagString
                     {
                         Index = 1,
                         WireType = WireFormat.WireType.LengthDelimited
@@ -77,6 +77,33 @@ namespace ProtobufDecoder.Test.Unit
                 .Be(@"message TestMessage
 {
     string tag1 = 1;
+}
+");
+        }
+
+        [Fact]
+        public void GivenMessageWithLengthDelimitedTag()
+        {
+            var message = new ProtobufMessage
+            {
+                Name = "TestMessage",
+                Tags =
+                {
+                    new ProtobufTagSingle
+                    {
+                        Index = 1,
+                        WireType = WireFormat.WireType.LengthDelimited
+                    }
+                }
+            };
+
+            var proto = ProtobufWriter.ToString(message);
+
+            proto
+                .Should()
+                .Be(@"message TestMessage
+{
+    bytes tag1 = 1;
 }
 ");
         }

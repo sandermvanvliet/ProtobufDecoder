@@ -34,7 +34,7 @@ namespace ProtobufDecoder
                 else if(tag is ProtobufTagRepeated repeatedTag && repeatedTag.Items.Any(t => t is ProtobufTagEmbeddedMessage))
                 {
                     var messageInstances = repeatedTag.Items.OfType<ProtobufTagEmbeddedMessage>().ToList();
-
+                    // TODO: compare tag types between embedded messages
                     var groupedTags = messageInstances
                         .SelectMany(e => e.Tags)
                         .GroupBy(
@@ -68,9 +68,9 @@ namespace ProtobufDecoder
                 }
                 else if (tag is ProtobufTagPacked packedTag)
                 {
-                    var name = string.IsNullOrEmpty(tag.Name) ? "tag" + tag.Index : tag.Name;
+                    var name = string.IsNullOrEmpty(packedTag.Name) ? "tag" + packedTag.Index : packedTag.Name;
 
-                    builder.AppendLine($"    repeated {FormatWireTypeForProto(tag)} {name} = {tag.Index} [packed=true];");
+                    builder.AppendLine($"    repeated {FormatWireTypeForProto(packedTag)} {name} = {packedTag.Index} [packed=true];");
                 }
                 else
                 {
@@ -131,8 +131,11 @@ namespace ProtobufDecoder
                 case WireFormat.WireType.Fixed64:
                     type = "double";
                     break;
+                case WireFormat.WireType.LengthDelimited when tag is ProtobufTagString:
+                    type = "string";
+                    break;
                 case WireFormat.WireType.LengthDelimited:
-                    type = "string"; // Whatevs
+                    type = "bytes";
                     break;
                 case WireFormat.WireType.StartGroup:
                 case WireFormat.WireType.EndGroup:
