@@ -9,7 +9,7 @@ namespace ProtobufDecoder.Values
             RawValue = rawValue;
         }
 
-        public override bool CanDecode => false;
+        public override bool CanDecode => true; // Allow this for now as we don't have a good way to distinguish strings from embedded messages containing strings
 
         public override string ToString()
         {
