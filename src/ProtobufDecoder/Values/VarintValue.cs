@@ -96,6 +96,21 @@ namespace ProtobufDecoder.Values
             return input.Item2;
         }
 
+        public string GetProtobufType()
+        {
+            if (UInt16 != "Got too many bytes to represent this value")
+            {
+                return "uint16";
+            }
+            
+            if (UInt32 != "Got too many bytes to represent this value")
+            {
+                return "uint32";
+            }
+
+            return "uint64";
+        }
+
         public int AsUInt32()
         {
             return Convert.ToInt32(ToTarget(RawValue, 32).Item1.Value);

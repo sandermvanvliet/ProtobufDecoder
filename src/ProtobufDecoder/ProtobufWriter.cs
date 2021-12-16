@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using Google.Protobuf;
 using ProtobufDecoder.Tags;
+using ProtobufDecoder.Values;
 
 namespace ProtobufDecoder
 {
@@ -42,6 +43,8 @@ namespace ProtobufDecoder
                             t => t,
                             (key, values) =>
                             {
+                                values = values.ToList();
+
                                 if (values.Count() == 1 && values.First() is ProtobufTagEmbeddedMessage)
                                 {
                                     return values.First();
@@ -133,6 +136,9 @@ namespace ProtobufDecoder
 
             switch (tag.WireType)
             {
+                case WireFormat.WireType.Varint when tag is ProtobufTagSingle singleTag:
+                    type = ((VarintValue)singleTag.Value)?.GetProtobufType() ?? "uint32";
+                    break;
                 case WireFormat.WireType.Varint:
                     type = "uint32";
                     break;
