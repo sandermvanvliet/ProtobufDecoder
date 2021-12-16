@@ -10,6 +10,7 @@ namespace ProtobufDecoder.Application.Wpf
         public DataTemplate Boolean { get; set; }
         public DataTemplate PackedFloat { get; set; }
         public DataTemplate PackedVarint { get; set; }
+        public DataTemplate Varint { get; set; }
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
@@ -20,16 +21,23 @@ namespace ProtobufDecoder.Application.Wpf
                     return Boolean;
                 }
 
-                if (descriptor.PropertyType == typeof(ProtobufValue))
+                if (descriptor.PropertyType == typeof(ProtobufValue) && descriptor.Value != null)
                 {
-                    if (descriptor.Value.GetType() == typeof(PackedFloatValue))
+                    var valueType = descriptor.Value.GetType();
+
+                    if (valueType == typeof(PackedFloatValue))
                     {
                         return PackedFloat;
                     }
 
-                    if (descriptor.Value.GetType() == typeof(PackedVarintValue))
+                    if (valueType == typeof(PackedVarintValue))
                     {
                         return PackedVarint;
+                    }
+
+                    if (valueType == typeof(VarintValue))
+                    {
+                        return Varint;
                     }
                 }
             }

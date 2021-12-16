@@ -8,6 +8,7 @@
         xmlns:converters="clr-namespace:ProtobufDecoder.Application.Wpf.Converters"
         xmlns:s="clr-namespace:ProtobufDecoder.Application.Wpf"
         xmlns:tags="clr-namespace:ProtobufDecoder.Tags;assembly=ProtobufDecoder"
+        xmlns:values="clr-namespace:ProtobufDecoder.Values;assembly=ProtobufDecoder"
         mc:Ignorable="d"
         Title="{Binding Path=Model.WindowTitle}"
         Height="600"
@@ -216,23 +217,79 @@
 
                                             <s:PropertyGridViewTemplateSelector.PackedFloat>
                                                 <DataTemplate DataType="s:ProtobufTagPropertyDescriptor">
-                                                    <TextBox Text="{Binding Path=Value, Mode=OneWay}"
-                                                             IsReadOnly="{Binding Path=IsReadOnly}"
-                                                             Style="{StaticResource GridViewTextBoxStyle}"
-                                                             TextChanged="TextBoxBase_OnTextChanged"
-                                                             Tag="{Binding Path=Name, Mode=OneTime}" />
+                                                    <!-- Note that the binding path doesn't resolve now but that's because the
+                                                    ProtobufTagPropertyDescriptor exposes Value as an object -->
+                                                    <ListBox ItemsSource="{Binding Path=Value.Value}" 
+                                                             Margin="0,0,4,0"
+                                                             HorizontalAlignment="Left"
+                                                             Width="140"
+                                                             HorizontalContentAlignment="Right"/>
                                                 </DataTemplate>
                                             </s:PropertyGridViewTemplateSelector.PackedFloat>
 
                                             <s:PropertyGridViewTemplateSelector.PackedVarint>
                                                 <DataTemplate DataType="s:ProtobufTagPropertyDescriptor">
-                                                    <TextBox Text="{Binding Path=Value, Mode=OneWay}"
-                                                             IsReadOnly="{Binding Path=IsReadOnly}"
-                                                             Style="{StaticResource GridViewTextBoxStyle}"
-                                                             TextChanged="TextBoxBase_OnTextChanged"
-                                                             Tag="{Binding Path=Name, Mode=OneTime}" />
+                                                    <!-- Note that the binding path doesn't resolve now but that's because the
+                                                    ProtobufTagPropertyDescriptor exposes Value as an object -->
+                                                    <ListBox ItemsSource="{Binding Path=Value.Values}" 
+                                                             Margin="0,0,4,0"
+                                                             HorizontalAlignment="Left"
+                                                             Width="140"
+                                                             HorizontalContentAlignment="Right">
+                                                        <ListBox.ItemTemplate>
+                                                            <DataTemplate DataType="values:VarintValue">
+                                                                <TextBlock Text="{Binding Path=UInt32, Mode=OneWay}" HorizontalAlignment="Stretch" />
+                                                            </DataTemplate>
+                                                        </ListBox.ItemTemplate>
+                                                    </ListBox>
                                                 </DataTemplate>
                                             </s:PropertyGridViewTemplateSelector.PackedVarint>
+
+                                            <s:PropertyGridViewTemplateSelector.Varint>
+                                                <DataTemplate DataType="s:ProtobufTagPropertyDescriptor">
+                                                    <Grid>
+                                                        <Grid.Resources>
+                                                            <Style TargetType="TextBlock">
+                                                                <Setter Property="Margin" Value="0,0,0,2"/>
+                                                            </Style>
+                                                        </Grid.Resources>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition/>
+                                                            <RowDefinition/>
+                                                            <RowDefinition/>
+                                                            <RowDefinition/>
+                                                            <RowDefinition/>
+                                                            <RowDefinition/>
+                                                            <RowDefinition/>
+                                                        </Grid.RowDefinitions>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="45" />
+                                                            <ColumnDefinition Width="*" />
+                                                        </Grid.ColumnDefinitions>
+                                                        
+                                                        <TextBlock Grid.Column="0" Grid.Row="0" Text="Bool" FontWeight="Bold" />
+                                                        <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Path=Value.Bool, Mode=OneWay}" HorizontalAlignment="Stretch" />
+                                                        
+                                                        <TextBlock Grid.Column="0" Grid.Row="1" Text="UInt16" FontWeight="Bold" />
+                                                        <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Path=Value.UInt16, Mode=OneWay}" HorizontalAlignment="Stretch" />
+                                                        
+                                                        <TextBlock Grid.Column="0" Grid.Row="2" Text="UInt32" FontWeight="Bold" />
+                                                        <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding Path=Value.UInt32, Mode=OneWay}" HorizontalAlignment="Stretch" />
+                                                        
+                                                        <TextBlock Grid.Column="0" Grid.Row="3" Text="UInt64" FontWeight="Bold" />
+                                                        <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Path=Value.UInt64, Mode=OneWay}" HorizontalAlignment="Stretch" />
+
+                                                        <TextBlock Grid.Column="0" Grid.Row="4" Text="Int16" FontWeight="Bold" />
+                                                        <TextBlock Grid.Column="1" Grid.Row="4" Text="{Binding Path=Value.Int16, Mode=OneWay}" HorizontalAlignment="Stretch" />
+                                                        
+                                                        <TextBlock Grid.Column="0" Grid.Row="5" Text="Int32" FontWeight="Bold" />
+                                                        <TextBlock Grid.Column="1" Grid.Row="5" Text="{Binding Path=Value.Int32, Mode=OneWay}" HorizontalAlignment="Stretch" />
+
+                                                        <TextBlock Grid.Column="0" Grid.Row="6" Text="Int64" FontWeight="Bold" />
+                                                        <TextBlock Grid.Column="1" Grid.Row="6" Text="{Binding Path=Value.Int64, Mode=OneWay}" HorizontalAlignment="Stretch" />
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </s:PropertyGridViewTemplateSelector.Varint>
                                         </s:PropertyGridViewTemplateSelector>
                                     </GridViewColumn.CellTemplateSelector>
                                 </GridViewColumn>
