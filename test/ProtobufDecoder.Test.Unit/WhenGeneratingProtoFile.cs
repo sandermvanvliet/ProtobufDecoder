@@ -244,6 +244,64 @@ namespace ProtobufDecoder.Test.Unit
         }
 
         [Fact]
+        public void GivenMessageWithPackedFloatEmbedded()
+        {
+            var message = new ProtobufMessage
+            {
+                Name = "TestMessage",
+                Tags =
+                {
+                    new ProtobufTagRepeated
+                    {
+                        Index = 1,
+                        WireType = WireFormat.WireType.LengthDelimited,
+                        Items =
+                        {
+                            new ProtobufTagSingle
+                            {
+                                Index = 1,
+                                WireType = WireFormat.WireType.LengthDelimited
+                            },
+                            new ProtobufTagEmbeddedMessage(
+                                new ProtobufTagSingle
+                                {
+                                    Index = 1,
+                                    WireType = WireFormat.WireType.LengthDelimited
+                                },
+                                new ProtobufTag[] 
+                                {
+                                    new ProtobufTagPackedFloat
+                                    {
+                                        Index = 2,
+                                        WireType = WireFormat.WireType.Fixed32
+                                    }
+                                })
+                            {
+                                Name="Embedded1"
+                            }
+                        }
+                    }
+                }
+                
+            };
+
+            var proto = ProtobufWriter.ToString(message);
+
+            proto
+                .Should()
+                .Be(@"message TestMessage
+{
+    message Embedded1
+    {
+        repeated float tag2 = 2 [packed=true];
+    }
+
+    repeated Embedded1 tag1 = 1;
+}
+");
+        }
+
+        [Fact]
         public void GivenMessageWithSingleEmbeddedMessage()
         {
             var message = new ProtobufMessage

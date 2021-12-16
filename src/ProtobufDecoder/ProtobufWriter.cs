@@ -47,6 +47,12 @@ namespace ProtobufDecoder
                                     return values.First();
                                 }
 
+                                // Only group when all instances are decoded
+                                if (values.Count() == 1 && repeatedTag.Items.Count != messageInstances.Count)
+                                {
+                                    return values.First();
+                                }
+
                                 var firstTag = values.First();
                                 return new ProtobufTagSingle
                                 {
@@ -108,8 +114,10 @@ namespace ProtobufDecoder
                         ? "tag" + embeddedTag.Index
                         : embeddedTag.Name;
 
+                    var isTagRepeated = embeddedTag is ProtobufTagPacked || embeddedTag is ProtobufTagRepeated;
+
                     builder.AppendLine(
-                        $"{indent}    {(embeddedTag.IsOptional ? "optional " : "")}{FormatWireTypeForProto(embeddedTag)} {embeddedTagName} = {embeddedTag.Index};");
+                        $"{indent}    {(embeddedTag.IsOptional ? "optional " : "")}{(isTagRepeated ? "repeated ": "")}{FormatWireTypeForProto(embeddedTag)} {embeddedTagName} = {embeddedTag.Index}{(embeddedTag is ProtobufTagPacked ? " [packed=true]" : "")};");
                 }
             }
 
