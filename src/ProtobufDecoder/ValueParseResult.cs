@@ -1,6 +1,6 @@
 namespace ProtobufDecoder
 {
-    public class ParseResult<TProtoValue>
+    public class ValueParseResult<TProtoValue>
     {
         public int Length { get; set; }
         public TProtoValue Value { get; set; }

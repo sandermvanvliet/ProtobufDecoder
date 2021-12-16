@@ -8,34 +8,9 @@ using ProtobufDecoder.Values;
 
 namespace ProtobufDecoder
 {
-    public sealed class ParseResult
-    {
-        public bool Success { get; set; }
-        public ProtobufMessage Message { get; set; }
-        public string FailureReason { get; set; }
-
-        public static ParseResult Failed(string reason)
-        {
-            return new ParseResult
-            {
-                Success = false,
-                FailureReason = reason
-            };
-        }
-
-        public static ParseResult Succeeded(ProtobufMessage message)
-        {
-            return new ParseResult
-            {
-                Success = true,
-                Message = message
-            };
-        }
-    }
-
     public class ProtobufParser
     {
-        public static ParseResult Parse(ReadOnlySpan<byte> input)
+        public static MessageParseResult Parse(ReadOnlySpan<byte> input)
         {
             if (input == null)
             {
@@ -46,7 +21,7 @@ namespace ProtobufDecoder
 
             if (input.Length == 0)
             {
-                return ParseResult.Failed("Input was empty");
+                return MessageParseResult.Failed("Input was empty");
             }
 
             var protobufTags = new List<ProtobufTagSingle>();
@@ -83,7 +58,7 @@ namespace ProtobufDecoder
 
                     if (tagFieldNumber == 0)
                     {
-                        throw new InvalidOperationException("Found a tag with index 0 which is not allowed");
+                        return MessageParseResult.Failed("Tag with index 0 found which is not allowed");
                     }
 
                     var tag = new ProtobufTagSingle
@@ -134,7 +109,7 @@ namespace ProtobufDecoder
                             tag.DataLength = parseResultF32.DataLength;
                             break;
                         default:
-                            throw new InvalidOperationException($"Invalid wire type {tag.WireType}");
+                            return MessageParseResult.Failed($"Invalid wire type {tag.WireType}");
                     }
 
                     tag.EndOffset = index - 1; // Subtract 1 because index is pointing at the start byte of the tag after the current one
@@ -231,10 +206,10 @@ namespace ProtobufDecoder
             protobufMessage.Tags.Clear();
             protobufMessage.Tags.AddRange(groupedTags);
 
-            return ParseResult.Succeeded(protobufMessage);
+            return MessageParseResult.Succeeded(protobufMessage);
         }
 
-        private static ParseResult<LengthDelimitedValue> ParseLengthDelimited(ReadOnlySpan<byte> input, int index)
+        private static ValueParseResult<LengthDelimitedValue> ParseLengthDelimited(ReadOnlySpan<byte> input, int index)
         {
             // Length-delimited tags are <tag number>|<varint length>|<data>
             var parsedLength = ParseVarint(input, index);
@@ -245,7 +220,7 @@ namespace ProtobufDecoder
 
             var fixedBytes = input.Slice(index, valueLength);
 
-            return new ParseResult<LengthDelimitedValue>
+            return new ValueParseResult<LengthDelimitedValue>
             {
                 Length = parsedLength.Length + valueLength, // The number of bytes for the length value + the length of the value itself
                 DataLength = valueLength,
@@ -254,7 +229,7 @@ namespace ProtobufDecoder
             };
         }
 
-        private static ParseResult<Fixed32Value> ParseFixed32(ReadOnlySpan<byte> input, int index)
+        private static ValueParseResult<Fixed32Value> ParseFixed32(ReadOnlySpan<byte> input, int index)
         {
             if (index + 4 > input.Length)
             {
@@ -263,7 +238,7 @@ namespace ProtobufDecoder
 
             var fixedBytes = input.Slice(index, 4).ToArray();
 
-            return new ParseResult<Fixed32Value>
+            return new ValueParseResult<Fixed32Value>
             {
                 Length = 4,
                 Value = new Fixed32Value(fixedBytes),
@@ -272,7 +247,7 @@ namespace ProtobufDecoder
             };
         }
 
-        private static ParseResult<Fixed64Value> ParseFixed64(ReadOnlySpan<byte> input, int index)
+        private static ValueParseResult<Fixed64Value> ParseFixed64(ReadOnlySpan<byte> input, int index)
         {
             var fixedBytes = input.Slice(index, 8).ToArray();
 
@@ -281,7 +256,7 @@ namespace ProtobufDecoder
                 throw new InvalidOperationException($"Expected 8 bytes but got {fixedBytes.Length}");
             }
 
-            return new ParseResult<Fixed64Value>
+            return new ValueParseResult<Fixed64Value>
             {
                 Length = 8,
                 Value = new Fixed64Value(fixedBytes),
@@ -290,7 +265,7 @@ namespace ProtobufDecoder
             };
         }
 
-        public static ParseResult<VarintValue> ParseVarint(ReadOnlySpan<byte> input, int index)
+        public static ValueParseResult<VarintValue> ParseVarint(ReadOnlySpan<byte> input, int index)
         {
             var length = 0;
 
@@ -322,7 +297,7 @@ namespace ProtobufDecoder
 
             var varintBytes = input.Slice(index, length).ToArray();
 
-            return new ParseResult<VarintValue>
+            return new ValueParseResult<VarintValue>
             {
                 Length = varintBytes.Length,
                 Value = new VarintValue(varintBytes),
