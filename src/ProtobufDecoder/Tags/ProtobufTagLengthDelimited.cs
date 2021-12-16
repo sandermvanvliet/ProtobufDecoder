@@ -32,9 +32,9 @@ namespace ProtobufDecoder.Tags
             {
                 try
                 {
-                    var decodedMessage = ProtobufParser.Parse(tag.Value.RawValue);
+                    var parseResult = ProtobufParser.Parse(tag.Value.RawValue);
 
-                    if (decodedMessage.Tags.Any(t => t.Index <= 0))
+                    if (parseResult.Success && parseResult.Message.Tags.Any(t => t.Index <= 0))
                     {
                         // Valid tag indexes start at 1 to a very large number so
                         // any zero or negative values are out.

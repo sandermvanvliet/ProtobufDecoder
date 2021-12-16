@@ -57,8 +57,17 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             {
                 var bytes = File.ReadAllBytes(inputFilePath);
                 Model.InputFileByteStream = new MemoryStream(bytes);
-                Model.Message = ProtobufParser.Parse(bytes);
-                Model.StatusBarInfo(Strings.FileLoadedSuccessfully);
+                var parseResult = ProtobufParser.Parse(bytes);
+
+                if (parseResult.Success)
+                {
+                    Model.Message = parseResult.Message;
+                    Model.StatusBarInfo(Strings.FileLoadedSuccessfully);
+                }
+                else
+                {
+                    Model.StatusBarError(Strings.FileFailedToLoad, parseResult.FailureReason);
+                }
             }
             catch (Exception e)
             {

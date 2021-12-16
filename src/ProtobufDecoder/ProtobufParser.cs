@@ -8,9 +8,34 @@ using ProtobufDecoder.Values;
 
 namespace ProtobufDecoder
 {
+    public sealed class ParseResult
+    {
+        public bool Success { get; set; }
+        public ProtobufMessage Message { get; set; }
+        public string FailureReason { get; set; }
+
+        public static ParseResult Failed(string reason)
+        {
+            return new ParseResult
+            {
+                Success = false,
+                FailureReason = reason
+            };
+        }
+
+        public static ParseResult Succeeded(ProtobufMessage message)
+        {
+            return new ParseResult
+            {
+                Success = true,
+                Message = message
+            };
+        }
+    }
+
     public class ProtobufParser
     {
-        public static ProtobufMessage Parse(ReadOnlySpan<byte> input)
+        public static ParseResult Parse(ReadOnlySpan<byte> input)
         {
             if (input == null)
             {
@@ -21,7 +46,7 @@ namespace ProtobufDecoder
 
             if (input.Length == 0)
             {
-                return protobufMessage;
+                return ParseResult.Failed("Input was empty");
             }
 
             var protobufTags = new List<ProtobufTagSingle>();
@@ -54,9 +79,16 @@ namespace ProtobufDecoder
 
                     var tagAndWireType = (uint)VarintValue.ToTarget(tagBytes, 32).Item1.Value;
 
+                    var tagFieldNumber = WireFormat.GetTagFieldNumber(tagAndWireType);
+
+                    if (tagFieldNumber == 0)
+                    {
+                        throw new InvalidOperationException("Found a tag with index 0 which is not allowed");
+                    }
+
                     var tag = new ProtobufTagSingle
                     {
-                        Index = WireFormat.GetTagFieldNumber(tagAndWireType),
+                        Index = tagFieldNumber,
                         WireType = WireFormat.GetTagWireType(tagAndWireType),
                         StartOffset = index
                     };
@@ -199,7 +231,7 @@ namespace ProtobufDecoder
             protobufMessage.Tags.Clear();
             protobufMessage.Tags.AddRange(groupedTags);
 
-            return protobufMessage;
+            return ParseResult.Succeeded(protobufMessage);
         }
 
         private static ParseResult<LengthDelimitedValue> ParseLengthDelimited(ReadOnlySpan<byte> input, int index)

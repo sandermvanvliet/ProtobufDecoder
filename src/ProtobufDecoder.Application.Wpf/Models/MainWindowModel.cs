@@ -146,26 +146,35 @@ namespace ProtobufDecoder.Application.Wpf.Models
                 {
                     try
                     {
-                        var parsedMessage = ProtobufParser.Parse(singleTag.Value.RawValue);
-                        var embeddedMessageTag = new ProtobufTagEmbeddedMessage(singleTag, parsedMessage.Tags.ToArray())
-                        {
-                            Name = $"EmbeddedMessage{tag.Index}"
-                        };
+                        var parseResult = ProtobufParser.Parse(singleTag.Value.RawValue);
 
-                        // Replace the existing tag with the expanded tag
-                        if (singleTag.Parent is ProtobufTagRepeated repeatedTag)
+                        if (parseResult.Success)
                         {
-                            var tagIndex = repeatedTag.Items.IndexOf(singleTag);
-                            repeatedTag.Items.RemoveAt(tagIndex);
-                            repeatedTag.Items.Insert(tagIndex, embeddedMessageTag);
-                            OnPropertyChanged(nameof(Message));
+                            var embeddedMessageTag =
+                                new ProtobufTagEmbeddedMessage(singleTag, parseResult.Message.Tags.ToArray())
+                                {
+                                    Name = $"EmbeddedMessage{tag.Index}"
+                                };
+
+                            // Replace the existing tag with the expanded tag
+                            if (singleTag.Parent is ProtobufTagRepeated repeatedTag)
+                            {
+                                var tagIndex = repeatedTag.Items.IndexOf(singleTag);
+                                repeatedTag.Items.RemoveAt(tagIndex);
+                                repeatedTag.Items.Insert(tagIndex, embeddedMessageTag);
+                                OnPropertyChanged(nameof(Message));
+                            }
+                            else if (singleTag.Parent is ProtobufTagEmbeddedMessage embeddedTag)
+                            {
+                                var tagIndex = embeddedTag.Tags.IndexOf(singleTag);
+                                embeddedTag.Tags.RemoveAt(tagIndex);
+                                embeddedTag.Tags.Insert(tagIndex, embeddedMessageTag);
+                                OnPropertyChanged(nameof(Message));
+                            }
                         }
-                        else if(singleTag.Parent is ProtobufTagEmbeddedMessage embeddedTag)
+                        else
                         {
-                            var tagIndex = embeddedTag.Tags.IndexOf(singleTag);
-                            embeddedTag.Tags.RemoveAt(tagIndex);
-                            embeddedTag.Tags.Insert(tagIndex, embeddedMessageTag);
-                            OnPropertyChanged(nameof(Message));
+                            throw new Exception(parseResult.FailureReason);
                         }
                     }
                     catch (Exception exception)

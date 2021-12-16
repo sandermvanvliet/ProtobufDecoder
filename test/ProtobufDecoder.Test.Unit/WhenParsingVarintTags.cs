@@ -16,9 +16,10 @@ namespace ProtobufDecoder.Test.Unit
         {
             var input = new byte[] { 0x08, 0x96, 0x01 };
 
-            var message = ProtobufParser.Parse(input);
+            var parseResult = ProtobufParser.Parse(input);
 
-            message
+            parseResult
+				.Message
                 .Tags
                 .Should()
                 .OnlyContain(t => t.Index == 1);
@@ -29,9 +30,10 @@ namespace ProtobufDecoder.Test.Unit
         {
             var input = new byte[] { 0x08, 0x96, 0x01 };
 
-            var message = ProtobufParser.Parse(input);
+            var parseResult = ProtobufParser.Parse(input);
 
-            message
+            parseResult
+				.Message
                 .Tags
                 .Should()
                 .OnlyContain(t => t.WireType == WireFormat.WireType.Varint);
@@ -42,9 +44,10 @@ namespace ProtobufDecoder.Test.Unit
         {
             var input = new byte[] { 0x08, 0x96, 0x01 };
 
-            var message = ProtobufParser.Parse(input);
+            var parseResult = ProtobufParser.Parse(input);
 
-            message
+            parseResult
+				.Message
                 .Tags
                 .OfType<ProtobufTagSingle>()
                 .Should()
@@ -56,9 +59,10 @@ namespace ProtobufDecoder.Test.Unit
         {
             var input = new byte[] { 0x08, 0x96, 0x01 };
 
-            var message = ProtobufParser.Parse(input);
+            var parseResult = ProtobufParser.Parse(input);
 
-            message
+            parseResult
+				.Message
                 .Tags
                 .OfType<ProtobufTagSingle>()
                 .Should()
@@ -70,9 +74,10 @@ namespace ProtobufDecoder.Test.Unit
         {
             var input = new byte[] { 0x08, 0x96, 0x01, 0x10, 0x01 };
 
-            var message = ProtobufParser.Parse(input);
+            var parseResult = ProtobufParser.Parse(input);
 
-            message
+            parseResult
+				.Message
                 .Tags
                 .Should()
                 .Contain(t => t.Index == 1 && t.WireType == WireFormat.WireType.Varint)
@@ -85,9 +90,10 @@ namespace ProtobufDecoder.Test.Unit
         {
             var input = new byte[] { 0x08, 0x96, 0x01, 0x10, 0x01 };
 
-            var message = ProtobufParser.Parse(input);
+            var parseResult = ProtobufParser.Parse(input);
 
-            message
+            parseResult
+				.Message
                 .Tags
                 .OfType<ProtobufTagSingle>()
                 .Should()
@@ -101,9 +107,10 @@ namespace ProtobufDecoder.Test.Unit
             // so we need to be able to handle that.
             var input = new byte[] { 0x10, 0x01 , 0x08, 0x96, 0x01 };
 
-            var message = ProtobufParser.Parse(input);
+            var parseResult = ProtobufParser.Parse(input);
 
-            message
+            parseResult
+				.Message
                 .Tags
                 .Should()
                 .Contain(t => t.Index == 1 && t.WireType == WireFormat.WireType.Varint)
@@ -116,9 +123,9 @@ namespace ProtobufDecoder.Test.Unit
         {
             var input = new byte[] { 0x10, 0x79 };
 
-            var message = ProtobufParser.Parse(input);
+            var parseResult = ProtobufParser.Parse(input);
 
-            var varintValue = message.Tags.Single().As<ProtobufTagSingle>().Value.As<VarintValue>();
+            var varintValue = parseResult.Message.Tags.Single().As<ProtobufTagSingle>().Value.As<VarintValue>();
 
             varintValue.Bool.Should().Be("Not a boolean");
             varintValue.Int16.Should().Be("-61");
@@ -134,9 +141,9 @@ namespace ProtobufDecoder.Test.Unit
         {
             var input = new byte[] { 0x10 }.Concat(VarintBitConverter.GetVarintBytes((uint)100000000)).ToArray();
 
-            var message = ProtobufParser.Parse(input);
+            var parseResult = ProtobufParser.Parse(input);
 
-            var varintValue = message.Tags.Single().As<ProtobufTagSingle>().Value.As<VarintValue>();
+            var varintValue = parseResult.Message.Tags.Single().As<ProtobufTagSingle>().Value.As<VarintValue>();
 
             varintValue.Bool.Should().Be("Not a boolean");
             varintValue.Int16.Should().Be("Got too many bytes to represent this value");
@@ -152,9 +159,9 @@ namespace ProtobufDecoder.Test.Unit
         {
             var input = new byte[] { 0x10 }.Concat(VarintBitConverter.GetVarintBytes((ulong)1000000000000)).ToArray();
 
-            var message = ProtobufParser.Parse(input);
+            var parseResult = ProtobufParser.Parse(input);
 
-            var varintValue = message.Tags.Single().As<ProtobufTagSingle>().Value.As<VarintValue>();
+            var varintValue = parseResult.Message.Tags.Single().As<ProtobufTagSingle>().Value.As<VarintValue>();
 
             varintValue.Bool.Should().Be("Not a boolean");
             varintValue.Int16.Should().Be("Got too many bytes to represent this value");

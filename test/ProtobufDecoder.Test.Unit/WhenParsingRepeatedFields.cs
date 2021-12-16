@@ -23,9 +23,10 @@ namespace ProtobufDecoder.Test.Unit
         {
             var input = new byte[] { 0x0a, 0x01, 0x03, 0x0a, 0x01, 0x03, 0x0a, 0x01, 0x03 };
 
-            var message = ProtobufParser.Parse(input);
+            var parseResult = ProtobufParser.Parse(input);
 
-            message
+            parseResult
+				.Message
                 .Tags
                 .Should()
                 .OnlyContain(t => t.Index == 1)
@@ -38,9 +39,10 @@ namespace ProtobufDecoder.Test.Unit
         {
             var input = new byte[] { 0x0a, 0x01, 0x03, 0x0a, 0x01, 0x03, 0x0a, 0x01, 0x03 };
 
-            var message = ProtobufParser.Parse(input);
+            var parseResult = ProtobufParser.Parse(input);
 
-            message
+            parseResult
+				.Message
                 .Tags
                 .Should()
                 .OnlyContain(t => t.WireType == WireFormat.WireType.LengthDelimited);
@@ -51,9 +53,10 @@ namespace ProtobufDecoder.Test.Unit
         {
             var input = new byte[] { 0x0a, 0x01, 0x03, 0x0a, 0x01, 0x03, 0x0a, 0x01, 0x03 };
 
-            var message = ProtobufParser.Parse(input);
+            var parseResult = ProtobufParser.Parse(input);
 
-            message
+            parseResult
+				.Message
                 .Tags
                 .Should()
                 .AllBeOfType<ProtobufTagRepeated>();
@@ -64,9 +67,10 @@ namespace ProtobufDecoder.Test.Unit
         {
             var input = new byte[] { 0x0a, 0x01, 0x03, 0x0a, 0x01, 0x03, 0x0a, 0x01, 0x03 };
 
-            var message = ProtobufParser.Parse(input);
+            var parseResult = ProtobufParser.Parse(input);
 
-            message
+            parseResult
+				.Message
                 .Tags
                 .Single()
                 .As<ProtobufTagRepeated>()
@@ -80,9 +84,10 @@ namespace ProtobufDecoder.Test.Unit
         {
             var input = new byte[] { 0x0a, 0x01, 0x03, 0x0a, 0x01, 0x03, 0x0a, 0x01, 0x03 };
 
-            var message = ProtobufParser.Parse(input);
+            var parseResult = ProtobufParser.Parse(input);
 
-            message
+            parseResult
+				.Message
                 .Tags
                 .Single()
                 .As<ProtobufTagRepeated>()
@@ -96,9 +101,10 @@ namespace ProtobufDecoder.Test.Unit
         {
             var input = new byte[] { 0x0a, 0x01, 0x03, 0x0a, 0x01, 0x03, 0x0a, 0x01, 0x03 };
 
-            var message = ProtobufParser.Parse(input);
+            var parseResult = ProtobufParser.Parse(input);
 
-            message
+            parseResult
+				.Message
                 .Tags
                 .Single()
                 .As<ProtobufTagRepeated>()
@@ -119,9 +125,10 @@ namespace ProtobufDecoder.Test.Unit
         {
             var input = new byte[] { 0x08, 0x03, 0x08, 0x03, 0x08, 0x03 };
 
-            var message = ProtobufParser.Parse(input);
+            var parseResult = ProtobufParser.Parse(input);
 
-            message
+            parseResult
+				.Message
                 .Tags
                 .Should()
                 .OnlyContain(t => t.Index == 1)
@@ -134,9 +141,10 @@ namespace ProtobufDecoder.Test.Unit
         {
             var input = new byte[] { 0x08, 0x03, 0x08, 0x03, 0x08, 0x03 };
 
-            var message = ProtobufParser.Parse(input);
+            var parseResult = ProtobufParser.Parse(input);
 
-            message
+            parseResult
+				.Message
                 .Tags
                 .Should()
                 .OnlyContain(t => t.WireType == WireFormat.WireType.Varint);
@@ -147,9 +155,10 @@ namespace ProtobufDecoder.Test.Unit
         {
             var input = new byte[] { 0x08, 0x03, 0x08, 0x03, 0x08, 0x03 };
 
-            var message = ProtobufParser.Parse(input);
+            var parseResult = ProtobufParser.Parse(input);
 
-            message
+            parseResult
+				.Message
                 .Tags
                 .Single()
                 .As<ProtobufTagRepeated>()

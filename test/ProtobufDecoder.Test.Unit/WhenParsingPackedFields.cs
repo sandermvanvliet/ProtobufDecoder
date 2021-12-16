@@ -24,9 +24,10 @@ namespace ProtobufDecoder.Test.Unit
         {
             var input = new byte[] { 0x0a, 0x06, 0x03, 0x8e, 0x02, 0x9e, 0xa7, 0x05 };
 
-            var message = ProtobufParser.Parse(input);
+            var parseResult = ProtobufParser.Parse(input);
 
-            message
+            parseResult
+				.Message
                 .Tags
                 .Should()
                 .OnlyContain(t => t.Index == 1);
@@ -37,9 +38,10 @@ namespace ProtobufDecoder.Test.Unit
         {
             var input = new byte[] { 0x0a, 0x06, 0x03, 0x8e, 0x02, 0x9e, 0xa7, 0x05 };
 
-            var message = ProtobufParser.Parse(input);
+            var parseResult = ProtobufParser.Parse(input);
 
-            message
+            parseResult
+				.Message
                 .Tags
                 .Should()
                 .OnlyContain(t => t.WireType == WireFormat.WireType.Varint);
@@ -50,9 +52,10 @@ namespace ProtobufDecoder.Test.Unit
         {
             var input = new byte[] { 0x0a, 0x06, 0x03, 0x8e, 0x02, 0x9e, 0xa7, 0x05 };
 
-            var message = ProtobufParser.Parse(input);
+            var parseResult = ProtobufParser.Parse(input);
 
-            message
+            parseResult
+				.Message
                 .Tags
                 .Should()
                 .OnlyContain(t => t is ProtobufTagPackedVarint);
@@ -63,9 +66,10 @@ namespace ProtobufDecoder.Test.Unit
         {
             var input = new byte[] { 0x0a, 0x06, 0x03, 0x8e, 0x02, 0x9e, 0xa7, 0x05 };
 
-            var message = ProtobufParser.Parse(input);
+            var parseResult = ProtobufParser.Parse(input);
 
-            message
+            parseResult
+				.Message
                 .Tags
                 .OfType<ProtobufTagPackedVarint>()
                 .Single()
@@ -79,9 +83,9 @@ namespace ProtobufDecoder.Test.Unit
         {
             var input = new byte[] { 0x0a, 0x06, 0x03, 0x8e, 0x02, 0x9e, 0xa7, 0x05 };
 
-            var message = ProtobufParser.Parse(input);
+            var parseResult = ProtobufParser.Parse(input);
 
-            var tag = message.Tags.Single() as ProtobufTagPackedVarint;
+            var tag = parseResult.Message.Tags.Single() as ProtobufTagPackedVarint;
 
             tag.Length.Should().Be(8);
         }
@@ -91,9 +95,9 @@ namespace ProtobufDecoder.Test.Unit
         {
             var input = new byte[] { 0x0a, 0x06, 0x03, 0x8e, 0x02, 0x9e, 0xa7, 0x05 };
 
-            var message = ProtobufParser.Parse(input);
+            var parseResult = ProtobufParser.Parse(input);
 
-            var tag = message.Tags.Single() as ProtobufTagPackedVarint;
+            var tag = parseResult.Message.Tags.Single() as ProtobufTagPackedVarint;
 
             tag.DataLength.Should().Be(6);
         }
@@ -109,9 +113,10 @@ namespace ProtobufDecoder.Test.Unit
 
             var bytes = testMessage.ToByteArray();
 
-            var message = ProtobufParser.Parse(bytes);
+            var parseResult = ProtobufParser.Parse(bytes);
 
-            message
+            parseResult
+				.Message
                 .Tags
                 .Should()
                 .HaveCount(2);
@@ -127,9 +132,10 @@ namespace ProtobufDecoder.Test.Unit
 
             var bytes = testMessage.ToByteArray();
 
-            var message = ProtobufParser.Parse(bytes);
+            var parseResult = ProtobufParser.Parse(bytes);
 
-            message
+            parseResult
+				.Message
                 .Tags
                 .Single(t => t.Index == 1)
                 .Should()
@@ -150,9 +156,10 @@ namespace ProtobufDecoder.Test.Unit
             };
 
             var bytes = testMessage.ToByteArray();
-            var message = ProtobufParser.Parse(bytes);
+            var parseResult = ProtobufParser.Parse(bytes);
 
-            message
+            parseResult
+				.Message
                 .Tags
                 .Single(t => t.Index == 2)
                 .As<ProtobufTagRepeated>()
@@ -172,9 +179,10 @@ namespace ProtobufDecoder.Test.Unit
             };
 
             var bytes = testMessage.ToByteArray();
-            var message = ProtobufParser.Parse(bytes);
+            var parseResult = ProtobufParser.Parse(bytes);
 
-            message
+            parseResult
+				.Message
                 .Tags
                 .Single(t => t.Index == 3)
                 .Should()
@@ -194,9 +202,10 @@ namespace ProtobufDecoder.Test.Unit
             };
 
             var bytes = testMessage.ToByteArray();
-            var message = ProtobufParser.Parse(bytes);
+            var parseResult = ProtobufParser.Parse(bytes);
 
-            message
+            parseResult
+				.Message
                 .Tags
                 .Single(t => t.Index == 3)
                 .Should()

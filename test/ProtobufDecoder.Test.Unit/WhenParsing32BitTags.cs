@@ -15,9 +15,10 @@ namespace ProtobufDecoder.Test.Unit
         {
             var input = new byte[] { 0x0d, 0x4B, 0x06, 0x9E, 0x3F };
 
-            var message = ProtobufParser.Parse(input);
+            var parseResult = ProtobufParser.Parse(input);
 
-            message
+            parseResult
+				.Message
                 .Tags
                 .Should()
                 .OnlyContain(t => t.Index == 1);
@@ -28,9 +29,10 @@ namespace ProtobufDecoder.Test.Unit
         {
             var input = new byte[] { 0x0d, 0x4B, 0x06, 0x9E, 0x3F };
 
-            var message = ProtobufParser.Parse(input);
+            var parseResult = ProtobufParser.Parse(input);
 
-            message
+            parseResult
+				.Message
                 .Tags
                 .Should()
                 .OnlyContain(t => t.WireType == WireFormat.WireType.Fixed32);
@@ -41,9 +43,10 @@ namespace ProtobufDecoder.Test.Unit
         {
             var input = new byte[] { 0x0d, 0x4B, 0x06, 0x9E, 0x3F };
 
-            var message = ProtobufParser.Parse(input);
+            var parseResult = ProtobufParser.Parse(input);
 
-            message
+            parseResult
+				.Message
                 .Tags
                 .OfType<ProtobufTagSingle>()
                 .Should()
@@ -55,9 +58,10 @@ namespace ProtobufDecoder.Test.Unit
         {
             var input = new byte[] { 0x0d, 0x4B, 0x06, 0x9E, 0x3F };
 
-            var message = ProtobufParser.Parse(input);
+            var parseResult = ProtobufParser.Parse(input);
 
-            message
+            parseResult
+				.Message
                 .Tags
                 .OfType<ProtobufTagSingle>()
                 .Single()
@@ -73,9 +77,10 @@ namespace ProtobufDecoder.Test.Unit
         {
             var input = new byte[] { 0x0d, 0x4B, 0x06, 0x9E, 0x3F, 0x15, 0x4B, 0x06, 0x9E, 0x3F };
 
-            var message = ProtobufParser.Parse(input);
+            var parseResult = ProtobufParser.Parse(input);
 
-            message
+            parseResult
+				.Message
                 .Tags
                 .Should()
                 .Contain(t => t.Index == 1 && t.WireType == WireFormat.WireType.Fixed32)
@@ -88,9 +93,10 @@ namespace ProtobufDecoder.Test.Unit
         {
             var input = new byte[] { 0x0d, 0x4B, 0x06, 0x9E, 0x3F, 0x15, 0x4B, 0x06, 0x9E, 0x3F };
 
-            var message = ProtobufParser.Parse(input);
+            var parseResult = ProtobufParser.Parse(input);
 
-            message
+            parseResult
+				.Message
                 .Tags
                 .OfType<ProtobufTagSingle>()
                 .Single(t => t.Index == 2)
