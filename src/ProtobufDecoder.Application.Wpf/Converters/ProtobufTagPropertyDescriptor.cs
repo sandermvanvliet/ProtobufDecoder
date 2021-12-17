@@ -4,7 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using ProtobufDecoder.Application.Wpf.Annotations;
 
-namespace ProtobufDecoder.Application.Wpf
+namespace ProtobufDecoder.Application.Wpf.Converters
 {
     public class ProtobufTagPropertyDescriptor : INotifyPropertyChanged
     {

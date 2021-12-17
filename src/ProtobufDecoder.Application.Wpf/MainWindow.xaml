@@ -48,7 +48,7 @@
         </CollectionViewSource>
         <Style TargetType="TextBox" x:Key="GridViewTextBoxStyle">
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Path=IsReadOnly}" Value="True" d:DataContext="{d:DesignInstance s:ProtobufTagPropertyDescriptor}">
+                <DataTrigger Binding="{Binding Path=IsReadOnly}" Value="True" d:DataContext="{d:DesignInstance converters:ProtobufTagPropertyDescriptor}">
                     <DataTrigger.Setters>
                         <Setter Property="BorderThickness" Value="0" />
                     </DataTrigger.Setters>
@@ -58,12 +58,12 @@
         </Style>
         <Style TargetType="CheckBox" x:Key="GridViewCheckBoxStyle">
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Path=IsReadOnly}" Value="True" d:DataContext="{d:DesignInstance s:ProtobufTagPropertyDescriptor}">
+                <DataTrigger Binding="{Binding Path=IsReadOnly}" Value="True" d:DataContext="{d:DesignInstance converters:ProtobufTagPropertyDescriptor}">
                     <DataTrigger.Setters>
                         <Setter Property="IsEnabled" Value="False" />
                     </DataTrigger.Setters>
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Path=IsReadOnly}" Value="False" d:DataContext="{d:DesignInstance s:ProtobufTagPropertyDescriptor}">
+                <DataTrigger Binding="{Binding Path=IsReadOnly}" Value="False" d:DataContext="{d:DesignInstance converters:ProtobufTagPropertyDescriptor}">
                     <DataTrigger.Setters>
                         <Setter Property="IsEnabled" Value="True" />
                     </DataTrigger.Setters>
@@ -199,7 +199,7 @@
                                     <GridViewColumn.CellTemplateSelector>
                                         <s:PropertyGridViewTemplateSelector>
                                             <s:PropertyGridViewTemplateSelector.String>
-                                                <DataTemplate DataType="s:ProtobufTagPropertyDescriptor">
+                                                <DataTemplate DataType="converters:ProtobufTagPropertyDescriptor">
                                                     <TextBox Text="{Binding Path=Value, Mode=OneWay}"
                                                              IsReadOnly="{Binding Path=IsReadOnly}"
                                                              Style="{StaticResource GridViewTextBoxStyle}"
@@ -209,14 +209,14 @@
                                             </s:PropertyGridViewTemplateSelector.String>
 
                                             <s:PropertyGridViewTemplateSelector.Boolean>
-                                                <DataTemplate DataType="s:ProtobufTagPropertyDescriptor">
+                                                <DataTemplate DataType="converters:ProtobufTagPropertyDescriptor">
                                                     <CheckBox IsChecked="{Binding Path=Value, Mode=OneWay}"
                                                               Style="{StaticResource GridViewCheckBoxStyle}" />
                                                 </DataTemplate>
                                             </s:PropertyGridViewTemplateSelector.Boolean>
 
                                             <s:PropertyGridViewTemplateSelector.PackedFloat>
-                                                <DataTemplate DataType="s:ProtobufTagPropertyDescriptor">
+                                                <DataTemplate DataType="converters:ProtobufTagPropertyDescriptor">
                                                     <!-- Note that the binding path doesn't resolve now but that's because the
                                                     ProtobufTagPropertyDescriptor exposes Value as an object -->
                                                     <ListBox ItemsSource="{Binding Path=Value.Value}" 
@@ -228,7 +228,7 @@
                                             </s:PropertyGridViewTemplateSelector.PackedFloat>
 
                                             <s:PropertyGridViewTemplateSelector.PackedVarint>
-                                                <DataTemplate DataType="s:ProtobufTagPropertyDescriptor">
+                                                <DataTemplate DataType="converters:ProtobufTagPropertyDescriptor">
                                                     <!-- Note that the binding path doesn't resolve now but that's because the
                                                     ProtobufTagPropertyDescriptor exposes Value as an object -->
                                                     <ListBox ItemsSource="{Binding Path=Value.Values}" 
@@ -246,7 +246,7 @@
                                             </s:PropertyGridViewTemplateSelector.PackedVarint>
 
                                             <s:PropertyGridViewTemplateSelector.Varint>
-                                                <DataTemplate DataType="s:ProtobufTagPropertyDescriptor">
+                                                <DataTemplate DataType="converters:ProtobufTagPropertyDescriptor">
                                                     <Grid DataContext="{Binding Path=Value}"
                                                           d:DataContext="{d:DesignInstance values:VarintValue}">
                                                         <Grid.Resources>
@@ -301,7 +301,7 @@
                     <ListView.GroupStyle>
                         <GroupStyle>
                             <GroupStyle.HeaderTemplate>
-                                <DataTemplate DataType="{x:Type s:ProtobufTagPropertyDescriptor}">
+                                <DataTemplate DataType="{x:Type converters:ProtobufTagPropertyDescriptor}">
                                     <Border BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrush}}"
                                             Background="{DynamicResource {x:Static SystemColors.ControlBrush}}"
                                             BorderThickness="1">
@@ -332,7 +332,7 @@
                                 HorizontalAlignment="Stretch"
                                 Margin="4,0,0,0"
                                 DataContext="{Binding ElementName=TagPropertiesListBox, Path=SelectedItem}"
-                                d:DataContext="{d:DesignInstance s:ProtobufTagPropertyDescriptor}">
+                                d:DataContext="{d:DesignInstance converters:ProtobufTagPropertyDescriptor}">
                         <TextBlock Text="{Binding Path=Name}" FontWeight="Bold" />
                         <TextBlock Text="{Binding Path=Description}" TextWrapping="Wrap" VerticalAlignment="Stretch"
                                    HorizontalAlignment="Stretch" />

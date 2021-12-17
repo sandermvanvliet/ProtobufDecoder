@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using ProtobufDecoder.Application.Wpf.Converters;
 using ProtobufDecoder.Values;
 
 namespace ProtobufDecoder.Application.Wpf
