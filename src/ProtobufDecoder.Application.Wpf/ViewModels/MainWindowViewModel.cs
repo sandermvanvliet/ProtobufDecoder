@@ -1,18 +1,23 @@
 ﻿using System;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Microsoft.Win32;
+using ProtobufDecoder.Application.Wpf.Annotations;
 using ProtobufDecoder.Application.Wpf.Commands;
 using ProtobufDecoder.Application.Wpf.Models;
 using ProtobufDecoder.Tags;
 
 namespace ProtobufDecoder.Application.Wpf.ViewModels
 {
-    public class MainWindowViewModel
+    public class MainWindowViewModel : INotifyPropertyChanged
     {
+        private MessageViewModel _message;
+
         public MainWindowViewModel()
         {
             Model = new MainWindowModel();
@@ -38,8 +43,23 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 _ => (_ as TreeView)?.SelectedItem != null);
 
             DecodeTagCommand = new RelayCommand(
-                _ => DecodeTag((_ as TreeView)?.SelectedItem as ProtobufTag),
-                _ => (_ as TreeView)?.SelectedItem is ProtobufTagSingle singleTag && (singleTag.Value?.CanDecode ?? false));
+                _ =>
+                {
+                    var parseResult = ((_ as TreeView)?.SelectedItem as ProtobufTagViewModel)?.DecodeTag();
+                    if (parseResult == null)
+                    {
+                        Model.StatusBarWarning(Strings.CannotDecodeTag);
+                    }
+                    else if (parseResult.Success)
+                    {
+                        Model.StatusBarInfo(Strings.TagDecodedSuccessfully);
+                    }
+                    else
+                    {
+                        Model.StatusBarError(Strings.FailedToDecodeTag, parseResult.FailureReason);
+                    }
+                },
+                _ => (_ as TreeView)?.SelectedItem is ProtobufTagViewModel viewModel && viewModel.CanDecode);
         }
 
         public ICommand LoadFileCommand { get; }
@@ -51,6 +71,17 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
         public MainWindowModel Model { get; set; }
 
+        public MessageViewModel Message
+        {
+            get => _message;
+            set
+            {
+                if (Equals(value, _message)) return;
+                _message = value;
+                OnPropertyChanged();
+            }
+        }
+
         private void LoadAndDecode(string inputFilePath)
         {
             try
@@ -61,6 +92,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
                 if (parseResult.Success)
                 {
+                    Message = new MessageViewModel(parseResult.Message);
                     Model.Message = parseResult.Message;
                     Model.StatusBarInfo(Strings.FileLoadedSuccessfully);
                 }
@@ -168,32 +200,17 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             }
         }
 
-        private void DecodeTag(ProtobufTag selectedTag)
-        {
-            if (selectedTag is ProtobufTagSingle singleTag and not ProtobufTagEmbeddedMessage)
-            {
-                if (singleTag.Value.CanDecode)
-                {
-                    var parseResult = Model.DecodeTag(selectedTag);
-                    if (parseResult.Success)
-                    {
-                        Model.StatusBarInfo(Strings.TagDecodedSuccessfully);
-                    }
-                    else
-                    {
-                        Model.StatusBarError(Strings.FailedToDecodeTag, parseResult.FailureReason);
-                    }
-
-                    return;
-                }
-            }
-
-            Model.StatusBarWarning(Strings.CannotDecodeTag);
-        }
-
         public void SetSelectedTagProperty(ProtobufTag tag, string propertyName, object value)
         {
             Model.SetTagProperty(tag, propertyName, value);
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
+using ProtobufDecoder.Application.Wpf.ViewModels;
 using ProtobufDecoder.Tags;
 
 namespace ProtobufDecoder.Application.Wpf.Converters
@@ -16,16 +17,16 @@ namespace ProtobufDecoder.Application.Wpf.Converters
         {
             var list = new List<ProtobufTagPropertyDescriptor>();
 
-            if (value is ProtobufTag tag)
+            if (value is ProtobufTagViewModel viewModel)
             {
                 // Ensure that the type of the tag always appears in the list of properties
                 list.Add(new ProtobufTagPropertyDescriptor(
-                    new ManualPropertyDescriptor("Type", tag.GetType().Name),
-                    tag,
+                    new ManualPropertyDescriptor("Type", viewModel.Tag.GetType().Name),
+                    viewModel.Tag,
                     null,
                     true));
 
-                var properties = TypeDescriptor.GetProperties(tag);
+                var properties = TypeDescriptor.GetProperties(viewModel.Tag);
 
                 foreach (PropertyDescriptor p in properties)
                 {
@@ -36,7 +37,7 @@ namespace ProtobufDecoder.Application.Wpf.Converters
 
                     list.Add(new ProtobufTagPropertyDescriptor(
                         p, 
-                        tag, 
+                        viewModel.Tag, 
                         GetCategoryOf(p), 
                         HasAttribute<ReadOnlyAttribute>(p.Attributes, a => a.IsReadOnly)));
                 }

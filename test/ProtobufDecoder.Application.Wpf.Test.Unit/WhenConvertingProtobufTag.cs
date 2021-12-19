@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Linq;
 using FluentAssertions;
 using ProtobufDecoder.Application.Wpf.Converters;
+using ProtobufDecoder.Application.Wpf.ViewModels;
 using ProtobufDecoder.Tags;
 using Xunit;
 
@@ -43,7 +44,7 @@ namespace ProtobufDecoder.Application.Wpf.Test.Unit
             // Use a proper object with properties to
             // ensure we're not accidentially seeing
             // properties of the input
-            var input = new ProtobufTagSingle();
+            var input = new ProtobufTagViewModel(new ProtobufTagSingle());
 
             Convert(input)
                 .As<List<ProtobufTagPropertyDescriptor>>()
@@ -59,7 +60,7 @@ namespace ProtobufDecoder.Application.Wpf.Test.Unit
             // Use a proper object with properties to
             // ensure we're not accidentially seeing
             // properties of the input
-            var input = new ProtobufTagSingle();
+            var input = new ProtobufTagViewModel(new ProtobufTagSingle());
 
             Convert(input)
                 .As<List<ProtobufTagPropertyDescriptor>>()

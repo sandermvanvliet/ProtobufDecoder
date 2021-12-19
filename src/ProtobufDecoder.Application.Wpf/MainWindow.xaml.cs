@@ -54,7 +54,14 @@ namespace ProtobufDecoder.Application.Wpf
 
         private void TagsTreeView_OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            if (TagsTreeView.SelectedItem is ProtobufTagSingle singleTag)
+            var viewModel = e.NewValue as ProtobufTagViewModel;
+
+            if (viewModel == null)
+            {
+                return;
+            }
+
+            if (viewModel.Tag is ProtobufTagSingle singleTag)
             {
                 var byteViewOffset = GetOffsetOf(singleTag);
 

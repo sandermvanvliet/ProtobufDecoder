@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
@@ -136,57 +135,6 @@ namespace ProtobufDecoder.Application.Wpf.Models
             StatusBarText = string.Format(format, args);
             StatusBarBackground = Brushes.Red;
             StatusBarForeground = Brushes.White;
-        }
-
-        public MessageParseResult DecodeTag(ProtobufTag tag)
-        {
-            var parseResult = MessageParseResult.Failed("Can only decode a single tag");
-
-            if (tag is ProtobufTagSingle singleTag)
-            {
-                if(singleTag.Value.CanDecode)
-                {
-                    try
-                    {
-                        parseResult = ProtobufParser.Parse(singleTag.Value.RawValue);
-
-                        if (parseResult.Success)
-                        {
-                            var embeddedMessageTag =
-                                new ProtobufTagEmbeddedMessage(singleTag, parseResult.Message.Tags.ToArray())
-                                {
-                                    Name = $"EmbeddedMessage{tag.Index}"
-                                };
-
-                            // Replace the existing tag with the expanded tag
-                            if (singleTag.Parent is ProtobufTagRepeated repeatedTag)
-                            {
-                                var tagIndex = repeatedTag.Items.IndexOf(singleTag);
-                                repeatedTag.Items.RemoveAt(tagIndex);
-                                repeatedTag.Items.Insert(tagIndex, embeddedMessageTag);
-                                OnPropertyChanged(nameof(Message));
-                            }
-                            else if (singleTag.Parent is ProtobufTagEmbeddedMessage embeddedTag)
-                            {
-                                var tagIndex = embeddedTag.Tags.IndexOf(singleTag);
-                                embeddedTag.Tags.RemoveAt(tagIndex);
-                                embeddedTag.Tags.Insert(tagIndex, embeddedMessageTag);
-                                OnPropertyChanged(nameof(Message));
-                            }
-                        }
-                    }
-                    catch (Exception exception)
-                    {
-                        parseResult = MessageParseResult.Failed($"Unexpected error: {exception.Message}");
-                    }
-                }
-                else
-                {
-                    parseResult = MessageParseResult.Failed($"Tag value can't be decoded");
-                }
-            }
-
-            return parseResult;
         }
 
         public void SetTagProperty(ProtobufTag tag, string propertyName, object value)

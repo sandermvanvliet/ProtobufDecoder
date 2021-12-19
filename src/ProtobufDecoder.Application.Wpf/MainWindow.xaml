@@ -7,7 +7,6 @@
         xmlns:viewModels="clr-namespace:ProtobufDecoder.Application.Wpf.ViewModels"
         xmlns:converters="clr-namespace:ProtobufDecoder.Application.Wpf.Converters"
         xmlns:s="clr-namespace:ProtobufDecoder.Application.Wpf"
-        xmlns:tags="clr-namespace:ProtobufDecoder.Tags;assembly=ProtobufDecoder"
         xmlns:values="clr-namespace:ProtobufDecoder.Values;assembly=ProtobufDecoder"
         mc:Ignorable="d"
         Title="{Binding Path=Model.WindowTitle}"
@@ -17,22 +16,6 @@
         d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}"
         Icon="icon.png">
     <Window.Resources>
-        <DataTemplate DataType="{x:Type tags:ProtobufTagSingle}">
-            <TextBlock Text="{Binding Path=Name}" />
-        </DataTemplate>
-
-        <HierarchicalDataTemplate DataType="{x:Type tags:ProtobufTagRepeated}"
-                                  ItemsSource="{Binding Path=Items,Mode=OneWay}">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{Binding Path=Name}" />
-                <TextBlock Text="{x:Static s:Strings.TagRepeated}" Margin="4, 0, 0, 0" />
-            </StackPanel>
-        </HierarchicalDataTemplate>
-
-        <HierarchicalDataTemplate DataType="{x:Type tags:ProtobufTagEmbeddedMessage}"
-                                  ItemsSource="{Binding Path=Tags,Mode=OneWay}">
-            <TextBlock Text="{Binding Path=Name}" />
-        </HierarchicalDataTemplate>
         <converters:ProtobufTagConverter x:Key="ProtobufTagConverter" />
         <converters:ProtobufMessageConverter x:Key="GeneratedProtoConverter" />
         <CollectionViewSource
@@ -137,7 +120,7 @@
                 </Grid.RowDefinitions>
                 <TreeView x:Name="TagsTreeView"
                           SelectedItemChanged="TagsTreeView_OnSelectedItemChanged"
-                          ItemsSource="{Binding Model.Message.Tags,Mode=OneWay}"
+                          ItemsSource="{Binding Message.Tags,Mode=OneWay}"
                           VerticalAlignment="Stretch"
                           Grid.Row="0">
                     <TreeView.ContextMenu>
@@ -152,6 +135,24 @@
                                       InputGestureText="Ctrl+C" />
                         </ContextMenu>
                     </TreeView.ContextMenu>
+                    <TreeView.ItemContainerStyle>
+                        <Style TargetType="{x:Type TreeViewItem}">
+                            <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                            <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                            <Setter Property="FontWeight" Value="Normal" />
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="FontWeight" Value="Bold" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TreeView.ItemContainerStyle>
+
+                    <TreeView.ItemTemplate>
+                        <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                            <TextBlock Text="{Binding Name}" />
+                        </HierarchicalDataTemplate>
+                    </TreeView.ItemTemplate>
                 </TreeView>
                 <GridSplitter Grid.Row="1"
                               Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
