@@ -44,7 +44,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             CopyTagValueCommand = new RelayCommand(
                 _ => ((_ as TreeView)?.SelectedItem as ProtobufTagViewModel)?.CopyTagValueToCsharpArray(),
                 _ => (_ as TreeView)?.SelectedItem is ProtobufTagViewModel)
-                .OnSuccess(_ => Model.StatusBarInfo(Strings.ContextMenuCopyValue));
+                .OnSuccess(_ => Model.StatusBarInfo(Strings.TagCopiedToClipboard));
 
             DecodeTagCommand = new RelayCommand(
                 _ =>((_ as TreeView)?.SelectedItem as ProtobufTagViewModel)?.DecodeTag(),
