@@ -1,16 +1,13 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Microsoft.Win32;
 using ProtobufDecoder.Application.Wpf.Annotations;
 using ProtobufDecoder.Application.Wpf.Commands;
 using ProtobufDecoder.Application.Wpf.Models;
-using ProtobufDecoder.Tags;
 
 namespace ProtobufDecoder.Application.Wpf.ViewModels
 {
@@ -39,8 +36,14 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 _ => Model?.Message != null);
 
             CopyTagValueCommand = new RelayCommand(
-                _ => CopyTagValueToCsharpArray((_ as  TreeView)?.SelectedItem as ProtobufTag),
-                _ => (_ as TreeView)?.SelectedItem != null);
+                _ =>
+                {
+                    if (((_ as TreeView)?.SelectedItem as ProtobufTagViewModel)?.CopyTagValueToCsharpArray() ?? false)
+                    {
+                        Model.StatusBarInfo(Strings.ContextMenuCopyValue);
+                    }
+                },
+                _ => (_ as TreeView)?.SelectedItem is ProtobufTagViewModel);
 
             DecodeTagCommand = new RelayCommand(
                 _ =>
@@ -185,24 +188,6 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             {
                 Model.StatusBarError(Strings.ProtoFileFailedToSave, e.Message);
             }
-        }
-
-        private void CopyTagValueToCsharpArray(ProtobufTag selectedTag)
-        {
-            if (selectedTag is ProtobufTagSingle singleTag and not ProtobufTagEmbeddedMessage)
-            {
-                var bytes = string.Join(", ", singleTag.Value.RawValue.Select(x => "0x" + x.ToString("X2").ToLower()));
-                var csharpArray = $"var tagValueBytes = new byte[] {{{bytes}}};";
-
-                Clipboard.SetText(csharpArray);
-
-                Model.StatusBarInfo(Strings.TagCopiedToClipboard);
-            }
-        }
-
-        public void SetSelectedTagProperty(ProtobufTag tag, string propertyName, object value)
-        {
-            Model.SetTagProperty(tag, propertyName, value);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

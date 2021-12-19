@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
 using ProtobufDecoder.Application.Wpf.ViewModels;
 using ProtobufDecoder.Tags;
@@ -144,17 +143,6 @@ namespace ProtobufDecoder.Application.Wpf
             if (ViewModel.LoadFileCommand.CanExecute(ViewModel.Model.InputFilePath))
             {
                 ViewModel.LoadFileCommand.Execute(ViewModel.Model.InputFilePath);
-            }
-        }
-
-        private void TextBoxBase_OnTextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (sender is TextBox textBox)
-            {
-                if (textBox.Tag is string propertyName)
-                {
-                    ViewModel.SetSelectedTagProperty(TagsTreeView.SelectedItem as ProtobufTag, propertyName, textBox.Text);
-                }
             }
         }
     }

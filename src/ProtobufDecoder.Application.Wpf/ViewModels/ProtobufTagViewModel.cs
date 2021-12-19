@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using ProtobufDecoder.Application.Wpf.Annotations;
 using ProtobufDecoder.Tags;
 
@@ -54,9 +55,28 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                     return;
                 }
 
+                if (_tag != null)
+                {
+                    Tag.PropertyChanged -= TagOnPropertyChanged;
+                }
+
                 _tag = value;
+                
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(CanDecode));
+
+                if (value != null)
+                {
+                    _tag.PropertyChanged += TagOnPropertyChanged;
+                }
+            }
+        }
+
+        private void TagOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(Name))
+            {
+                Name = Tag.Name;
             }
         }
 
@@ -151,7 +171,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
             if (Tag is ProtobufTagSingle singleTag)
             {
-                if(singleTag.Value.CanDecode)
+                if (singleTag.Value.CanDecode)
                 {
                     try
                     {
@@ -198,6 +218,21 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             }
 
             return parseResult;
+        }
+
+        public bool CopyTagValueToCsharpArray()
+        {
+            if (Tag is ProtobufTagSingle singleTag and not ProtobufTagEmbeddedMessage)
+            {
+                var bytes = string.Join(", ", singleTag.Value.RawValue.Select(x => "0x" + x.ToString("X2").ToLower()));
+                var csharpArray = $"var tagValueBytes = new byte[] {{{bytes}}};";
+
+                Clipboard.SetText(csharpArray);
+
+                return true;
+            }
+
+            return false;
         }
     }
 }

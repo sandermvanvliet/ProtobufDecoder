@@ -201,11 +201,9 @@
                                         <s:PropertyGridViewTemplateSelector>
                                             <s:PropertyGridViewTemplateSelector.String>
                                                 <DataTemplate DataType="converters:ProtobufTagPropertyDescriptor">
-                                                    <TextBox Text="{Binding Path=Value, Mode=OneWay}"
+                                                    <TextBox Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                                              IsReadOnly="{Binding Path=IsReadOnly}"
-                                                             Style="{StaticResource GridViewTextBoxStyle}"
-                                                             TextChanged="TextBoxBase_OnTextChanged"
-                                                             Tag="{Binding Path=Name, Mode=OneTime}" />
+                                                             Style="{StaticResource GridViewTextBoxStyle}" />
                                                 </DataTemplate>
                                             </s:PropertyGridViewTemplateSelector.String>
 
