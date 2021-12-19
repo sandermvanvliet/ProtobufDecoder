@@ -6,9 +6,12 @@ namespace ProtobufDecoder.Application.Wpf.Commands
     public class RelayCommand : ICommand
     {
         private readonly Func<object, bool> _canExecute;
-        private readonly Action<object> _execute;
+        private readonly Func<object, CommandResult> _execute;
+        private Action<CommandResult> _onFailure;
+        private Action<CommandResult> _onSuccess;
+        private Action<CommandResult> _onSuccessWithWarnings;
 
-        public RelayCommand(Action<object> execute, Func<object, bool> canExecute = null)
+        public RelayCommand(Func<object, CommandResult> execute, Func<object, bool> canExecute = null)
         {
             _execute = execute;
             _canExecute = canExecute;
@@ -27,7 +30,38 @@ namespace ProtobufDecoder.Application.Wpf.Commands
 
         public void Execute(object parameter)
         {
-            _execute(parameter);
+            var result = _execute(parameter);
+
+            if (result.Result == Result.Success)
+            {
+                _onSuccess?.Invoke(result);
+            }
+            else if (result.Result == Result.SuccessWithWarnings)
+            {
+                _onSuccessWithWarnings?.Invoke(result);
+            }
+            else if (result.Result == Result.Failure)
+            {
+                _onFailure?.Invoke(result);
+            }
+        }
+
+        public RelayCommand OnSuccess(Action<CommandResult> action)
+        {
+            _onSuccess = action;
+            return this;
+        }
+
+        public RelayCommand OnSuccessWithWarnings(Action<CommandResult> action)
+        {
+            _onSuccessWithWarnings = action;
+            return this;
+        }
+
+        public RelayCommand OnFailure(Action<CommandResult> action)
+        {
+            _onFailure = action;
+            return this;
         }
     }
 }

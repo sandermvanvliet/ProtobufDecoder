@@ -21,7 +21,9 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
             LoadFileCommand = new RelayCommand(
                 _ => LoadAndDecode(Model.InputFilePath),
-                _ => !string.IsNullOrEmpty(Model?.InputFilePath));
+                _ => !string.IsNullOrEmpty(Model?.InputFilePath))
+                .OnSuccess(_ => Model.StatusBarInfo(Strings.FileLoadedSuccessfully))
+                .OnFailure(_ => Model.StatusBarError(Strings.FileFailedToLoad, _.Message));
 
             OpenFileCommand = new RelayCommand(
                 _ => OpenFile(),
@@ -29,40 +31,27 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
             SaveGeneratedProtoCommand = new RelayCommand(
                 _ => SaveGeneratedProtoFile(),
-                _ => Model?.Message != null);
+                _ => Model?.Message != null)
+                .OnSuccess(_ => Model.StatusBarInfo(Strings.ProtoFileSavedSuccessfully))
+                .OnFailure(_ => Model.StatusBarError(Strings.ProtoFileFailedToSave, _.Message));
 
             SaveGeneratedProtoAsCommand = new RelayCommand(
                 _ => SaveGeneratedProtoFileAs(),
-                _ => Model?.Message != null);
+                _ => Model?.Message != null)
+                .OnSuccess(_ => Model.StatusBarInfo(Strings.ProtoFileSavedAs, _.Message))
+                .OnFailure(_ => Model.StatusBarError(Strings.ProtoFileFailedToSave, _.Message));
 
             CopyTagValueCommand = new RelayCommand(
-                _ =>
-                {
-                    if (((_ as TreeView)?.SelectedItem as ProtobufTagViewModel)?.CopyTagValueToCsharpArray() ?? false)
-                    {
-                        Model.StatusBarInfo(Strings.ContextMenuCopyValue);
-                    }
-                },
-                _ => (_ as TreeView)?.SelectedItem is ProtobufTagViewModel);
+                _ => ((_ as TreeView)?.SelectedItem as ProtobufTagViewModel)?.CopyTagValueToCsharpArray(),
+                _ => (_ as TreeView)?.SelectedItem is ProtobufTagViewModel)
+                .OnSuccess(_ => Model.StatusBarInfo(Strings.ContextMenuCopyValue));
 
             DecodeTagCommand = new RelayCommand(
-                _ =>
-                {
-                    var parseResult = ((_ as TreeView)?.SelectedItem as ProtobufTagViewModel)?.DecodeTag();
-                    if (parseResult == null)
-                    {
-                        Model.StatusBarWarning(Strings.CannotDecodeTag);
-                    }
-                    else if (parseResult.Success)
-                    {
-                        Model.StatusBarInfo(Strings.TagDecodedSuccessfully);
-                    }
-                    else
-                    {
-                        Model.StatusBarError(Strings.FailedToDecodeTag, parseResult.FailureReason);
-                    }
-                },
-                _ => (_ as TreeView)?.SelectedItem is ProtobufTagViewModel viewModel && viewModel.CanDecode);
+                _ =>((_ as TreeView)?.SelectedItem as ProtobufTagViewModel)?.DecodeTag(),
+                _ => (_ as TreeView)?.SelectedItem is ProtobufTagViewModel viewModel && viewModel.CanDecode)
+                .OnSuccess(_ => Model.StatusBarInfo(Strings.TagDecodedSuccessfully))
+                .OnSuccessWithWarnings(_ => Model.StatusBarWarning(Strings.CannotDecodeTag))
+                .OnFailure(_ => Model.StatusBarError(Strings.FailedToDecodeTag, _.Message));               
         }
 
         public ICommand LoadFileCommand { get; }
@@ -85,7 +74,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             }
         }
 
-        private void LoadAndDecode(string inputFilePath)
+        private CommandResult LoadAndDecode(string inputFilePath)
         {
             try
             {
@@ -97,20 +86,19 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 {
                     Message = new MessageViewModel(parseResult.Message);
                     Model.Message = parseResult.Message;
-                    Model.StatusBarInfo(Strings.FileLoadedSuccessfully);
+
+                    return CommandResult.Success();
                 }
-                else
-                {
-                    Model.StatusBarError(Strings.FileFailedToLoad, parseResult.FailureReason);
-                }
+
+                return CommandResult.Failure(parseResult.FailureReason);
             }
             catch (Exception e)
             {
-                Model.StatusBarError(Strings.FileFailedToLoad, e.Message);
+                return CommandResult.Failure(e.Message);
             }
         }
 
-        private void OpenFile()
+        private CommandResult OpenFile()
         {
             var dialog = new OpenFileDialog
             {
@@ -127,9 +115,11 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
                 LoadFileCommand.Execute(null);
             }
+
+            return CommandResult.Success();
         }
 
-        private void SaveGeneratedProtoFile()
+        private CommandResult SaveGeneratedProtoFile()
         {
             if (string.IsNullOrEmpty(Model.OutputFilePath))
             {
@@ -145,7 +135,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
                 if (!result.HasValue || !result.Value)
                 {
-                    return;
+                    return CommandResult.Success();
                 }
 
                 Model.OutputFilePath = dialog.FileName;
@@ -154,15 +144,15 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             try
             {
                 File.WriteAllText(Model.OutputFilePath, ProtobufWriter.ToString(Model.Message));
-                Model.StatusBarInfo(Strings.ProtoFileSavedSuccessfully);
+                return CommandResult.Success();
             }
             catch (Exception e)
             {
-                Model.StatusBarError(Strings.ProtoFileFailedToSave, e.Message);
+                return CommandResult.Failure(e.Message);
             }
         }
 
-        private void SaveGeneratedProtoFileAs()
+        private CommandResult SaveGeneratedProtoFileAs()
         {
             var dialog = new SaveFileDialog
             {
@@ -176,17 +166,17 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
             if (!result.HasValue || !result.Value)
             {
-                return;
+                return CommandResult.Success();
             }
 
             try
             {
                 File.WriteAllText(dialog.FileName, ProtobufWriter.ToString(Model.Message));
-                Model.StatusBarInfo(Strings.ProtoFileSavedAs, dialog.FileName);
+                return CommandResult.Success(dialog.FileName);
             }
             catch (Exception e)
             {
-                Model.StatusBarError(Strings.ProtoFileFailedToSave, e.Message);
+                return CommandResult.Failure(e.Message);
             }
         }
 

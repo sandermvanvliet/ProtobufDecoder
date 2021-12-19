@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using ProtobufDecoder.Application.Wpf.Annotations;
+using ProtobufDecoder.Application.Wpf.Commands;
 using ProtobufDecoder.Tags;
 
 namespace ProtobufDecoder.Application.Wpf.ViewModels
@@ -165,7 +166,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public MessageParseResult DecodeTag()
+        public CommandResult DecodeTag()
         {
             var parseResult = MessageParseResult.Failed("Can only decode a single tag");
 
@@ -217,10 +218,14 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 }
             }
 
-            return parseResult;
+            return new CommandResult
+            {
+                Result = parseResult.Success ? Result.Success : Result.Failure,
+                Message = parseResult.FailureReason
+            };
         }
 
-        public bool CopyTagValueToCsharpArray()
+        public CommandResult CopyTagValueToCsharpArray()
         {
             if (Tag is ProtobufTagSingle singleTag and not ProtobufTagEmbeddedMessage)
             {
@@ -229,10 +234,10 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
                 Clipboard.SetText(csharpArray);
 
-                return true;
+                return CommandResult.Success();
             }
 
-            return false;
+            return CommandResult.Failure("Not a tag");
         }
     }
 }
