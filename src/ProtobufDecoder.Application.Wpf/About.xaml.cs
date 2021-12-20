@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,6 +30,16 @@ namespace ProtobufDecoder.Application.Wpf
         private void OkButton_OnClick(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void Hyperlink_OnClick(object sender, RoutedEventArgs e)
+        {
+            var startInfo = new ProcessStartInfo((sender as Hyperlink).NavigateUri.ToString())
+            {
+                UseShellExecute = true
+            };
+
+            Process.Start(startInfo);
         }
     }
 }

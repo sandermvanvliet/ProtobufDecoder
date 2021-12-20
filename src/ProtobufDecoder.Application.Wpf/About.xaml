@@ -5,31 +5,55 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProtobufDecoder.Application.Wpf"
         mc:Ignorable="d"
-        Title="{x:Static local:Strings.AboutTitle}" Height="143" Width="368">
+        Title="{x:Static local:Strings.AboutTitle}" Height="250" Width="550">
     <Grid Margin="0,0,0,0">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition />
+            <ColumnDefinition Width="86*" />
+            <ColumnDefinition Width="60"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="32" />
+            <RowDefinition Height="28" />
+            <RowDefinition Height="28" />
+            <RowDefinition Height="28" />
+            <RowDefinition />
+            <RowDefinition Height="38" />
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-            <Label Width="60" HorizontalContentAlignment="Right" VerticalAlignment="Center" Content="{x:Static local:Strings.AboutVersion}"/>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Grid.ColumnSpan="2">
+            <Image Source="icon.png" />
+            <TextBlock FontWeight="Bold" VerticalAlignment="Center" FontSize="18">ProtobufDecoder</TextBlock>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" Grid.ColumnSpan="2" Grid.Column="0">
+            <Label Width="120" HorizontalContentAlignment="Right" VerticalAlignment="Center" Content="{x:Static local:Strings.AboutVersion}"/>
             <TextBlock Name="VersionTextBlock" VerticalAlignment="Center" />
         </StackPanel>
 
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
-            <Label Width="60" HorizontalContentAlignment="Right" VerticalAlignment="Center">GitHub:</Label>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Grid.ColumnSpan="2" Grid.Column="0">
+            <Label Width="120" HorizontalContentAlignment="Right" VerticalAlignment="Center">Sources:</Label>
             <TextBlock VerticalAlignment="Center">
-                <Hyperlink NavigateUri="https://github.com/sandermvanvliet/ProtobufDecoder">https://github.com/sandermvanvliet/ProtobufDecoder</Hyperlink>
+                <Hyperlink NavigateUri="https://github.com/sandermvanvliet/ProtobufDecoder" Click="Hyperlink_OnClick">https://github.com/sandermvanvliet/ProtobufDecoder</Hyperlink>
             </TextBlock>
         </StackPanel>
 
-        <StackPanel Grid.Row="2" HorizontalAlignment="Right" Margin="8,8,8,8">
-            <Button Name="OkButton" Click="OkButton_OnClick" Content="{x:Static local:Strings.AboutButtonClose}"></Button>
+        <StackPanel Grid.Row="3" Orientation="Horizontal" Grid.ColumnSpan="2" Grid.Column="0">
+            <Label Width="120" HorizontalContentAlignment="Right" VerticalAlignment="Center">License:</Label>
+            <TextBlock VerticalAlignment="Center">
+                <Hyperlink NavigateUri="https://github.com/sandermvanvliet/ProtobufDecoder/blob/master/LICENSE" Click="Hyperlink_OnClick">MIT</Hyperlink>
+            </TextBlock>
         </StackPanel>
+
+        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="2" Grid.Column="0">
+            <Label VerticalAlignment="Top" Width="120" HorizontalContentAlignment="Right" HorizontalAlignment="Left">Acknowledgements:</Label>
+            <StackPanel Orientation="Vertical" VerticalAlignment="Top" Margin="0,4,0,0" Width="425">
+                <TextBlock TextWrapping="Wrap"><Hyperlink NavigateUri="https://github.com/topas/VarintBitConverter/" Click="Hyperlink_OnClick">topas/VarintBitConverter</Hyperlink> for Varint decoding from the Protobuf payloads</TextBlock>
+                <TextBlock><Hyperlink NavigateUri="https://github.com/abbaye/WPFHexEditorControl" Click="Hyperlink_OnClick">WPF:HexEditor</Hyperlink> to display the raw payload and tag highlighting</TextBlock>
+                <TextBlock>String detection tricks from <Hyperlink NavigateUri="https://github.com/mildsunrise/protobuf-inspector" Click="Hyperlink_OnClick">mildsunrise/protobuf-inspector</Hyperlink></TextBlock>
+            </StackPanel>
+        </StackPanel>
+
+        <Button Name="OkButton" Click="OkButton_OnClick" Content="{x:Static local:Strings.AboutButtonClose}"
+                 Grid.Row="5" Grid.Column="1" Margin="8,8,8,8"/>
     </Grid>
 </Window>
