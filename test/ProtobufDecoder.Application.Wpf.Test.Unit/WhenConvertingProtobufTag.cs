@@ -68,6 +68,34 @@ namespace ProtobufDecoder.Application.Wpf.Test.Unit
                 .NotContain(p => p.Name == nameof(ProtobufTagSingle.Parent));
         }
 
+        [Fact]
+        public void GivenEmbeddedMessageTag_ValuePropertyIsExcluded()
+        {
+            // Use a proper object with properties to
+            // ensure we're not accidentially seeing
+            // properties of the input
+            var input = new ProtobufTagViewModel(new ProtobufTagEmbeddedMessage(new ProtobufTagSingle(), new ProtobufTag[0]));
+
+            Convert(input)
+                .As<List<ProtobufTagPropertyDescriptor>>()
+                .Should()
+                .NotContain(p => p.Name == nameof(ProtobufTagSingle.Value));
+        }
+
+        [Fact]
+        public void GivenRepeatedTag_ValuePropertyIsExcluded()
+        {
+            // Use a proper object with properties to
+            // ensure we're not accidentially seeing
+            // properties of the input
+            var input = new ProtobufTagViewModel(new ProtobufTagRepeated());
+
+            Convert(input)
+                .As<List<ProtobufTagPropertyDescriptor>>()
+                .Should()
+                .NotContain(p => p.Name == nameof(ProtobufTagSingle.Value));
+        }
+
         private object Convert(object input)
         {
             return new ProtobufTagConverter()

@@ -35,6 +35,12 @@ namespace ProtobufDecoder.Application.Wpf.Converters
                         continue;
                     }
 
+                    if (viewModel.Tag is ProtobufTagEmbeddedMessage &&
+                        p.Name == nameof(ProtobufTagEmbeddedMessage.Value))
+                    {
+                        continue;
+                    }
+
                     list.Add(new ProtobufTagPropertyDescriptor(
                         p, 
                         viewModel.Tag, 
