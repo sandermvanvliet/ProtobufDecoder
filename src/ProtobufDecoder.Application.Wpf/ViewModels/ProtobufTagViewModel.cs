@@ -73,7 +73,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             }
         }
 
-        private void TagOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        private void TagOnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(Name))
             {
