@@ -62,7 +62,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 }
 
                 _tag = value;
-                
+
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(CanDecode));
 
@@ -185,26 +185,11 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                                 {
                                     Name = $"EmbeddedMessage{Tag.Index}"
                                 };
-
-                            // Replace the existing tag with the expanded tag
-                            if (singleTag.Parent is ProtobufTagRepeated repeatedTag)
-                            {
-                                var tagIndex = repeatedTag.Items.IndexOf(singleTag);
-                                repeatedTag.Items.RemoveAt(tagIndex);
-                                repeatedTag.Items.Insert(tagIndex, embeddedMessageTag);
-                                Tag = embeddedMessageTag;
-                                PopulateChildren(embeddedMessageTag);
-                                IsExpanded = true;
-                            }
-                            else if (singleTag.Parent is ProtobufTagEmbeddedMessage embeddedTag)
-                            {
-                                var tagIndex = embeddedTag.Tags.IndexOf(singleTag);
-                                embeddedTag.Tags.RemoveAt(tagIndex);
-                                embeddedTag.Tags.Insert(tagIndex, embeddedMessageTag);
-                                Tag = embeddedMessageTag;
-                                PopulateChildren(embeddedMessageTag);
-                                IsExpanded = true;
-                            }
+                            
+                            ReplaceChildWith(singleTag, embeddedMessageTag);
+                            Tag = embeddedMessageTag;
+                            PopulateChildren(embeddedMessageTag);
+                            IsExpanded = true;
                         }
                     }
                     catch (Exception exception)
@@ -223,6 +208,28 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 Result = parseResult.Success ? Result.Success : Result.Failure,
                 Message = parseResult.FailureReason
             };
+        }
+
+        private void ReplaceChildWith(
+            ProtobufTagSingle child,
+            ProtobufTagSingle replacement)
+        {
+            if (Tag.Parent is ProtobufTagRepeated repeatedTag)
+            {
+                var tagIndex = repeatedTag.Items.IndexOf(child);
+                repeatedTag.Items.RemoveAt(tagIndex);
+                repeatedTag.Items.Insert(tagIndex, replacement);
+            }
+            else if (Tag.Parent is ProtobufTagEmbeddedMessage embeddedTag)
+            {
+                var tagIndex = embeddedTag.Tags.IndexOf(child);
+                embeddedTag.Tags.RemoveAt(tagIndex);
+                embeddedTag.Tags.Insert(tagIndex, embeddedTag);
+            }
+            else
+            {
+                throw new InvalidOperationException($"A {Tag.GetType().Name} doesn't support child tags");
+            }
         }
 
         public CommandResult CopyTagValueToCsharpArray()
