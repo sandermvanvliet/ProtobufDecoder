@@ -18,6 +18,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
         private string _name;
         private ProtobufTagViewModel _parent;
         private ProtobufTag _tag;
+        private ObservableCollection<ProtobufTagViewModel> _children = new();
 
         public ProtobufTagViewModel(ProtobufTag tag, ProtobufTagViewModel parent = null)
         {
@@ -72,18 +73,23 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             }
         }
 
-        public ObservableCollection<ProtobufTagViewModel> Children { get; set; } = new();
+        public ObservableCollection<ProtobufTagViewModel> Children
+        {
+            get => _children;
+            set
+            {
+                if (Equals(value, _children)) return;
+                _children = value;
+                OnPropertyChanged();
+            }
+        }
 
         public bool IsSelected
         {
             get => _isSelected;
             set
             {
-                if (value == _isSelected)
-                {
-                    return;
-                }
-
+                if (value == _isSelected) return;
                 _isSelected = value;
                 OnPropertyChanged();
             }
@@ -94,11 +100,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             get => _isExpanded;
             set
             {
-                if (value == _isExpanded)
-                {
-                    return;
-                }
-
+                if (value == _isExpanded) return;
                 _isExpanded = value;
                 OnPropertyChanged();
 
@@ -115,11 +117,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             get => _parent;
             set
             {
-                if (Equals(value, _parent))
-                {
-                    return;
-                }
-
+                if (Equals(value, _parent)) return;
                 _parent = value;
                 OnPropertyChanged();
             }
@@ -164,6 +162,9 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
         private void TagOnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            // Because we're shadowing the actual tag with this view model
+            // we need to update certain properties when they change on the
+            // actual ProtobufTag instance.
             if (e.PropertyName == nameof(Name))
             {
                 Name = Tag.Name;
@@ -172,12 +173,20 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
         private void ChildTagPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName != nameof(IsExpanded) && e.PropertyName != nameof(IsSelected))
+            // Ignore IsExpanded and IsSelected events because they
+            // are handled directly by the TreeView
+            if (e.PropertyName == nameof(IsExpanded) || e.PropertyName == nameof(IsSelected))
             {
-                // Trigger a PropertyChanged event of the children so 
-                // that the bindings update.
-                OnPropertyChanged(nameof(Tag));
+                return;
             }
+
+            // Trigger an update of the Tag property so that
+            // changes from child tags get bubbled up all the
+            // way to the MessageViewModel.
+            // That allows the UI to get notified of changes
+            // down the tree of tags and update the generated
+            // proto interface for example.
+            OnPropertyChanged(nameof(Tag));
         }
 
         [NotifyPropertyChangedInvocator]
