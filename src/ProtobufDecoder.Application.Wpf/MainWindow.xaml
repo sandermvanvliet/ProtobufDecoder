@@ -167,7 +167,7 @@
                         Margin="0"
                         Grid.Row="2">
                     <TextBox x:Name="GeneratedProtoTextBlock"
-                             Text="{Binding Model.Message, Converter={StaticResource GeneratedProtoConverter}}"
+                             Text="{Binding Message.Message, Converter={StaticResource GeneratedProtoConverter},Mode=OneWay}"
                              IsReadOnly="True" />
                 </Border>
             </Grid>
