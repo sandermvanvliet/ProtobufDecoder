@@ -8,7 +8,7 @@ using Xunit;
 
 namespace ProtobufDecoder.Test.Unit
 {
-    public class WhenGeneratingProtoFile
+    public class WhenRenderingProtobufInterface
     {
         private readonly Renderer _renderer = new Renderer();
 
