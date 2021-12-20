@@ -174,6 +174,11 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             {
                 if (singleTag.Value.CanDecode)
                 {
+                    if (Parent == null)
+                    {
+                        return CommandResult.Failure("Tag doesn't have a parent");
+                    }
+
                     try
                     {
                         parseResult = ProtobufParser.Parse(singleTag.Value.RawValue);
@@ -186,7 +191,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                                     Name = $"EmbeddedMessage{Tag.Index}"
                                 };
                             
-                            ReplaceChildWith(singleTag, embeddedMessageTag);
+                            Parent.ReplaceChildWith(singleTag, embeddedMessageTag);
                             Tag = embeddedMessageTag;
                             PopulateChildren(embeddedMessageTag);
                             IsExpanded = true;
@@ -199,7 +204,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 }
                 else
                 {
-                    parseResult = MessageParseResult.Failed($"Tag value can't be decoded");
+                    parseResult = MessageParseResult.Failed("Tag value can't be decoded");
                 }
             }
 
@@ -210,22 +215,17 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             };
         }
 
-        private void ReplaceChildWith(
+        protected void ReplaceChildWith(
             ProtobufTagSingle child,
             ProtobufTagSingle replacement)
         {
-            if (Tag?.Parent == null)
-            {
-                throw new InvalidOperationException("Tag doesn't have a parent");
-            }
-
-            if (Tag.Parent is ProtobufTagRepeated repeatedTag)
+            if (Tag is ProtobufTagRepeated repeatedTag)
             {
                 var tagIndex = repeatedTag.Items.IndexOf(child);
                 repeatedTag.Items.RemoveAt(tagIndex);
                 repeatedTag.Items.Insert(tagIndex, replacement);
             }
-            else if (Tag.Parent is ProtobufTagEmbeddedMessage embeddedTag)
+            else if (Tag is ProtobufTagEmbeddedMessage embeddedTag)
             {
                 var tagIndex = embeddedTag.Tags.IndexOf(child);
                 embeddedTag.Tags.RemoveAt(tagIndex);
