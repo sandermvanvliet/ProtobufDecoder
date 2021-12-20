@@ -36,15 +36,21 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
         private void TagsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            foreach (INotifyPropertyChanged tag in e.OldItems)
+            if (e.OldItems != null)
             {
-                tag.PropertyChanged -= TagPropertyChanged;
+                foreach (INotifyPropertyChanged tag in e.OldItems)
+                {
+                    tag.PropertyChanged -= TagPropertyChanged;
+                }
             }
 
-            
-            foreach (INotifyPropertyChanged tag in e.NewItems)
+
+            if (e.NewItems != null)
             {
-                tag.PropertyChanged += TagPropertyChanged;
+                foreach (INotifyPropertyChanged tag in e.NewItems)
+                {
+                    tag.PropertyChanged += TagPropertyChanged;
+                }
             }
         }
 
