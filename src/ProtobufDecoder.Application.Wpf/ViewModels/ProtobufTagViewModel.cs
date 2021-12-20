@@ -168,7 +168,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
         public CommandResult DecodeTag()
         {
-            var parseResult = MessageParseResult.Failed("Can only decode a single tag");
+            var parseResult = MessageParseResult.Failure("Can only decode a single tag");
 
             if (Tag is ProtobufTagSingle singleTag)
             {
@@ -199,12 +199,12 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                     }
                     catch (Exception exception)
                     {
-                        parseResult = MessageParseResult.Failed($"Unexpected error: {exception.Message}");
+                        parseResult = MessageParseResult.Failure($"Unexpected error: {exception.Message}");
                     }
                 }
                 else
                 {
-                    parseResult = MessageParseResult.Failed("Tag value can't be decoded");
+                    parseResult = MessageParseResult.Failure("Tag value can't be decoded");
                 }
             }
 
