@@ -235,6 +235,8 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             {
                 throw new InvalidOperationException($"A {Tag.Parent.GetType().Name} doesn't support child tags");
             }
+
+            OnPropertyChanged(nameof(Children));
         }
 
         public CommandResult CopyTagValueToCsharpArray()

@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -24,8 +25,32 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             {
                 if (Equals(value, _tags)) return;
                 _tags = value;
+                foreach (var tag in _tags)
+                {
+                    tag.PropertyChanged += TagPropertyChanged;
+                }
+                _tags.CollectionChanged += TagsOnCollectionChanged;
                 OnPropertyChanged();
             }
+        }
+
+        private void TagsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            foreach (INotifyPropertyChanged tag in e.OldItems)
+            {
+                tag.PropertyChanged -= TagPropertyChanged;
+            }
+
+            
+            foreach (INotifyPropertyChanged tag in e.NewItems)
+            {
+                tag.PropertyChanged += TagPropertyChanged;
+            }
+        }
+
+        private void TagPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            OnPropertyChanged(nameof(Message));
         }
 
         public ProtobufMessage Message
