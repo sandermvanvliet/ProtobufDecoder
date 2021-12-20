@@ -56,6 +56,14 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
         private void TagPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            // Ignore IsExpanded and IsSelected events because they
+            // are handled directly by the TreeView
+            if (e.PropertyName == nameof(ProtobufTagViewModel.IsSelected) ||
+                e.PropertyName == nameof(ProtobufTagViewModel.IsExpanded))
+            {
+                return;
+            }
+
             OnPropertyChanged(nameof(Message));
         }
 
