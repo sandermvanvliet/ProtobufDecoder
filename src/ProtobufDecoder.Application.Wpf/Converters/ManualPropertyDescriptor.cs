@@ -11,7 +11,7 @@ namespace ProtobufDecoder.Application.Wpf.Converters
     {
         private readonly string _value;
 
-        public ManualPropertyDescriptor(string name, string value) : base(name, Array.Empty<Attribute>())
+        public ManualPropertyDescriptor(string name, string value, string description) : base(name, new Attribute[] { new DescriptionAttribute(description) })
         {
             _value = value;
         }
