@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Google.Protobuf;
@@ -36,25 +37,12 @@ namespace ProtobufDecoder.Output.Protobuf
 
                 if (tag.Items.Count > 1)
                 {
-                    var groupedTags = tag
+                    var protobufTags = tag
                         .Items
                         .OfType<ProtobufTagEmbeddedMessage>()
-                        .SelectMany(t => t.Tags)
-                        .GroupBy<ProtobufTag, int, ProtobufTag, ProtobufTag>(
-                            t => t.Index,
-                            t => t,
-                            (index, values) =>
-                            {
-                                var tags = values.ToList();
+                        .SelectMany(t => t.Tags);
 
-                                return new ProtobufTagSingle
-                                {
-                                    Index = index,
-                                    WireType = tags.First().WireType,
-                                    IsOptional = tags.Count() != tag.Items.Count
-                                };
-                            })
-                        .ToArray();
+                    var groupedTags = AggregateEmbeddedMessageTags(protobufTags, tag.Items.Count);
 
                     embeddedMessageTag = new ProtobufTagEmbeddedMessage(
                         embeddedMessageTag,
@@ -76,6 +64,90 @@ namespace ProtobufDecoder.Output.Protobuf
 
                 Builder.AppendLine($"{_indent}{optionality}repeated {type} {tag.Name} = {tag.Index};");
             }
+        }
+
+        private static ProtobufTag[] AggregateEmbeddedMessageTags(IEnumerable<ProtobufTag> protobufTags, int itemsCount)
+        {
+            return protobufTags
+                .GroupBy(
+                    t => t.Index,
+                    t => t,
+                    (index, values) => AggregateTags(index, values.ToList(), itemsCount))
+                .ToArray();
+        }
+
+        private static ProtobufTag AggregateTags(int index, List<ProtobufTag> tags, int itemCount)
+        {
+            var firstTag = tags.First();
+
+            if (firstTag is ProtobufTagRepeated)
+            {
+                return new ProtobufTagRepeated
+                {
+                    Index = index,
+                    WireType = firstTag.WireType,
+                    IsOptional = tags.Count != itemCount
+                };
+            }
+
+            if (firstTag is ProtobufTagPackedFloat)
+            {
+                return new ProtobufTagPackedFloat
+                {
+                    Index = index,
+                    IsOptional = tags.Count != itemCount
+                };
+            }
+
+            if (firstTag is ProtobufTagPackedVarint)
+            {
+                return new ProtobufTagPackedVarint
+                {
+                    Index = index,
+                    IsOptional = tags.Count != itemCount
+                };
+            }
+
+            if (firstTag is ProtobufTagString)
+            {
+                return new ProtobufTagString
+                {
+                    Index = index,
+                    IsOptional = tags.Count != itemCount
+                };
+            }
+
+            if (firstTag is ProtobufTagLengthDelimited)
+            {
+                return new ProtobufTagLengthDelimited
+                {
+                    Index = index,
+                    IsOptional = tags.Count != itemCount
+                };
+            }
+
+            if (firstTag is ProtobufTagEmbeddedMessage embedded)
+            {
+                var subTags = tags
+                    .OfType<ProtobufTagEmbeddedMessage>()
+                    .SelectMany(t => t.Tags)
+                    .ToArray();
+
+                    subTags = AggregateEmbeddedMessageTags(subTags, tags.Count);
+                
+                return new ProtobufTagEmbeddedMessage(embedded, subTags)
+                {
+                    Index = index,
+                    Name = firstTag.Name
+                };
+            }
+
+            return new ProtobufTagSingle
+            {
+                Index = index,
+                WireType = firstTag.WireType,
+                IsOptional = tags.Count != itemCount
+            };
         }
 
         protected override void Visit(ProtobufTagEmbeddedMessage tag)

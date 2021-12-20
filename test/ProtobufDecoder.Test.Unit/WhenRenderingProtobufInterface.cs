@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using FluentAssertions;
 using Google.Protobuf;
 using ProtobufDecoder.Output.Protobuf;
@@ -403,6 +404,351 @@ namespace ProtobufDecoder.Test.Unit
     message EmbeddedMessage
     {
         double tag1 = 1;
+    }
+
+    repeated EmbeddedMessage tag10 = 10;
+}
+");
+        }
+
+        [Fact]
+        public void GivenMessageWithTwoInstancesOfEmbeddedMessageWhichContainsEmbeddedMessageTag()
+        {
+            var message = new ProtobufMessage
+            {
+                Name = "TestMessage",
+                Tags =
+                {
+                    new ProtobufTagRepeated
+                    {
+                        Index = 10,
+                        WireType = WireFormat.WireType.LengthDelimited,
+                        Items = new ObservableCollection<ProtobufTagSingle>
+                        {
+                            new ProtobufTagEmbeddedMessage(new ProtobufTagSingle
+                                {
+                                    Index = 10,
+                                    WireType = WireFormat.WireType.LengthDelimited
+                                },
+                                new ProtobufTag[]
+                                {
+                                    new ProtobufTagEmbeddedMessage(new ProtobufTagSingle(), new []
+                                    {
+                                        new ProtobufTagSingle { Index = 1, WireType = WireFormat.WireType.Varint }
+                                    })
+                                    {
+                                        Index = 1,
+                                        Name = "SubEmbeddedMessage"
+                                    }
+                                })
+                            {
+                                Name = "EmbeddedMessage"
+                            },
+                            
+                            new ProtobufTagEmbeddedMessage(new ProtobufTagSingle
+                                {
+                                    Index = 10,
+                                    WireType = WireFormat.WireType.LengthDelimited
+                                },
+                                new ProtobufTag[]
+                                {
+                                    new ProtobufTagEmbeddedMessage(new ProtobufTagSingle(), new []
+                                    {
+                                        new ProtobufTagSingle { Index = 1, WireType = WireFormat.WireType.Varint }
+                                    })
+                                    {
+                                        Index = 1,
+                                        Name = "SubEmbeddedMessage"
+                                    }
+                                })
+                            {
+                                Name = "EmbeddedMessage"
+                            }
+                        }
+                    }
+                }
+            };
+
+            var proto = _renderer.Render(message);
+
+            proto
+                .Should()
+                .Be(@"message TestMessage
+{
+    message EmbeddedMessage
+    {
+        message SubEmbeddedMessage
+        {
+            uint32 tag1 = 1;
+        }
+
+        SubEmbeddedMessage tag1 = 1;
+    }
+
+    repeated EmbeddedMessage tag10 = 10;
+}
+");
+        }
+
+        [Fact]
+        public void GivenMessageWithTwoInstancesOfEmbeddedMessageWhichContainsRepeatedTag()
+        {
+            var message = new ProtobufMessage
+            {
+                Name = "TestMessage",
+                Tags =
+                {
+                    new ProtobufTagRepeated
+                    {
+                        Index = 10,
+                        WireType = WireFormat.WireType.LengthDelimited,
+                        Items = new ObservableCollection<ProtobufTagSingle>
+                        {
+                            new ProtobufTagEmbeddedMessage(new ProtobufTagSingle
+                                {
+                                    Index = 10,
+                                    WireType = WireFormat.WireType.LengthDelimited
+                                },
+                                new ProtobufTag[]
+                                {
+                                    new ProtobufTagRepeated
+                                    {
+                                        Index = 1,
+                                        WireType = WireFormat.WireType.Fixed64
+                                    }
+                                })
+                            {
+                                Name = "EmbeddedMessage"
+                            },
+                            
+                            new ProtobufTagEmbeddedMessage(new ProtobufTagSingle
+                                {
+                                    Index = 10,
+                                    WireType = WireFormat.WireType.LengthDelimited
+                                },
+                                new ProtobufTag[]
+                                {
+                                    new ProtobufTagRepeated
+                                    {
+                                        Index = 1,
+                                        WireType = WireFormat.WireType.Fixed64
+                                    }
+                                })
+                            {
+                                Name = "EmbeddedMessage"
+                            }
+                        }
+                    }
+                }
+            };
+
+            var proto = _renderer.Render(message);
+
+            proto
+                .Should()
+                .Be(@"message TestMessage
+{
+    message EmbeddedMessage
+    {
+        repeated double tag1 = 1;
+    }
+
+    repeated EmbeddedMessage tag10 = 10;
+}
+");
+        }
+
+        [Fact]
+        public void GivenMessageWithTwoInstancesOfEmbeddedMessageWhichContainsPackedFloatTag()
+        {
+            var message = new ProtobufMessage
+            {
+                Name = "TestMessage",
+                Tags =
+                {
+                    new ProtobufTagRepeated
+                    {
+                        Index = 10,
+                        WireType = WireFormat.WireType.LengthDelimited,
+                        Items = new ObservableCollection<ProtobufTagSingle>
+                        {
+                            new ProtobufTagEmbeddedMessage(new ProtobufTagSingle
+                                {
+                                    Index = 10,
+                                    WireType = WireFormat.WireType.LengthDelimited
+                                },
+                                new ProtobufTag[]
+                                {
+                                    new ProtobufTagPackedFloat
+                                    {
+                                        Index = 1
+                                    }
+                                })
+                            {
+                                Name = "EmbeddedMessage"
+                            },
+                            
+                            new ProtobufTagEmbeddedMessage(new ProtobufTagSingle
+                                {
+                                    Index = 10,
+                                    WireType = WireFormat.WireType.LengthDelimited
+                                },
+                                new ProtobufTag[]
+                                {
+                                    new ProtobufTagPackedFloat
+                                    {
+                                        Index = 1
+                                    }
+                                })
+                            {
+                                Name = "EmbeddedMessage"
+                            }
+                        }
+                    }
+                }
+            };
+
+            var proto = _renderer.Render(message);
+
+            proto
+                .Should()
+                .Be(@"message TestMessage
+{
+    message EmbeddedMessage
+    {
+        repeated float tag1 = 1 [packed=true];
+    }
+
+    repeated EmbeddedMessage tag10 = 10;
+}
+");
+        }
+
+        [Fact]
+        public void GivenMessageWithTwoInstancesOfEmbeddedMessageWhichContainsLengthDelimitedTag()
+        {
+            var message = new ProtobufMessage
+            {
+                Name = "TestMessage",
+                Tags =
+                {
+                    new ProtobufTagRepeated
+                    {
+                        Index = 10,
+                        WireType = WireFormat.WireType.LengthDelimited,
+                        Items = new ObservableCollection<ProtobufTagSingle>
+                        {
+                            new ProtobufTagEmbeddedMessage(new ProtobufTagSingle
+                                {
+                                    Index = 10,
+                                    WireType = WireFormat.WireType.LengthDelimited
+                                },
+                                new ProtobufTag[]
+                                {
+                                    new ProtobufTagLengthDelimited
+                                    {
+                                        Index = 1
+                                    }
+                                })
+                            {
+                                Name = "EmbeddedMessage"
+                            },
+                            
+                            new ProtobufTagEmbeddedMessage(new ProtobufTagSingle
+                                {
+                                    Index = 10,
+                                    WireType = WireFormat.WireType.LengthDelimited
+                                },
+                                new ProtobufTag[]
+                                {
+                                    new ProtobufTagLengthDelimited
+                                    {
+                                        Index = 1
+                                    }
+                                })
+                            {
+                                Name = "EmbeddedMessage"
+                            }
+                        }
+                    }
+                }
+            };
+
+            var proto = _renderer.Render(message);
+
+            proto
+                .Should()
+                .Be(@"message TestMessage
+{
+    message EmbeddedMessage
+    {
+        bytes tag1 = 1;
+    }
+
+    repeated EmbeddedMessage tag10 = 10;
+}
+");
+        }
+
+        [Fact]
+        public void GivenMessageWithTwoInstancesOfEmbeddedMessageWhichContainsStringTag()
+        {
+            var message = new ProtobufMessage
+            {
+                Name = "TestMessage",
+                Tags =
+                {
+                    new ProtobufTagRepeated
+                    {
+                        Index = 10,
+                        WireType = WireFormat.WireType.LengthDelimited,
+                        Items = new ObservableCollection<ProtobufTagSingle>
+                        {
+                            new ProtobufTagEmbeddedMessage(new ProtobufTagSingle
+                                {
+                                    Index = 10,
+                                    WireType = WireFormat.WireType.LengthDelimited
+                                },
+                                new ProtobufTag[]
+                                {
+                                    new ProtobufTagString
+                                    {
+                                        Index = 1
+                                    }
+                                })
+                            {
+                                Name = "EmbeddedMessage"
+                            },
+                            
+                            new ProtobufTagEmbeddedMessage(new ProtobufTagSingle
+                                {
+                                    Index = 10,
+                                    WireType = WireFormat.WireType.LengthDelimited
+                                },
+                                new ProtobufTag[]
+                                {
+                                    new ProtobufTagString
+                                    {
+                                        Index = 1
+                                    }
+                                })
+                            {
+                                Name = "EmbeddedMessage"
+                            }
+                        }
+                    }
+                }
+            };
+
+            var proto = _renderer.Render(message);
+
+            proto
+                .Should()
+                .Be(@"message TestMessage
+{
+    message EmbeddedMessage
+    {
+        string tag1 = 1;
     }
 
     repeated EmbeddedMessage tag10 = 10;
