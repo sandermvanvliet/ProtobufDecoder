@@ -47,6 +47,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 }
 
                 _tag = value;
+                Name = _tag.Name;
 
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(CanDecode));
