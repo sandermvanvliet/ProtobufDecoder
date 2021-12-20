@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.3.0
+
+In this release contains the following:
+
+- Improved Protobuf interface output particularly around nested messages
+- Added detection of packed types such as varint and float. Packed doubles detection doesn't work yet and will be included in a future release
+- Improved the wire type used in the Protobuf output for Varint types. It looks at the size of the value for now so [YMMV](http://www.catb.org/jargon/html/Y/YMMV.html), currently it will choose either `uint16`, `uint32` or `uint64`.
+- Added detection of string values, this sometimes fails when a length-delimited tag has a value with tag numbers and values that fall in the ASCII printable characters range. Again, YMMV
+- Fixes a bug where the _Decode tag_ context menu option would be enabled for tags that do not support further decoding
+- The property grid now shows a description of the selected property which helps with figuring out the various values
+- The property grid no longer shows the `Value` property for tag types that do not have a value
+- The property grid now shows all the values of a packed tag
+- The property grid now shows the possible types of a Varint value which should help you decide which actual type to use
+- Under de hood a number of changes were made to make sure the tags tree view and Protobuf interface output are updated continuously
+- The UI now has splitters between the tag tree view and the Protobuf output as well as in the property grid between the properties and the property description.
+
+
 ## 0.2.0
 
 ### New property grid
