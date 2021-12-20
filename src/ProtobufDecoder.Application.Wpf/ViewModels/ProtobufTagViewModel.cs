@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -17,7 +18,6 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
         private string _name;
         private ProtobufTagViewModel _parent;
         private ProtobufTag _tag;
-        private ObservableCollection<ProtobufTagViewModel> _children = new();
 
         public ProtobufTagViewModel(ProtobufTag tag, ProtobufTagViewModel parent = null)
         {
@@ -26,22 +26,6 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             Tag = tag;
 
             PopulateChildren(tag);
-        }
-
-        private void PopulateChildren(ProtobufTag tag)
-        {
-            if (tag is ProtobufTagRepeated repeated)
-            {
-                var children = repeated.Items.Select(item => new ProtobufTagViewModel(item, this));
-
-                Children = new ObservableCollection<ProtobufTagViewModel>(children);
-            }
-            else if (tag is ProtobufTagEmbeddedMessage embedded)
-            {
-                var children = embedded.Tags.Select(item => new ProtobufTagViewModel(item, this));
-
-                Children = new ObservableCollection<ProtobufTagViewModel>(children);
-            }
         }
 
         public bool CanDecode => Tag is ProtobufTagSingle singleTag && (singleTag.Value?.CanDecode ?? false);
@@ -73,14 +57,6 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             }
         }
 
-        private void TagOnPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(Name))
-            {
-                Name = Tag.Name;
-            }
-        }
-
         public string Name
         {
             get => _name;
@@ -96,16 +72,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             }
         }
 
-        public ObservableCollection<ProtobufTagViewModel> Children
-        {
-            get => _children;
-            set
-            {
-                if (Equals(value, _children)) return;
-                _children = value;
-                OnPropertyChanged();
-            }
-        }
+        public ObservableCollection<ProtobufTagViewModel> Children { get; set; } = new();
 
         public bool IsSelected
         {
@@ -160,6 +127,59 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        private void PopulateChildren(ProtobufTag tag)
+        {
+            IEnumerable<ProtobufTagViewModel> children = null;
+
+            if (tag is ProtobufTagRepeated repeated)
+            {
+                children = repeated.Items.Select(item => new ProtobufTagViewModel(item, this));
+            }
+            else if (tag is ProtobufTagEmbeddedMessage embedded)
+            {
+                children = embedded.Tags.Select(item => new ProtobufTagViewModel(item, this));
+            }
+
+            // Clear event handler from children that we're removing
+            foreach (var child in Children)
+            {
+                child.PropertyChanged -= ChildTagPropertyChanged;
+            }
+
+            // Clear the collection
+            Children.Clear();
+
+            if (children != null)
+            {
+                // Add new children
+                foreach (var child in children)
+                {
+                    Children.Add(child);
+
+                    // And listen for changes on the children
+                    child.PropertyChanged += ChildTagPropertyChanged;
+                }
+            }
+        }
+
+        private void TagOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(Name))
+            {
+                Name = Tag.Name;
+            }
+        }
+
+        private void ChildTagPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != nameof(IsExpanded) && e.PropertyName != nameof(IsSelected))
+            {
+                // Trigger a PropertyChanged event of the children so 
+                // that the bindings update.
+                OnPropertyChanged(nameof(Tag));
+            }
+        }
+
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
@@ -190,7 +210,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                                 {
                                     Name = $"EmbeddedMessage{Tag.Index}"
                                 };
-                            
+
                             Parent.ReplaceChildWith(singleTag, embeddedMessageTag);
                             Tag = embeddedMessageTag;
                             PopulateChildren(embeddedMessageTag);
@@ -235,8 +255,6 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             {
                 throw new InvalidOperationException($"A {Tag.Parent.GetType().Name} doesn't support child tags");
             }
-
-            OnPropertyChanged(nameof(Children));
         }
 
         public CommandResult CopyTagValueToCsharpArray()
