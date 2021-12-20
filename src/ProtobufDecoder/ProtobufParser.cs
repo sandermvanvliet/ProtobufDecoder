@@ -21,7 +21,7 @@ namespace ProtobufDecoder
 
             if (input.Length == 0)
             {
-                return MessageParseResult.Failed("Input was empty");
+                return MessageParseResult.Failure("Input was empty");
             }
 
             var protobufTags = new List<ProtobufTagSingle>();
@@ -58,7 +58,7 @@ namespace ProtobufDecoder
 
                     if (tagFieldNumber == 0)
                     {
-                        return MessageParseResult.Failed("Tag with index 0 found which is not allowed");
+                        return MessageParseResult.Failure("Tag with index 0 found which is not allowed");
                     }
 
                     var tag = new ProtobufTagSingle
@@ -109,7 +109,7 @@ namespace ProtobufDecoder
                             tag.DataLength = parseResultF32.DataLength;
                             break;
                         default:
-                            return MessageParseResult.Failed($"Invalid wire type {tag.WireType}");
+                            return MessageParseResult.Failure($"Invalid wire type {tag.WireType}");
                     }
 
                     tag.EndOffset = index - 1; // Subtract 1 because index is pointing at the start byte of the tag after the current one
@@ -206,7 +206,7 @@ namespace ProtobufDecoder
             protobufMessage.Tags.Clear();
             protobufMessage.Tags.AddRange(groupedTags);
 
-            return MessageParseResult.Succeeded(protobufMessage);
+            return MessageParseResult.Success(protobufMessage);
         }
 
         private static ValueParseResult<LengthDelimitedValue> ParseLengthDelimited(ReadOnlySpan<byte> input, int index)

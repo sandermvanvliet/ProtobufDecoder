@@ -82,7 +82,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 Model.InputFileByteStream = new MemoryStream(bytes);
                 var parseResult = ProtobufParser.Parse(bytes);
 
-                if (parseResult.Success)
+                if (parseResult.Successful)
                 {
                     Message = new MessageViewModel(parseResult.Message);
                     Model.Message = parseResult.Message;
