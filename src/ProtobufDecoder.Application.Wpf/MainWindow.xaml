@@ -105,7 +105,7 @@
                            AllowDrop="False"
                            ByteGrouping="EightByte"
                            DefaultCopyToClipboardMode="CSharpCode"
-                           Stream="{Binding Path=Model.InputFileByteStream}"
+                           Stream="{Binding Path=Message.InputFileByteStream}"
                            AllowCustomBackgroundBlock="True"
                            AllowZoom="False"
                            AllowAutoHighLightSelectionByte="False"

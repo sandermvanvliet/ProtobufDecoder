@@ -1,9 +1,12 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using ProtobufDecoder.Application.Wpf.Annotations;
+using ProtobufDecoder.Application.Wpf.Commands;
 
 namespace ProtobufDecoder.Application.Wpf.ViewModels
 {
@@ -11,11 +14,11 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
     {
         private ProtobufMessage _message;
         private ObservableCollection<ProtobufTagViewModel> _tags;
+        private Stream _inputFileByteStream;
 
-        public MessageViewModel(ProtobufMessage message)
+        public MessageViewModel()
         {
-            Message = message;
-            Tags = new ObservableCollection<ProtobufTagViewModel>(message.Tags.Select(tag => new ProtobufTagViewModel(tag)));
+            Message = new ProtobufMessage();
         }
 
         public ObservableCollection<ProtobufTagViewModel> Tags
@@ -78,6 +81,18 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 }
 
                 _message = value;
+                Tags = new ObservableCollection<ProtobufTagViewModel>(_message.Tags.Select(tag => new ProtobufTagViewModel(tag)));
+                OnPropertyChanged();
+            }
+        }
+
+        public Stream InputFileByteStream
+        {
+            get => _inputFileByteStream;
+            set
+            {
+                if (Equals(value, _inputFileByteStream)) return;
+                _inputFileByteStream = value;
                 OnPropertyChanged();
             }
         }
@@ -88,6 +103,29 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public CommandResult LoadAndDecode(string inputFilePath)
+        {
+            try
+            {
+                var bytes = File.ReadAllBytes(inputFilePath);
+                InputFileByteStream = new MemoryStream(bytes);
+                var parseResult = ProtobufParser.Parse(bytes);
+
+                if (parseResult.Successful)
+                {
+                    Message = parseResult.Message;
+
+                    return CommandResult.Success();
+                }
+
+                return CommandResult.Failure(parseResult.FailureReason);
+            }
+            catch (Exception e)
+            {
+                return CommandResult.Failure(e.Message);
+            }
         }
     }
 }

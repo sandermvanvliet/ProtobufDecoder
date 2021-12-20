@@ -1,10 +1,7 @@
 ﻿using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows.Media;
 using ProtobufDecoder.Application.Wpf.Annotations;
-using ProtobufDecoder.Tags;
 
 namespace ProtobufDecoder.Application.Wpf.Models
 {
@@ -13,7 +10,6 @@ namespace ProtobufDecoder.Application.Wpf.Models
         private string _inputFilePath;
         private ProtobufMessage _message;
         private string _windowTitle = "ProtobufDecoder";
-        private Stream _inputFileByteStream;
         private string _outputFilePath;
         private string _statusBarText;
         private Brush _statusBarBackground = Brushes.DodgerBlue;
@@ -57,17 +53,6 @@ namespace ProtobufDecoder.Application.Wpf.Models
             {
                 if (value == _windowTitle) return;
                 _windowTitle = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public Stream InputFileByteStream
-        {
-            get => _inputFileByteStream;
-            set
-            {
-                if (Equals(value, _inputFileByteStream)) return;
-                _inputFileByteStream = value;
                 OnPropertyChanged();
             }
         }
@@ -135,21 +120,6 @@ namespace ProtobufDecoder.Application.Wpf.Models
             StatusBarText = string.Format(format, args);
             StatusBarBackground = Brushes.Red;
             StatusBarForeground = Brushes.White;
-        }
-
-        public void SetTagProperty(ProtobufTag tag, string propertyName, object value)
-        {
-            switch (propertyName)
-            {
-                case nameof(ProtobufTag.Name):
-                    tag.Name = (string)value;
-                    OnPropertyChanged(nameof(Message));
-                    break;
-                case nameof(ProtobufTag.IsOptional):
-                    tag.IsOptional = (bool)value;
-                    OnPropertyChanged(nameof(Message));
-                    break;
-            }
         }
     }
 }

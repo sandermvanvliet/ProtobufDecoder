@@ -23,9 +23,10 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             _renderer = new Renderer();
 
             Model = new MainWindowModel();
+            Message = new MessageViewModel();
 
             LoadFileCommand = new RelayCommand(
-                _ => LoadAndDecode(Model.InputFilePath),
+                _ => Message.LoadAndDecode(Model.InputFilePath),
                 _ => !string.IsNullOrEmpty(Model?.InputFilePath))
                 .OnSuccess(_ => Model.StatusBarInfo(Strings.FileLoadedSuccessfully))
                 .OnFailure(_ => Model.StatusBarError(Strings.FileFailedToLoad, _.Message));
@@ -76,30 +77,6 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 if (Equals(value, _message)) return;
                 _message = value;
                 OnPropertyChanged();
-            }
-        }
-
-        private CommandResult LoadAndDecode(string inputFilePath)
-        {
-            try
-            {
-                var bytes = File.ReadAllBytes(inputFilePath);
-                Model.InputFileByteStream = new MemoryStream(bytes);
-                var parseResult = ProtobufParser.Parse(bytes);
-
-                if (parseResult.Successful)
-                {
-                    Message = new MessageViewModel(parseResult.Message);
-                    Model.Message = parseResult.Message;
-
-                    return CommandResult.Success();
-                }
-
-                return CommandResult.Failure(parseResult.FailureReason);
-            }
-            catch (Exception e)
-            {
-                return CommandResult.Failure(e.Message);
             }
         }
 
