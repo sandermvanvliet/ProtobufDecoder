@@ -206,6 +206,9 @@ namespace ProtobufDecoder.Output.Protobuf
 
             switch (tag.WireType)
             {
+                case WireFormat.WireType.Varint when tag is ProtobufTagPackedVarint packedVarint:
+                    type = "uint32";
+                    break;
                 case WireFormat.WireType.Varint when tag is ProtobufTagSingle singleTag:
                     type = ((VarintValue)singleTag.Value)?.GetProtobufType() ?? "uint32";
                     break;
