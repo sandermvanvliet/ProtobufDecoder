@@ -258,7 +258,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             {
                 var tagIndex = embeddedTag.Tags.IndexOf(child);
                 embeddedTag.Tags.RemoveAt(tagIndex);
-                embeddedTag.Tags.Insert(tagIndex, embeddedTag);
+                embeddedTag.Tags.Insert(tagIndex, replacement);
             }
             else
             {
