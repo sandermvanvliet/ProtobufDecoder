@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using FluentAssertions;
 using Google.Protobuf;
+using ProtobufDecoder.Output.Protobuf;
 using ProtobufDecoder.Tags;
 using ProtobufDecoder.Values;
 using Xunit;
@@ -9,6 +10,8 @@ namespace ProtobufDecoder.Test.Unit
 {
     public class WhenGeneratingProtoFile
     {
+        private readonly Renderer _renderer = new Renderer();
+
         [Fact]
         public void GivenMessageWithoutTags_OnlyMessageIsWritten()
         {
@@ -17,7 +20,7 @@ namespace ProtobufDecoder.Test.Unit
                 Name = "TestMessage"
             };
 
-            var proto = ProtobufWriter.ToString(message);
+            var proto = _renderer.Render(message);
 
             proto
                 .Should()
@@ -43,7 +46,7 @@ namespace ProtobufDecoder.Test.Unit
                 }
             };
 
-            var proto = ProtobufWriter.ToString(message);
+            var proto = _renderer.Render(message);
 
             proto
                 .Should()
@@ -70,7 +73,7 @@ namespace ProtobufDecoder.Test.Unit
                 }
             };
 
-            var proto = ProtobufWriter.ToString(message);
+            var proto = _renderer.Render(message);
 
             proto
                 .Should()
@@ -97,7 +100,7 @@ namespace ProtobufDecoder.Test.Unit
                 }
             };
 
-            var proto = ProtobufWriter.ToString(message);
+            var proto = _renderer.Render(message);
 
             proto
                 .Should()
@@ -124,7 +127,7 @@ namespace ProtobufDecoder.Test.Unit
                 }
             };
 
-            var proto = ProtobufWriter.ToString(message);
+            var proto = _renderer.Render(message);
 
             proto
                 .Should()
@@ -151,7 +154,7 @@ namespace ProtobufDecoder.Test.Unit
                 }
             };
 
-            var proto = ProtobufWriter.ToString(message);
+            var proto = _renderer.Render(message);
 
             proto
                 .Should()
@@ -178,7 +181,7 @@ namespace ProtobufDecoder.Test.Unit
                 }
             };
 
-            var proto = ProtobufWriter.ToString(message);
+            var proto = _renderer.Render(message);
 
             proto
                 .Should()
@@ -205,7 +208,7 @@ namespace ProtobufDecoder.Test.Unit
                 }
             };
 
-            var proto = ProtobufWriter.ToString(message);
+            var proto = _renderer.Render(message);
 
             proto
                 .Should()
@@ -232,7 +235,7 @@ namespace ProtobufDecoder.Test.Unit
                 }
             };
 
-            var proto = ProtobufWriter.ToString(message);
+            var proto = _renderer.Render(message);
 
             proto
                 .Should()
@@ -257,11 +260,6 @@ namespace ProtobufDecoder.Test.Unit
                         WireType = WireFormat.WireType.LengthDelimited,
                         Items =
                         {
-                            new ProtobufTagSingle
-                            {
-                                Index = 1,
-                                WireType = WireFormat.WireType.LengthDelimited
-                            },
                             new ProtobufTagEmbeddedMessage(
                                 new ProtobufTagSingle
                                 {
@@ -285,7 +283,7 @@ namespace ProtobufDecoder.Test.Unit
                 
             };
 
-            var proto = ProtobufWriter.ToString(message);
+            var proto = _renderer.Render(message);
 
             proto
                 .Should()
@@ -328,7 +326,7 @@ namespace ProtobufDecoder.Test.Unit
                 }
             };
 
-            var proto = ProtobufWriter.ToString(message);
+            var proto = _renderer.Render(message);
 
             proto
                 .Should()
@@ -396,7 +394,7 @@ namespace ProtobufDecoder.Test.Unit
                 }
             };
 
-            var proto = ProtobufWriter.ToString(message);
+            var proto = _renderer.Render(message);
 
             proto
                 .Should()
@@ -464,7 +462,7 @@ namespace ProtobufDecoder.Test.Unit
                 }
             };
 
-            var proto = ProtobufWriter.ToString(message);
+            var proto = _renderer.Render(message);
 
             proto
                 .Should()
@@ -521,7 +519,7 @@ namespace ProtobufDecoder.Test.Unit
                 }
             };
 
-            var proto = ProtobufWriter.ToString(message);
+            var proto = _renderer.Render(message);
 
             proto
                 .Should()

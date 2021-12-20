@@ -2,12 +2,20 @@ using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
+using ProtobufDecoder.Output.Protobuf;
 
 namespace ProtobufDecoder.Application.Wpf.Converters
 {
     [ValueConversion(typeof(ProtobufMessage), typeof(string))]
     public class ProtobufMessageConverter : IValueConverter
     {
+        private readonly Renderer _renderer;
+
+        public ProtobufMessageConverter()
+        {
+            _renderer = new Renderer();
+        }
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is ProtobufMessage message)
@@ -17,7 +25,7 @@ namespace ProtobufDecoder.Application.Wpf.Converters
                     message.Name = "TestMessage";
                 }
 
-                return ProtobufWriter.ToString(message);
+                return _renderer.Render(message);
             }
 
             return DependencyProperty.UnsetValue;

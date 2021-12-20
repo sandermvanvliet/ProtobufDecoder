@@ -8,15 +8,20 @@ using Microsoft.Win32;
 using ProtobufDecoder.Application.Wpf.Annotations;
 using ProtobufDecoder.Application.Wpf.Commands;
 using ProtobufDecoder.Application.Wpf.Models;
+using ProtobufDecoder.Output;
+using ProtobufDecoder.Output.Protobuf;
 
 namespace ProtobufDecoder.Application.Wpf.ViewModels
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
         private MessageViewModel _message;
+        private readonly IRenderer _renderer;
 
         public MainWindowViewModel()
         {
+            _renderer = new Renderer();
+
             Model = new MainWindowModel();
 
             LoadFileCommand = new RelayCommand(
@@ -143,7 +148,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
             try
             {
-                File.WriteAllText(Model.OutputFilePath, ProtobufWriter.ToString(Model.Message));
+                File.WriteAllText(Model.OutputFilePath,  _renderer.Render(Model.Message));
                 return CommandResult.Success();
             }
             catch (Exception e)
@@ -171,7 +176,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
             try
             {
-                File.WriteAllText(dialog.FileName, ProtobufWriter.ToString(Model.Message));
+                File.WriteAllText(dialog.FileName, _renderer.Render(Model.Message));
                 return CommandResult.Success(dialog.FileName);
             }
             catch (Exception e)
