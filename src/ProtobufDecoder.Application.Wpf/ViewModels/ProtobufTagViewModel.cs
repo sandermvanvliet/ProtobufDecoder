@@ -214,6 +214,11 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             ProtobufTagSingle child,
             ProtobufTagSingle replacement)
         {
+            if (Tag?.Parent == null)
+            {
+                throw new InvalidOperationException("Tag doesn't have a parent");
+            }
+
             if (Tag.Parent is ProtobufTagRepeated repeatedTag)
             {
                 var tagIndex = repeatedTag.Items.IndexOf(child);
@@ -228,7 +233,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             }
             else
             {
-                throw new InvalidOperationException($"A {Tag.GetType().Name} doesn't support child tags");
+                throw new InvalidOperationException($"A {Tag.Parent.GetType().Name} doesn't support child tags");
             }
         }
 
