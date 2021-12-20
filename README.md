@@ -64,13 +64,13 @@ You can create a shortcut to that executable in the Start Menu or wherever you w
 
 - [X] ~~Decode length-delimited tag values that could be strings, packed repeated values or embedded messages~~
 - [ ] Generate `.proto` file from decoded payload
-  - [x] Single tags
-  - [x] Optional vs required tags
+  - [x] ~~Single tags~~
+  - [x] ~~Optional vs required tags~~
   - [ ] Nested messages **(work in progress)**
   - [ ] Length-delimited tag type hinting (is it a string or a message?) **(work in progress)**
-  - [ ] Repeated value tags
-- [x] Package application for download
-- [x] Set up release build for git tags
+  - [x] ~~Repeated value tags~~
+- [x] ~~Package application for download~~
+- [x] ~~Set up release build for git tags~~
 - [ ] Load a `.proto` file and apply it to the decoded payload (to verify the `.proto` file and payload match)
 - [ ] Decode groups
 
