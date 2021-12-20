@@ -47,7 +47,7 @@ namespace ProtobufDecoder.Application.Wpf.Converters
             }
         }
 
-        public Type PropertyType { get; set; }
+        public Type PropertyType { get; }
         public string Category { get; }
         public bool IsReadOnly { get; }
         public string Description { get; }
