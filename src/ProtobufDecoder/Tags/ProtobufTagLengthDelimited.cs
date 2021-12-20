@@ -1,4 +1,5 @@
 using System.Linq;
+using Google.Protobuf;
 
 namespace ProtobufDecoder.Tags
 {
@@ -8,6 +9,11 @@ namespace ProtobufDecoder.Tags
     /// <remarks>The value of this tag can be a string or embedded message (<see cref="ProtobufTagEmbeddedMessage"/>)</remarks>
     public class ProtobufTagLengthDelimited : ProtobufTagSingle
     {
+        public ProtobufTagLengthDelimited()
+        {
+            WireType = WireFormat.WireType.LengthDelimited;
+        }
+
         public static ProtobufTagLengthDelimited From(ProtobufTagSingle source)
         {
             // This clones the values from the original tag.

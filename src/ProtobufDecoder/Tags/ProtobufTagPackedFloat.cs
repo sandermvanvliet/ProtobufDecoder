@@ -8,6 +8,11 @@ namespace ProtobufDecoder.Tags
     /// </summary>
     public class ProtobufTagPackedFloat : ProtobufTagPacked
     {
+        public ProtobufTagPackedFloat()
+        {
+            WireType = WireFormat.WireType.Fixed32;
+        }
+
         public static ProtobufTagPackedFloat From(ProtobufTagSingle source)
         {
             // This clones the values from the original tag.

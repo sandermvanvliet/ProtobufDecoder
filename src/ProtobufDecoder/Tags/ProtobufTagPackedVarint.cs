@@ -8,6 +8,11 @@ namespace ProtobufDecoder.Tags
     /// </summary>
     public class ProtobufTagPackedVarint : ProtobufTagPacked
     {
+        public ProtobufTagPackedVarint()
+        {
+            WireType = WireFormat.WireType.Varint;
+        }
+
         public static ProtobufTagPackedVarint From(ProtobufTagSingle source)
         {
             // This clones the values from the original tag.
