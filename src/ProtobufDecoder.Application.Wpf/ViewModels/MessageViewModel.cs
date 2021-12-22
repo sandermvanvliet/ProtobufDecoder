@@ -107,6 +107,10 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
         public CommandResult LoadAndDecode(string inputFilePath)
         {
+            // First clear the current message so that we don't show
+            // stale data if loading this message fails.
+            Message = new ProtobufMessage();
+
             try
             {
                 var bytes = File.ReadAllBytes(inputFilePath);
