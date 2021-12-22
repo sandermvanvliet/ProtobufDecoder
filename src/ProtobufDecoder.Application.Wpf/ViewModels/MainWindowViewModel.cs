@@ -37,13 +37,13 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
             SaveGeneratedProtoCommand = new RelayCommand(
                 _ => SaveGeneratedProtoFile(),
-                _ => Model?.Message != null)
+                _ => Message != null)
                 .OnSuccess(_ => Model.StatusBarInfo(Strings.ProtoFileSavedSuccessfully))
                 .OnFailure(_ => Model.StatusBarError(Strings.ProtoFileFailedToSave, _.Message));
 
             SaveGeneratedProtoAsCommand = new RelayCommand(
                 _ => SaveGeneratedProtoFileAs(),
-                _ => Model?.Message != null)
+                _ => Message != null)
                 .OnSuccess(_ => Model.StatusBarInfo(Strings.ProtoFileSavedAs, _.Message))
                 .OnFailure(_ => Model.StatusBarError(Strings.ProtoFileFailedToSave, _.Message));
 
@@ -133,7 +133,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
             try
             {
-                File.WriteAllText(Model.OutputFilePath, _renderer.Render(Model.Message));
+                File.WriteAllText(Model.OutputFilePath, _renderer.Render(Message.Message));
                 return CommandResult.Success();
             }
             catch (Exception e)
@@ -161,7 +161,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
             try
             {
-                File.WriteAllText(dialog.FileName, _renderer.Render(Model.Message));
+                File.WriteAllText(dialog.FileName, _renderer.Render(Message.Message));
                 return CommandResult.Success(dialog.FileName);
             }
             catch (Exception e)

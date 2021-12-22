@@ -45,24 +45,10 @@ namespace ProtobufDecoder.Application.Wpf.Test.Unit
         }
 
         [Fact]
-        public void GivenViewModel_SaveGeneratedProtoFileCommandCannotBeExecuted()
-        {
-            new MainWindowViewModel()
-                .SaveGeneratedProtoCommand
-                .CanExecute(null)
-                .Should()
-                .BeFalse();
-        }
-
-        [Fact]
         public void GivenViewModelWithRenderedProtoContent_SaveGeneratedProtoFileCommandCanBeExecuted()
         {
             var viewModel = new MainWindowViewModel
             {
-                Model =
-                {
-                    Message = new ProtobufMessage()
-                }
             };
 
             viewModel
@@ -73,24 +59,11 @@ namespace ProtobufDecoder.Application.Wpf.Test.Unit
         }
 
         [Fact]
-        public void GivenViewModel_SaveGeneratedProtoFileAsCommandCannotBeExecuted()
-        {
-            new MainWindowViewModel()
-                .SaveGeneratedProtoAsCommand
-                .CanExecute(null)
-                .Should()
-                .BeFalse();
-        }
-
-        [Fact]
         public void GivenViewModelWithRenderedProtoContent_SaveGeneratedProtoFileAsCommandCanBeExecuted()
         {
             var viewModel = new MainWindowViewModel
             {
-                Model =
-                {
-                    Message = new ProtobufMessage()
-                }
+                Message = new MessageViewModel()
             };
 
             viewModel

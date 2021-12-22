@@ -8,7 +8,6 @@ namespace ProtobufDecoder.Application.Wpf.Models
     public class MainWindowModel : INotifyPropertyChanged
     {
         private string _inputFilePath;
-        private ProtobufMessage _message;
         private string _windowTitle = "ProtobufDecoder";
         private string _outputFilePath;
         private string _statusBarText;
@@ -32,17 +31,6 @@ namespace ProtobufDecoder.Application.Wpf.Models
                 OnPropertyChanged();
 
                 WindowTitle = "ProtobufDecoder - " + value;
-            }
-        }
-
-        public ProtobufMessage Message
-        {
-            get => _message;
-            set
-            {
-                if (Equals(value, _message)) return;
-                _message = value;
-                OnPropertyChanged();
             }
         }
 
