@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using ProtobufDecoder.Application.Wpf.ViewModels;
@@ -143,6 +144,16 @@ namespace ProtobufDecoder.Application.Wpf
             if (ViewModel.LoadFileCommand.CanExecute(ViewModel.Model.InputFilePath))
             {
                 ViewModel.LoadFileCommand.Execute(ViewModel.Model.InputFilePath);
+            }
+        }
+
+        private void MainWindow_OnDrop(object sender, DragEventArgs e)
+        {
+            if(e.Data.GetData(DataFormats.FileDrop) is string[] filePath && filePath.Any())
+            {
+                ViewModel.Model.InputFilePath = filePath[0];
+
+                ViewModel.LoadFileCommand.Execute(null);
             }
         }
     }

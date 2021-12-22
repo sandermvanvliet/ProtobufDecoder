@@ -14,7 +14,9 @@
         Width="1200"
         Loaded="MainWindow_OnLoaded"
         d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}"
-        Icon="icon.png">
+        Icon="icon.png"
+        AllowDrop="True"
+        Drop="MainWindow_OnDrop">
     <Window.Resources>
         <converters:ProtobufTagConverter x:Key="ProtobufTagConverter" />
         <converters:ProtobufMessageConverter x:Key="GeneratedProtoConverter" />
@@ -111,7 +113,8 @@
                            AllowCustomBackgroundBlock="True"
                            AllowZoom="False"
                            AllowAutoHighLightSelectionByte="False"
-                           Margin="4,0,0,0" />
+                           Margin="4,0,0,0"
+                           AllowFileDrop="False"/>
             <Grid VerticalAlignment="Stretch"
                   Grid.Column="1"
                   Margin="4,0,0,0">
