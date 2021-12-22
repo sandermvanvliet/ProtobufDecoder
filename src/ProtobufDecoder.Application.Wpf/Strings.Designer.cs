@@ -115,6 +115,15 @@ namespace ProtobufDecoder.Application.Wpf {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Decode all tags.
+        /// </summary>
+        public static string ContextMenuDecodeAllTags {
+            get {
+                return ResourceManager.GetString("ContextMenuDecodeAllTags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Decode tag.
         /// </summary>
         public static string ContextMenuDecodeTag {

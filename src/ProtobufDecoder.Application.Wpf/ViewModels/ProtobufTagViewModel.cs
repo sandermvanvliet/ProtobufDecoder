@@ -29,7 +29,32 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             PopulateChildren(tag);
         }
 
-        public bool CanDecode => Tag is ProtobufTagSingle singleTag && (singleTag.Value?.CanDecode ?? false);
+        public bool CanDecode
+        {
+            get
+            {
+                if (Tag is ProtobufTagSingle singleTag && (singleTag.Value?.CanDecode ?? false))
+                {
+                    return true;
+                }
+
+                if (Tag is ProtobufTagRepeated repeated && 
+                    repeated.Items.Count > 0 &&
+                    repeated.Items.Any(tag => tag.Value?.CanDecode ?? false))
+                {
+                    return true;
+                }
+
+                if (Tag is ProtobufTagEmbeddedMessage embedded &&
+                    embedded.Tags.Count > 0 &&
+                    embedded.Tags.Any(tag => tag is ProtobufTagSingle single && (single.Value?.CanDecode ?? false)))
+                {
+                    return true;
+                }
+
+                return false;
+            }
+        }
 
         public ProtobufTag Tag
         {
@@ -199,42 +224,40 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
         public CommandResult DecodeTag()
         {
             var parseResult = MessageParseResult.Failure("Can only decode a single tag");
-
-            if (Tag is ProtobufTagSingle singleTag)
+            
+            // Order matters in this check because an embedded message derives from a single tag
+            if (Tag is ProtobufTagEmbeddedMessage)
             {
-                if (singleTag.Value.CanDecode)
+                var results = Children
+                    .Where(c => c.CanDecode)
+                    .Select(c => c.DecodeTag()).ToList();
+
+                if (results.Any(r => r.Result == Result.Failure))
                 {
-                    if (Parent == null)
-                    {
-                        return CommandResult.Failure("Tag doesn't have a parent");
-                    }
-
-                    try
-                    {
-                        parseResult = ProtobufParser.Parse(singleTag.Value.RawValue);
-
-                        if (parseResult.Successful)
-                        {
-                            var embeddedMessageTag =
-                                new ProtobufTagEmbeddedMessage(singleTag, parseResult.Message.Tags.ToArray())
-                                {
-                                    Name = $"EmbeddedMessage{Tag.Index}"
-                                };
-
-                            Parent.ReplaceChildWith(singleTag, embeddedMessageTag);
-                            Tag = embeddedMessageTag;
-                            PopulateChildren(embeddedMessageTag);
-                            IsExpanded = true;
-                        }
-                    }
-                    catch (Exception exception)
-                    {
-                        parseResult = MessageParseResult.Failure($"Unexpected error: {exception.Message}");
-                    }
+                    parseResult = MessageParseResult.Failure("Some tags failed to decode: " + string.Join(", ", results.Where(r => r.Result == Result.Failure).Select(r => r.Message)));
                 }
                 else
                 {
-                    parseResult = MessageParseResult.Failure("Tag value can't be decoded");
+                    parseResult = MessageParseResult.Success(null);
+                }
+            }
+            else if (Tag is ProtobufTagSingle singleTag)
+            {
+                parseResult = DecodeSingleTagDecodeTag(singleTag);
+            }
+            else if (Tag is ProtobufTagRepeated)
+            {
+                var results = Children
+                    .Where(c => c.CanDecode)
+                    .Select(c => c.DecodeTag()).ToList();
+
+                if (results.Any(r => r.Result == Result.Failure))
+                {
+                    parseResult = MessageParseResult.Failure("Some tags failed to decode: " + string.Join(", ", results.Where(r => r.Result == Result.Failure).Select(r => r.Message)));
+                }
+                else
+                {
+                    parseResult = MessageParseResult.Success(null);
                 }
             }
 
@@ -243,6 +266,48 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 Result = parseResult.Successful ? Result.Success : Result.Failure,
                 Message = parseResult.FailureReason
             };
+        }
+
+        private MessageParseResult DecodeSingleTagDecodeTag(ProtobufTagSingle singleTag)
+        {
+            MessageParseResult parseResult;
+
+            if (singleTag.Value.CanDecode)
+            {
+                if (Parent == null)
+                {
+                    return MessageParseResult.Failure("Tag does not have a parent");
+                }
+
+                try
+                {
+                    parseResult = ProtobufParser.Parse(singleTag.Value.RawValue);
+
+                    if (parseResult.Successful)
+                    {
+                        var embeddedMessageTag =
+                            new ProtobufTagEmbeddedMessage(singleTag, parseResult.Message.Tags.ToArray())
+                            {
+                                Name = $"EmbeddedMessage{Tag.Index}"
+                            };
+
+                        Parent.ReplaceChildWith(singleTag, embeddedMessageTag);
+                        Tag = embeddedMessageTag;
+                        PopulateChildren(embeddedMessageTag);
+                        IsExpanded = true;
+                    }
+                }
+                catch (Exception exception)
+                {
+                    parseResult = MessageParseResult.Failure($"Unexpected error: {exception.Message}");
+                }
+            }
+            else
+            {
+                parseResult = MessageParseResult.Failure("Tag value can't be decoded");
+            }
+
+            return parseResult;
         }
 
         protected void ReplaceChildWith(

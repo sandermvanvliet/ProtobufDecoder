@@ -101,4 +101,7 @@
     <data name="FailedToDecodeTag" xml:space="preserve">
       <value>Tag kon niet gedecodeerd worden: {0}</value>
     </data>
+    <data name="ContextMenuDecodeAllTags" xml:space="preserve">
+      <value>Decodeer alle tags</value>
+    </data>
   </root>

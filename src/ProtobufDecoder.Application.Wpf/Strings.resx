@@ -207,4 +207,7 @@
   <data name="FailedToDecodeTag" xml:space="preserve">
     <value>Decoding tag failed: {0}</value>
   </data>
+  <data name="ContextMenuDecodeAllTags" xml:space="preserve">
+    <value>Decode all tags</value>
+  </data>
 </root>

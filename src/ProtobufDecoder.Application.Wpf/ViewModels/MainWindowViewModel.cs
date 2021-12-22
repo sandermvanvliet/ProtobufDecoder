@@ -53,11 +53,18 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 .OnSuccess(_ => Model.StatusBarInfo(Strings.TagCopiedToClipboard));
 
             DecodeTagCommand = new RelayCommand(
-                _ =>((_ as TreeView)?.SelectedItem as ProtobufTagViewModel)?.DecodeTag(),
+                _ => ((_ as TreeView)?.SelectedItem as ProtobufTagViewModel)?.DecodeTag(),
                 _ => (_ as TreeView)?.SelectedItem is ProtobufTagViewModel viewModel && viewModel.CanDecode)
                 .OnSuccess(_ => Model.StatusBarInfo(Strings.TagDecodedSuccessfully))
                 .OnSuccessWithWarnings(_ => Model.StatusBarWarning(Strings.CannotDecodeTag))
-                .OnFailure(_ => Model.StatusBarError(Strings.FailedToDecodeTag, _.Message));               
+                .OnFailure(_ => Model.StatusBarError(Strings.FailedToDecodeTag, _.Message));
+
+            DecodeAllTagsCommand = new RelayCommand(
+                    _ => ((_ as TreeView)?.SelectedItem as ProtobufTagViewModel)?.DecodeTag(),
+                    _ => (_ as TreeView)?.SelectedItem is ProtobufTagViewModel viewModel && viewModel.CanDecode)
+                .OnSuccess(_ => Model.StatusBarInfo(Strings.TagDecodedSuccessfully))
+                .OnSuccessWithWarnings(_ => Model.StatusBarWarning(Strings.CannotDecodeTag))
+                .OnFailure(_ => Model.StatusBarError(Strings.FailedToDecodeTag, _.Message));
         }
 
         public ICommand LoadFileCommand { get; }
@@ -66,6 +73,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
         public ICommand SaveGeneratedProtoAsCommand { get; }
         public ICommand CopyTagValueCommand { get; set; }
         public ICommand DecodeTagCommand { get; set; }
+        public ICommand DecodeAllTagsCommand { get; set; }
 
         public MainWindowModel Model { get; set; }
 
@@ -125,7 +133,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
             try
             {
-                File.WriteAllText(Model.OutputFilePath,  _renderer.Render(Model.Message));
+                File.WriteAllText(Model.OutputFilePath, _renderer.Render(Model.Message));
                 return CommandResult.Success();
             }
             catch (Exception e)

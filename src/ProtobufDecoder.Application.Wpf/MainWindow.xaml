@@ -61,6 +61,8 @@
                     CommandParameter="{Binding ElementName=TagsTreeView}" />
         <KeyBinding Command="{Binding Path=DecodeTagCommand}" Key="D" Modifiers="Control"
                     CommandParameter="{Binding ElementName=TagsTreeView}" />
+        <KeyBinding Command="{Binding Path=DecodeAllTagsCommand}" Key="A" Modifiers="Control"
+                    CommandParameter="{Binding ElementName=TagsTreeView}" />
     </Window.InputBindings>
     <DockPanel>
         <Menu DockPanel.Dock="Top" IsMainMenu="True" Margin="0,0,0,0" Height="20">
@@ -125,11 +127,15 @@
                           Grid.Row="0">
                     <TreeView.ContextMenu>
                         <ContextMenu>
-                            <MenuItem Header="{x:Static s:Strings.ContextMenuDecodeTag}" x:Name="DecodeTagMenuItem"
+                            <MenuItem Header="{x:Static s:Strings.ContextMenuDecodeTag}"
                                       Command="{Binding Path=DecodeTagCommand}"
                                       CommandParameter="{Binding PlacementTarget, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
                                       InputGestureText="Ctrl+D" />
-                            <MenuItem Header="{x:Static s:Strings.ContextMenuCopyValue}" x:Name="CopyValueAsBytes"
+                            <MenuItem Header="{x:Static s:Strings.ContextMenuDecodeAllTags}"
+                                      Command="{Binding Path=DecodeAllTagsCommand}"
+                                      CommandParameter="{Binding PlacementTarget, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
+                                      InputGestureText="Ctrl+A" />
+                            <MenuItem Header="{x:Static s:Strings.ContextMenuCopyValue}"
                                       Command="{Binding Path=CopyTagValueCommand}"
                                       CommandParameter="{Binding PlacementTarget, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
                                       InputGestureText="Ctrl+C" />
