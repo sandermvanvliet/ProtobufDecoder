@@ -180,7 +180,7 @@ namespace ProtobufDecoder
                     {
                         var isProbableString = ProtobufTagLengthDelimited.IsProbableString(singleTag.Value.RawValue);
 
-                        if (!isProbableString)
+                        if (!isProbableString && singleTag.Value.RawValue.Length > 0)
                         {
                             var isProbablePackedFloat = ProtobufTagPacked.IsProbablePackedFloat(singleTag.Value.RawValue);
                             var isProbablePackedVarint = ProtobufTagPacked.IsProbablePackedVarint(singleTag.Value.RawValue);
