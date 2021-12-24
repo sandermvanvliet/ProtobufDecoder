@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.0
+
+- Added drag-and-drop support which means you can now drag a file onto the ProtobufDecoder window and it will load that file
+- Added a _Decode all_ context menu option which is enabled on repeated and embedded message tags. When used it will attempt to decode all items (repeated tag) or tags (embedded message)
+- Fixed an issue w3here the current message tags and generated proto file would not be cleared when a new file is loaded and that fails. This would show stale data which wasn't very nice
+
 ## 0.3.0
 
 In this release contains the following:
@@ -15,7 +21,6 @@ In this release contains the following:
 - The property grid now shows the possible types of a Varint value which should help you decide which actual type to use
 - Under de hood a number of changes were made to make sure the tags tree view and Protobuf interface output are updated continuously
 - The UI now has splitters between the tag tree view and the Protobuf output as well as in the property grid between the properties and the property description.
-
 
 ## 0.2.0
 
