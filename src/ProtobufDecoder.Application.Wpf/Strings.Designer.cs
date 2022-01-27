@@ -151,11 +151,29 @@ namespace ProtobufDecoder.Application.Wpf {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File has a {0}-byte length prefix which was stripped.
+        /// </summary>
+        public static string FileLengthPrefix {
+            get {
+                return ResourceManager.GetString("FileLengthPrefix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File loaded successfully.
         /// </summary>
         public static string FileLoadedSuccessfully {
             get {
                 return ResourceManager.GetString("FileLoadedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File loaded successfully: {0}.
+        /// </summary>
+        public static string FileLoadedWithWarnings {
+            get {
+                return ResourceManager.GetString("FileLoadedWithWarnings", resourceCulture);
             }
         }
         

@@ -29,6 +29,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 _ => Message.LoadAndDecode(Model.InputFilePath),
                 _ => !string.IsNullOrEmpty(Model?.InputFilePath))
                 .OnSuccess(_ => Model.StatusBarInfo(Strings.FileLoadedSuccessfully))
+                .OnSuccessWithWarnings(_ => Model.StatusBarInfo(Strings.FileLoadedWithWarnings, _.Message))
                 .OnFailure(_ => Model.StatusBarError(Strings.FileFailedToLoad, _.Message));
 
             OpenFileCommand = new RelayCommand(

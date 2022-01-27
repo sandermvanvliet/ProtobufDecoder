@@ -104,4 +104,10 @@
     <data name="ContextMenuDecodeAllTags" xml:space="preserve">
       <value>Decodeer alle tags</value>
     </data>
+    <data name="FileLoadedWithWarnings" xml:space="preserve">
+      <value>Bestand succesvol geladen: {0}</value>
+    </data>
+    <data name="FileLengthPrefix" xml:space="preserve">
+      <value>Bestand heeft een lengte prefix van {0}-bytes, deze is overgeslagen</value>
+    </data>
   </root>

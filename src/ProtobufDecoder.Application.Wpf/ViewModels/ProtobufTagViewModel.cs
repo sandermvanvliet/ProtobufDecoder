@@ -11,16 +11,16 @@ using ProtobufDecoder.Tags;
 
 namespace ProtobufDecoder.Application.Wpf.ViewModels
 {
-    public class ProtobufTagViewModel : INotifyPropertyChanged
+    public class ProtobufTagViewModel : INotifyPropertyChanged, IProtobufParent
     {
         private bool _isExpanded;
         private bool _isSelected;
         private string _name;
-        private ProtobufTagViewModel _parent;
+        private IProtobufParent _parent;
         private ProtobufTag _tag;
         private ObservableCollection<ProtobufTagViewModel> _children = new();
 
-        public ProtobufTagViewModel(ProtobufTag tag, ProtobufTagViewModel parent = null)
+        public ProtobufTagViewModel(ProtobufTag tag, IProtobufParent parent = null)
         {
             Name = tag.Name;
             Parent = parent;
@@ -138,7 +138,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             }
         }
 
-        public ProtobufTagViewModel Parent
+        public IProtobufParent Parent
         {
             get => _parent;
             set
@@ -310,7 +310,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             return parseResult;
         }
 
-        protected void ReplaceChildWith(
+        public void ReplaceChildWith(
             ProtobufTagSingle child,
             ProtobufTagSingle replacement)
         {
@@ -346,5 +346,16 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
             return CommandResult.Failure("Not a tag");
         }
+    }
+
+    public interface IProtobufParent
+    {
+        bool IsSelected { get; set; }
+        bool IsExpanded { get; set; }
+        IProtobufParent Parent { get; set; }
+
+        void ReplaceChildWith(
+            ProtobufTagSingle child,
+            ProtobufTagSingle replacement);
     }
 }

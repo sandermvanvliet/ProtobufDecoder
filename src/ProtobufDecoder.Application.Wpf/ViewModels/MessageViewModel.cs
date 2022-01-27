@@ -7,10 +7,11 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using ProtobufDecoder.Application.Wpf.Annotations;
 using ProtobufDecoder.Application.Wpf.Commands;
+using ProtobufDecoder.Tags;
 
 namespace ProtobufDecoder.Application.Wpf.ViewModels
 {
-    public class MessageViewModel : INotifyPropertyChanged
+    public class MessageViewModel : INotifyPropertyChanged, IProtobufParent
     {
         private ProtobufMessage _message;
         private ObservableCollection<ProtobufTagViewModel> _tags;
@@ -81,7 +82,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 }
 
                 _message = value;
-                Tags = new ObservableCollection<ProtobufTagViewModel>(_message.Tags.Select(tag => new ProtobufTagViewModel(tag)));
+                Tags = new ObservableCollection<ProtobufTagViewModel>(_message.Tags.Select(tag => new ProtobufTagViewModel(tag, this)));
                 OnPropertyChanged();
             }
         }
@@ -124,12 +125,87 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                     return CommandResult.Success();
                 }
 
+                // Parsing failed, let's see if there is a length prefix.
+                // That could either be 2 or 4 bytes, if the first two bytes
+                // are zeros and the two bytes after that are not then it's
+                // most likely a 4 byte prefix.
+                if (bytes[0] == 0x0 && bytes[1] == 0x0 && (bytes[2] != 0x0 || bytes[3] != 0x0))
+                {
+                    // 4 byte prefix, figure out the length from the second pair of bytes
+                    var length = ToUInt16(bytes, 2, 2);
+                    if (length + 4 == bytes.Length)
+                    {
+                        // Bingo
+                        parseResult = ProtobufParser.Parse(bytes.Skip(4).ToArray());
+
+                        if(parseResult.Successful)
+                        {
+                            Message = parseResult.Message;
+
+                            return CommandResult.SuccessWithWarning(string.Format(Strings.FileLengthPrefix, 4));
+                        }
+                    }
+                }
+                else
+                {
+                    // Try to figure out if the first two bytes are a length prefix
+                    var length = ToUInt16(bytes, 0, 2);
+                    if (length + 2 == bytes.Length)
+                    {
+                        // Bingo
+                        parseResult = ProtobufParser.Parse(bytes.Skip(2).ToArray());
+
+                        if(parseResult.Successful)
+                        {
+                            Message = parseResult.Message;
+
+                            return CommandResult.SuccessWithWarning(string.Format(Strings.FileLengthPrefix, 2));
+                        }
+                    }
+                }
+
                 return CommandResult.Failure(parseResult.FailureReason);
             }
             catch (Exception e)
             {
                 return CommandResult.Failure(e.Message);
             }
+        }
+        
+        private static int ToUInt16(byte[] buffer, int start, int count)
+        {
+            if (buffer.Length >= start + count)
+            {
+                var b = buffer.Skip(start).Take(count).ToArray();
+                if (BitConverter.IsLittleEndian)
+                {
+                    Array.Reverse(b);
+                }
+
+                if (b.Length == count)
+                {
+                    return (BitConverter.ToUInt16(b, 0));
+                }
+
+                return 0;
+            }
+
+            return 0;
+        }
+
+        // Ignore this
+        public bool IsSelected { get; set; }
+        // Ignore this
+        public bool IsExpanded { get; set; }
+        // Ignore this
+        public IProtobufParent Parent { get; set; }
+
+        public void ReplaceChildWith(ProtobufTagSingle child, ProtobufTagSingle replacement)
+        {
+            var tagIndex = Message.Tags.IndexOf(child);
+            Message.Tags.RemoveAt(tagIndex);
+            Message.Tags.Insert(tagIndex, replacement);
+            Tags = new ObservableCollection<ProtobufTagViewModel>(Message.Tags.Select(tag => new ProtobufTagViewModel(tag, this)));           
         }
     }
 }

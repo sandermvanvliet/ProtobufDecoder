@@ -210,4 +210,10 @@
   <data name="ContextMenuDecodeAllTags" xml:space="preserve">
     <value>Decode all tags</value>
   </data>
+  <data name="FileLoadedWithWarnings" xml:space="preserve">
+    <value>File loaded successfully: {0}</value>
+  </data>
+  <data name="FileLengthPrefix" xml:space="preserve">
+    <value>File has a {0}-byte length prefix which was stripped</value>
+  </data>
 </root>
