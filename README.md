@@ -78,7 +78,7 @@ You can create a shortcut to that executable in the Start Menu or wherever you w
 
 See [LICENSE](./LICENSE).
 
-## Achknowledgements
+## Acknowledgements
 
 This application uses:
 
