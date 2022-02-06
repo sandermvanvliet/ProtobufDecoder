@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using ProtobufDecoder.Application.Wpf.Annotations;
 using ProtobufDecoder.Application.Wpf.Commands;
 using ProtobufDecoder.Tags;
@@ -106,7 +107,29 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        public CommandResult LoadAndDecodeFromClipboard()
+        {
+            if (Clipboard.GetData("application/octet-stream") is MemoryStream data)
+            {
+                var bytes = data.ToArray().Take((int)data.Length).ToArray();
+
+                if (bytes.Length > 0)
+                {
+                    return Decode(bytes);
+                }
+            }
+
+            return CommandResult.Failure(Strings.ClipboardEmpty);
+        }
+
         public CommandResult LoadAndDecode(string inputFilePath)
+        {
+            var bytes = File.ReadAllBytes(inputFilePath);
+
+            return Decode(bytes);
+        }
+
+        private CommandResult Decode(byte[] bytes)
         {
             // First clear the current message so that we don't show
             // stale data if loading this message fails.
@@ -114,7 +137,6 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
             try
             {
-                var bytes = File.ReadAllBytes(inputFilePath);
                 InputFileByteStream = new MemoryStream(bytes);
                 var parseResult = ProtobufParser.Parse(bytes);
 
@@ -138,7 +160,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                         // Bingo
                         parseResult = ProtobufParser.Parse(bytes.Skip(4).ToArray());
 
-                        if(parseResult.Successful)
+                        if (parseResult.Successful)
                         {
                             Message = parseResult.Message;
 
@@ -155,7 +177,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                         // Bingo
                         parseResult = ProtobufParser.Parse(bytes.Skip(2).ToArray());
 
-                        if(parseResult.Successful)
+                        if (parseResult.Successful)
                         {
                             Message = parseResult.Message;
 
@@ -171,7 +193,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 return CommandResult.Failure(e.Message);
             }
         }
-        
+
         private static int ToUInt16(byte[] buffer, int start, int count)
         {
             if (buffer.Length >= start + count)

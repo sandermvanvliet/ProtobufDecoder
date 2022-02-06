@@ -97,6 +97,15 @@ namespace ProtobufDecoder.Application.Wpf {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clipboard did not contain any bytes to load.
+        /// </summary>
+        public static string ClipboardEmpty {
+            get {
+                return ResourceManager.GetString("ClipboardEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Common.
         /// </summary>
         public static string CommonTagProperties {
@@ -264,6 +273,15 @@ namespace ProtobufDecoder.Application.Wpf {
         public static string MenuHelpAbout {
             get {
                 return ResourceManager.GetString("MenuHelpAbout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load from clipboard.
+        /// </summary>
+        public static string MenuLoadFromClipboard {
+            get {
+                return ResourceManager.GetString("MenuLoadFromClipboard", resourceCulture);
             }
         }
         

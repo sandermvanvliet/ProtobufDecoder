@@ -110,4 +110,10 @@
     <data name="FileLengthPrefix" xml:space="preserve">
       <value>Bestand heeft een lengte prefix van {0}-bytes, deze is overgeslagen</value>
     </data>
+    <data name="ClipboardEmpty" xml:space="preserve">
+      <value>Het klembord bevatte geen data om te laden</value>
+    </data>
+    <data name="MenuLoadFromClipboard" xml:space="preserve">
+      <value>Laden vanaf klembord</value>
+    </data>
   </root>

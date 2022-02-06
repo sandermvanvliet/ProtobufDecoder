@@ -5,6 +5,7 @@
 - Added drag-and-drop support which means you can now drag a file onto the ProtobufDecoder window and it will load that file
 - Added a _Decode all_ context menu option which is enabled on repeated and embedded message tags. When used it will attempt to decode all items (repeated tag) or tags (embedded message)
 - Fixed an issue w3here the current message tags and generated proto file would not be cleared when a new file is loaded and that fails. This would show stale data which wasn't very nice
+- Added a _Load from clipboard_ menu item which allows you to load raw bytes directly from the clipboard. You can use this together with the _Copy ...as raw binary_ option in Wireshark.
 
 ## 0.3.0
 

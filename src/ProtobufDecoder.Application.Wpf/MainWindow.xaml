@@ -65,12 +65,15 @@
                     CommandParameter="{Binding ElementName=TagsTreeView}" />
         <KeyBinding Command="{Binding Path=DecodeAllTagsCommand}" Key="A" Modifiers="Control"
                     CommandParameter="{Binding ElementName=TagsTreeView}" />
+        <KeyBinding Command="{Binding Path=LoadBytesFromClipboardCommand}" Key="O" Modifiers="Control+Shift "/>
     </Window.InputBindings>
     <DockPanel>
         <Menu DockPanel.Dock="Top" IsMainMenu="True" Margin="0,0,0,0" Height="20">
             <MenuItem Header="{x:Static s:Strings.MenuFile}">
                 <MenuItem Header="{x:Static s:Strings.MenuFileOpen}" Name="OpenFileMenuItem"
                           Command="{Binding Path=OpenFileCommand}" InputGestureText="Ctrl+O" />
+                <MenuItem Header="{x:Static s:Strings.MenuLoadFromClipboard}" Name="LoadFromClipboardMenuItem"
+                          Command="{Binding Path=LoadBytesFromClipboardCommand}" InputGestureText="Ctrl+Shift+O" />
                 <Separator />
                 <MenuItem Header="{x:Static s:Strings.MenuFileSaveGeneratedProto}" Name="SaveGeneratedProto"
                           Command="{Binding Path=SaveGeneratedProtoCommand}" InputGestureText="Ctrl+S" />

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Microsoft.Win32;
@@ -66,8 +68,16 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 .OnSuccess(_ => Model.StatusBarInfo(Strings.TagDecodedSuccessfully))
                 .OnSuccessWithWarnings(_ => Model.StatusBarWarning(Strings.CannotDecodeTag))
                 .OnFailure(_ => Model.StatusBarError(Strings.FailedToDecodeTag, _.Message));
+
+            LoadBytesFromClipboardCommand = new RelayCommand(
+                _ => Message.LoadAndDecodeFromClipboard(),
+                _ => Message != null)
+                .OnSuccess(_ => Model.StatusBarInfo(Strings.FileLoadedSuccessfully))
+                .OnSuccessWithWarnings(_ => Model.StatusBarInfo(Strings.FileLoadedWithWarnings, _.Message))
+                .OnFailure(_ => Model.StatusBarError(Strings.FileFailedToLoad, _.Message));
         }
 
+        public ICommand LoadBytesFromClipboardCommand { get; set; }
         public ICommand LoadFileCommand { get; }
         public ICommand OpenFileCommand { get; set; }
         public ICommand SaveGeneratedProtoCommand { get; }

@@ -216,4 +216,10 @@
   <data name="FileLengthPrefix" xml:space="preserve">
     <value>File has a {0}-byte length prefix which was stripped</value>
   </data>
+  <data name="ClipboardEmpty" xml:space="preserve">
+    <value>Clipboard did not contain any bytes to load</value>
+  </data>
+  <data name="MenuLoadFromClipboard" xml:space="preserve">
+    <value>Load from clipboard</value>
+  </data>
 </root>

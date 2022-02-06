@@ -7,7 +7,7 @@
 <!-- The manufacturer, for setup package publisher and folder info -->
 <?define Manufacturer = "Codenizer BV" ?>
 <!-- The version number of this setup package-->
-<?define Version = "0.3.0" ?>
+<?define Version = "0.4.0" ?>
 <!-- UpgradeCode must be unique and not changed once the first version of the program is installed. -->
 <?define UpgradeCode = "{4feac63a-39f3-45d8-ae85-491bc3f379e1}" ?>
 <!-- The name of the Cabinet -->
@@ -15,7 +15,7 @@
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <?define ProtobufDecoder.Application.Wpf_TargetDir=$(var.ProtobufDecoder.Application.Wpf.TargetDir)?>
-  <Product Id="377E18D3-40B7-4875-B618-279E210AAFC6" Name="$(var.Name)" Language="1033" Version="0.3.0.0" Manufacturer="$(var.Manufacturer)" UpgradeCode="$(var.UpgradeCode)">
+  <Product Id="377E18D3-40B7-4875-B618-279E210AAFC6" Name="$(var.Name)" Language="1033" Version="0.4.0.0" Manufacturer="$(var.Manufacturer)" UpgradeCode="$(var.UpgradeCode)">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perUser" InstallPrivileges="limited" />
 
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
