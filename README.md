@@ -27,10 +27,11 @@ A changelog can be found [here](Changelog.md)
 
 Download the latest installer from the [Releases page](https://github.com/sandermvanvliet/ProtobufDecoder/releases).
 
-
 When the application starts, open a file that contains a Protobuf payload either via File -> Open or using the keyboard shortcut <kbd>Ctrl</kbd> + <kbd>O</kbd>.
 
-Please note that at this time the ProtobufDecoder only supports the a file that contains _only_ a single raw Protobuf message. Any leading or trailing delimiters must be stripped before loading the file.
+Please note that at this time the ProtobufDecoder only supports the a file that contains _only_ a single raw Protobuf message. If the file contains a length prefix it will be automatically stripped (since version 0.4.0).
+
+For the keyboard warriors: shortcut keys are available throughout the app and they are hinted in the menu items.
 
 ### Integrating with other tools
 
