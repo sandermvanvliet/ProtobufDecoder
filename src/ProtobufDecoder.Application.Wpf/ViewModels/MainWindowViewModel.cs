@@ -75,9 +75,17 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 .OnSuccess(_ => Model.StatusBarInfo(Strings.FileLoadedSuccessfully))
                 .OnSuccessWithWarnings(_ => Model.StatusBarInfo(Strings.FileLoadedWithWarnings, _.Message))
                 .OnFailure(_ => Model.StatusBarError(Strings.FileFailedToLoad, _.Message));
+
+            LoadBytesFromHexStreamCommand = new RelayCommand(
+                    _ => LoadBytesFromHexStream(_ as Window),
+                    _ => Message != null)
+                .OnSuccess(_ => Model.StatusBarInfo(Strings.FileLoadedSuccessfully))
+                .OnSuccessWithWarnings(_ => Model.StatusBarInfo(Strings.FileLoadedWithWarnings, _.Message))
+                .OnFailure(_ => Model.StatusBarError(Strings.FileFailedToLoad, _.Message));
         }
 
         public ICommand LoadBytesFromClipboardCommand { get; set; }
+        public ICommand LoadBytesFromHexStreamCommand { get; set; }
         public ICommand LoadFileCommand { get; }
         public ICommand OpenFileCommand { get; set; }
         public ICommand SaveGeneratedProtoCommand { get; }
@@ -105,9 +113,9 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             {
                 RestoreDirectory = true,
                 CheckFileExists = true,
-                ShowReadOnly = true
+                ShowReadOnly = true,
             };
-
+            
             var result = dialog.ShowDialog();
 
             if (result.HasValue && result.Value)
@@ -115,6 +123,24 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 Model.InputFilePath = dialog.FileName;
 
                 LoadFileCommand.Execute(null);
+            }
+
+            return CommandResult.Success();
+        }
+
+        private CommandResult LoadBytesFromHexStream(Window owner)
+        {
+            var dialog = new PasteHexStreamDialog
+            {
+                Owner = owner,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner
+            };
+
+            var result = dialog.ShowDialog();
+
+            if (result.HasValue && result.Value && !string.IsNullOrEmpty(dialog.HexString))
+            {
+                return Message.LoadAndDecodeFromHexStream(dialog.HexString);
             }
 
             return CommandResult.Success();

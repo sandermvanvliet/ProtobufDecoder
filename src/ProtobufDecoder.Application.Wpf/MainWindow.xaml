@@ -16,7 +16,8 @@
         d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}"
         Icon="icon.png"
         AllowDrop="True"
-        Drop="MainWindow_OnDrop">
+        Drop="MainWindow_OnDrop"
+        x:Name="mainWindow">
     <Window.Resources>
         <converters:ProtobufTagConverter x:Key="ProtobufTagConverter" />
         <converters:ProtobufMessageConverter x:Key="GeneratedProtoConverter" />
@@ -66,6 +67,9 @@
         <KeyBinding Command="{Binding Path=DecodeAllTagsCommand}" Key="A" Modifiers="Control"
                     CommandParameter="{Binding ElementName=TagsTreeView}" />
         <KeyBinding Command="{Binding Path=LoadBytesFromClipboardCommand}" Key="O" Modifiers="Control+Shift "/>
+        <KeyBinding Command="{Binding Path=LoadBytesFromHexStreamCommand}" 
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
+                    Key="H" Modifiers="Control+Shift "/>
     </Window.InputBindings>
     <DockPanel>
         <Menu DockPanel.Dock="Top" IsMainMenu="True" Margin="0,0,0,0" Height="20">
@@ -74,6 +78,9 @@
                           Command="{Binding Path=OpenFileCommand}" InputGestureText="Ctrl+O" />
                 <MenuItem Header="{x:Static s:Strings.MenuLoadFromClipboard}" Name="LoadFromClipboardMenuItem"
                           Command="{Binding Path=LoadBytesFromClipboardCommand}" InputGestureText="Ctrl+Shift+O" />
+                <MenuItem Header="{x:Static s:Strings.MenuLoadFromHexStream}" Name="LoadFromHexStreamMenuItem"
+                          Command="{Binding Path=LoadBytesFromHexStreamCommand}" InputGestureText="Ctrl+Shift+H" 
+                          CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"/>
                 <Separator />
                 <MenuItem Header="{x:Static s:Strings.MenuFileSaveGeneratedProto}" Name="SaveGeneratedProto"
                           Command="{Binding Path=SaveGeneratedProtoCommand}" InputGestureText="Ctrl+S" />

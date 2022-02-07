@@ -116,4 +116,16 @@
     <data name="MenuLoadFromClipboard" xml:space="preserve">
       <value>Laden vanaf klembord</value>
     </data>
+    <data name="MenuLoadFromHexStream" xml:space="preserve">
+      <value>Laad vanuit hex stream</value>
+    </data>
+    <data name="LoadHexStringTitle" xml:space="preserve">
+      <value>Laad hex stream</value>
+    </data>
+    <data name="LoadHexStreamInstruction" xml:space="preserve">
+      <value>Voer hex stream in geformatteerd zonder 0x voorvoegsel</value>
+    </data>
+    <data name="LoadButton" xml:space="preserve">
+      <value>_Laden</value>
+    </data>
   </root>

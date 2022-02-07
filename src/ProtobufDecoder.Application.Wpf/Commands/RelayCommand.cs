@@ -17,6 +17,8 @@ namespace ProtobufDecoder.Application.Wpf.Commands
             _canExecute = canExecute;
         }
 
+        public object CommandParameter { get; set; }
+
         public event EventHandler CanExecuteChanged
         {
             add => CommandManager.RequerySuggested += value;

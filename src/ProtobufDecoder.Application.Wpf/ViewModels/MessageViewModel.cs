@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -120,6 +122,19 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             }
 
             return CommandResult.Failure(Strings.ClipboardEmpty);
+        }
+
+        public CommandResult LoadAndDecodeFromHexStream(string hexString)
+        {
+            var bytes = new List<byte>();
+
+            for (var i = 0; i < hexString.Length; i += 2)
+            {
+                var substring = hexString.Substring(i, 2).ToUpper();
+                bytes.AddRange(Convert.FromHexString(substring));
+            }
+
+            return Decode(bytes.ToArray());
         }
 
         public CommandResult LoadAndDecode(string inputFilePath)

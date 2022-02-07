@@ -214,6 +214,33 @@ namespace ProtobufDecoder.Application.Wpf {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to _Load.
+        /// </summary>
+        public static string LoadButton {
+            get {
+                return ResourceManager.GetString("LoadButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter hex string formatted without 0x prefixes.
+        /// </summary>
+        public static string LoadHexStreamInstruction {
+            get {
+                return ResourceManager.GetString("LoadHexStreamInstruction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load hex stream.
+        /// </summary>
+        public static string LoadHexStringTitle {
+            get {
+                return ResourceManager.GetString("LoadHexStringTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _File.
         /// </summary>
         public static string MenuFile {
@@ -282,6 +309,15 @@ namespace ProtobufDecoder.Application.Wpf {
         public static string MenuLoadFromClipboard {
             get {
                 return ResourceManager.GetString("MenuLoadFromClipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load from hex stream.
+        /// </summary>
+        public static string MenuLoadFromHexStream {
+            get {
+                return ResourceManager.GetString("MenuLoadFromHexStream", resourceCulture);
             }
         }
         

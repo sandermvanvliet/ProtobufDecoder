@@ -29,6 +29,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="PasteHexStreamDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Strings.Designer.cs">
       <DependentUpon>Strings.resx</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -64,6 +67,13 @@
     <Content Update="$(PkgWPFHexaEditor)\contentFiles\any\net5.0-windows7.0\Resources\EBCDIC.tbl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="PasteHexStreamDialog.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
 
 </Project>

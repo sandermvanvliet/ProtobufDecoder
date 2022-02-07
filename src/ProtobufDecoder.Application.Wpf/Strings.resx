@@ -222,4 +222,16 @@
   <data name="MenuLoadFromClipboard" xml:space="preserve">
     <value>Load from clipboard</value>
   </data>
+  <data name="MenuLoadFromHexStream" xml:space="preserve">
+    <value>Load from hex stream</value>
+  </data>
+  <data name="LoadHexStringTitle" xml:space="preserve">
+    <value>Load hex stream</value>
+  </data>
+  <data name="LoadHexStreamInstruction" xml:space="preserve">
+    <value>Enter hex string formatted without 0x prefixes</value>
+  </data>
+  <data name="LoadButton" xml:space="preserve">
+    <value>_Load</value>
+  </data>
 </root>
