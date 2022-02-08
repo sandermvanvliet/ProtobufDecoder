@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.5.0
+
+- Added an option to decode a hex-stream. You can now use the _Load from hex stream_ menu item (<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>H</kbd>) which opens a dialog box where you can enter a stream of hex encoded bytes to load. 
+The format is a two characters per byte, for example `f200ba0d` for a 4 byte payload.
+
+### Fixes
+
+-  Fix issue where the trimmed length prefix bytes would still be visible in the hex-editor view which caused the selection highlighting to be off by 2 or 4 bytes.
+
 ## 0.4.0
 
 - Added drag-and-drop support which means you can now drag a file onto the ProtobufDecoder window and it will load that file
