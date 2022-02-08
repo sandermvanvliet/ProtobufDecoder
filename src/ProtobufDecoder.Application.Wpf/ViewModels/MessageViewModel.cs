@@ -152,12 +152,13 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
             try
             {
-                InputFileByteStream = new MemoryStream(bytes);
                 var parseResult = ProtobufParser.Parse(bytes);
 
                 if (parseResult.Successful)
                 {
                     Message = parseResult.Message;
+                    
+                    InputFileByteStream = new MemoryStream(bytes);
 
                     return CommandResult.Success();
                 }
@@ -173,11 +174,13 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                     if (length + 4 == bytes.Length)
                     {
                         // Bingo
-                        parseResult = ProtobufParser.Parse(bytes.Skip(4).ToArray());
+                        var trimmedBytes = bytes.Skip(4).ToArray();
+                        parseResult = ProtobufParser.Parse(trimmedBytes);
 
                         if (parseResult.Successful)
                         {
                             Message = parseResult.Message;
+                            InputFileByteStream = new MemoryStream(trimmedBytes);
 
                             return CommandResult.SuccessWithWarning(string.Format(Strings.FileLengthPrefix, 4));
                         }
@@ -190,11 +193,13 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                     if (length + 2 == bytes.Length)
                     {
                         // Bingo
-                        parseResult = ProtobufParser.Parse(bytes.Skip(2).ToArray());
+                        var trimmedBytes = bytes.Skip(2).ToArray();
+                        parseResult = ProtobufParser.Parse(trimmedBytes);
 
                         if (parseResult.Successful)
                         {
                             Message = parseResult.Message;
+                            InputFileByteStream = new MemoryStream(trimmedBytes);
 
                             return CommandResult.SuccessWithWarning(string.Format(Strings.FileLengthPrefix, 2));
                         }
