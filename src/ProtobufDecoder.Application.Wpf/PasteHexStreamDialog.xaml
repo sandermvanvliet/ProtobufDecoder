@@ -5,29 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProtobufDecoder.Application.Wpf"
         mc:Ignorable="d"
-        Title="{x:Static local:Strings.LoadHexStringTitle}" Height="270" Width="550"
-        ResizeMode="NoResize">
-    <Grid Margin="0,0,0,0">
+        Title="{x:Static local:Strings.LoadHexStringTitle}" Height="301" Width="658">
+    <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="86*" />
+            <ColumnDefinition Width="80" />
+            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="60"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="32" />
-            <RowDefinition Height="160" />
+            <RowDefinition Height="*" />
             <RowDefinition Height="38" />
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Grid.ColumnSpan="2">
-            <TextBlock VerticalAlignment="Center" FontSize="18" Margin="4,0,0,0" Text="{x:Static local:Strings.LoadHexStreamInstruction}"></TextBlock>
-        </StackPanel>
+        <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" FontSize="18" Margin="4,0,0,0" Text="{x:Static local:Strings.LoadHexStreamInstruction}"/>
 
-        <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Stretch" Grid.ColumnSpan="2" Grid.Column="0">
-            <Label Width="120" HorizontalContentAlignment="Right" VerticalAlignment="Top" Content="Hex stream"/>
-            <TextBox Name="HexStreamTextBlock" VerticalAlignment="Top" Width="404" Margin="4,4,0,4" Height="151" />
-        </StackPanel>
+        <Label Grid.Row="1" Grid.Column="0" Margin="0,4,0,0" HorizontalContentAlignment="Right" VerticalAlignment="Top" Content="Hex stream:"/>
+        <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Name="HexStreamTextBlock" Margin="4,4,8,4" TextWrapping="Wrap" />
 
         <Button Name="LoadButton" Click="LoadButton_OnClick" Content="{x:Static local:Strings.LoadButton}"
-                 Grid.Row="2" Grid.Column="1" Margin="8,8,8,8"/>
+                 Grid.Row="2" Grid.Column="2" Margin="8,4,8,8"/>
     </Grid>
 </Window>
