@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -156,7 +155,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
                 if (parseResult.Successful)
                 {
-                    Message = parseResult.Message;
+                    Message = DecodePossibleTags(parseResult.Message);
                     
                     InputFileByteStream = new MemoryStream(bytes);
 
@@ -179,7 +178,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
                         if (parseResult.Successful)
                         {
-                            Message = parseResult.Message;
+                            Message = DecodePossibleTags(parseResult.Message);
                             InputFileByteStream = new MemoryStream(trimmedBytes);
 
                             return CommandResult.SuccessWithWarning(string.Format(Strings.FileLengthPrefix, 4));
@@ -198,7 +197,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
                         if (parseResult.Successful)
                         {
-                            Message = parseResult.Message;
+                            Message = DecodePossibleTags(parseResult.Message);
                             InputFileByteStream = new MemoryStream(trimmedBytes);
 
                             return CommandResult.SuccessWithWarning(string.Format(Strings.FileLengthPrefix, 2));
@@ -212,6 +211,42 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             {
                 return CommandResult.Failure(e.Message);
             }
+        }
+
+        private static ProtobufMessage DecodePossibleTags(ProtobufMessage message)
+        {
+            var decodableTags = message
+                .Tags
+                .OfType<ProtobufTagSingle>()
+                .Where(singleTag => singleTag.Value.CanDecode)
+                .ToList();
+
+            foreach (var singleTag in decodableTags)
+            {
+                try
+                {
+                    var decodeParseResult = ProtobufParser.Parse(singleTag.Value.RawValue);
+
+                    if (decodeParseResult.Successful)
+                    {
+                        var embeddedMessageTag =
+                            new ProtobufTagEmbeddedMessage(singleTag, decodeParseResult.Message.Tags.ToArray())
+                            {
+                                Name = $"EmbeddedMessage{singleTag.Index}"
+                            };
+
+                        var tagIndex = message.Tags.IndexOf(singleTag); 
+                        message.Tags.RemoveAt(tagIndex);
+                        message.Tags.Insert(tagIndex, embeddedMessageTag);
+                    }
+                }
+                catch
+                {
+                    // We don't really care about this
+                }
+            }
+
+            return message;
         }
 
         private static int ToUInt16(byte[] buffer, int start, int count)
