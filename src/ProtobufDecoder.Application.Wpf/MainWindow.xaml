@@ -132,6 +132,8 @@
                     <RowDefinition />
                     <RowDefinition Height="4" />
                     <RowDefinition Height="300" />
+                    <RowDefinition Height="4" />
+                    <RowDefinition Height="300" />
                 </Grid.RowDefinitions>
                 <TreeView x:Name="TagsTreeView"
                           SelectedItemChanged="TagsTreeView_OnSelectedItemChanged"
@@ -179,12 +181,46 @@
                               HorizontalAlignment="Stretch"
                               VerticalAlignment="Center"
                               Height="4" />
+                <TreeView x:Name="TagValuesTreeView"
+                          SelectedItemChanged="TagsTreeView_OnSelectedItemChanged"
+                          ItemsSource="{Binding Message.Tags,Mode=OneWay}"
+                          VerticalAlignment="Stretch"
+                          Grid.Row="2">
+                    <TreeView.ItemContainerStyle>
+                        <Style TargetType="{x:Type TreeViewItem}">
+                            <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                            <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                            <Setter Property="FontWeight" Value="Normal" />
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="FontWeight" Value="Bold" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TreeView.ItemContainerStyle>
+
+                    <TreeView.ItemTemplate>
+                        <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Tag.Index}" FontWeight="Bold"/>
+                                <TextBlock Text=":" FontWeight="Bold" />
+                                <TextBlock Text="{Binding MostLikelyValue}"  Margin="10,0,0,0" />
+                            </StackPanel>
+                        </HierarchicalDataTemplate>
+                    </TreeView.ItemTemplate>
+                </TreeView>
+                <GridSplitter Grid.Row="3"
+                              Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+                              ShowsPreview="True"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Center"
+                              Height="4" />
                 <Border BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"
                         BorderThickness="0.5"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         Margin="0"
-                        Grid.Row="2">
+                        Grid.Row="4">
                     <TextBox x:Name="GeneratedProtoTextBlock"
                              Text="{Binding Message.Message, Converter={StaticResource GeneratedProtoConverter},Mode=OneWay}"
                              IsReadOnly="True" />

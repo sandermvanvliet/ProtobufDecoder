@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Globalization;
 
 namespace ProtobufDecoder.Values
 {
@@ -21,5 +22,10 @@ namespace ProtobufDecoder.Values
         [ReadOnly(true)]
         [Browsable(true)]
         public byte[] RawBytes => RawValue;
+
+        public override string ToString()
+        {
+            return Value.ToString(CultureInfo.CurrentUICulture);
+        }
     }
 }

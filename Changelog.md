@@ -6,6 +6,8 @@
 The format is a two characters per byte, for example `f200ba0d` for a 4 byte payload.
 - Tags on the message root that can be decoded (embedded messages, repeated tags etc) will now be automatically decoded on load.
 - Tags on the message root that have children will now automatically be expanded to improve usability as you don't have to manually expand those anymore.
+- A new view has been added that shows the tag values in a tree view with the same structure as the tag structure tree view:
+![screenshot showing tag values in tree view](tag-values.png)
 
 ### Fixes
 

@@ -13,6 +13,21 @@ namespace ProtobufDecoder.Values
 
         public override bool CanDecode => false;
 
+        public override string ToString()
+        {
+            if (UInt16 != "Got too many bytes to represent this value")
+            {
+                return UInt16;
+            }
+            
+            if (UInt32 != "Got too many bytes to represent this value")
+            {
+                return UInt32;
+            }
+
+            return UInt64;
+        }
+
         [Description("The boolean representation")]
         [ReadOnly(true)]
         [Browsable(true)]

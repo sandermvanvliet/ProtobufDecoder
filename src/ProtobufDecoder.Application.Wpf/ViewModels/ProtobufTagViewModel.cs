@@ -78,6 +78,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(CanDecode));
+                OnPropertyChanged(nameof(MostLikelyValue));
 
                 if (value != null)
                 {
@@ -148,6 +149,29 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 if (Equals(value, _parent)) return;
                 _parent = value;
                 OnPropertyChanged();
+            }
+        }
+
+        public string MostLikelyValue
+        {
+            get
+            {
+                if (Tag is ProtobufTagEmbeddedMessage embeddedMessage)
+                {
+                    return embeddedMessage.Name;
+                }
+
+                if (Tag is ProtobufTagRepeated repeated)
+                {
+                    return repeated.Name;
+                }
+                
+                if (Tag is ProtobufTagSingle singleTag)
+                {
+                    return singleTag.Value?.ToString() ?? string.Empty;
+                }
+
+                return string.Empty;
             }
         }
 
@@ -348,16 +372,5 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
             return CommandResult.Failure("Not a tag");
         }
-    }
-
-    public interface IProtobufParent
-    {
-        bool IsSelected { get; set; }
-        bool IsExpanded { get; set; }
-        IProtobufParent Parent { get; set; }
-
-        void ReplaceChildWith(
-            ProtobufTagSingle child,
-            ProtobufTagSingle replacement);
     }
 }

@@ -13,7 +13,9 @@ namespace ProtobufDecoder.Values
 
         public override string ToString()
         {
-            return Value;
+            return string.IsNullOrEmpty(Value)
+                ? "(empty)"
+                : Value;
         }
     }
 }
