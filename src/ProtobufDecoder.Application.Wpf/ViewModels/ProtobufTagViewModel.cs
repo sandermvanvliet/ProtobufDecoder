@@ -27,6 +27,8 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             Tag = tag;
 
             PopulateChildren(tag);
+
+            IsExpanded = Parent is MessageViewModel && Children.Any();
         }
 
         public bool CanDecode

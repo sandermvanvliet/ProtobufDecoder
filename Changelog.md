@@ -4,6 +4,7 @@
 
 - Added an option to decode a hex-stream. You can now use the _Load from hex stream_ menu item (<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>H</kbd>) which opens a dialog box where you can enter a stream of hex encoded bytes to load. 
 The format is a two characters per byte, for example `f200ba0d` for a 4 byte payload.
+- Tags on the message root that have children will now automatically be expanded to improve usability as you don't have to manually expand those anymore.
 
 ### Fixes
 
