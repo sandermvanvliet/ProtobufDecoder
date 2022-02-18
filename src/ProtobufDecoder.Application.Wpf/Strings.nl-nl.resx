@@ -128,4 +128,7 @@
     <data name="LoadButton" xml:space="preserve">
       <value>_Laden</value>
     </data>
+    <data name="MenuFileNewWindow" xml:space="preserve">
+      <value>_Nieuw venster</value>
+    </data>
   </root>

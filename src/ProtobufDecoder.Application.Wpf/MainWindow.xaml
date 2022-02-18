@@ -58,6 +58,7 @@
         </Style>
     </Window.Resources>
     <Window.InputBindings>
+        <KeyBinding Command="{Binding Path=NewWindowCommand}" Key="N" Modifiers="Control" />
         <KeyBinding Command="{Binding Path=OpenFileCommand}" Key="O" Modifiers="Control" />
         <KeyBinding Command="{Binding Path=SaveGeneratedProtoCommand}" Key="S" Modifiers="Control" />
         <KeyBinding Command="{Binding Path=CopyTagValueCommand}" Key="C" Modifiers="Control"
@@ -74,6 +75,9 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top" IsMainMenu="True" Margin="0,0,0,0" Height="20">
             <MenuItem Header="{x:Static s:Strings.MenuFile}">
+                <MenuItem Header="{x:Static s:Strings.MenuFileNewWindow}" Name="NewWindowMenuItem"
+                          Command="{Binding Path=NewWindowCommand}" InputGestureText="Ctrl+N"/>
+                <Separator />
                 <MenuItem Header="{x:Static s:Strings.MenuFileOpen}" Name="OpenFileMenuItem"
                           Command="{Binding Path=OpenFileCommand}" InputGestureText="Ctrl+O" />
                 <MenuItem Header="{x:Static s:Strings.MenuLoadFromClipboard}" Name="LoadFromClipboardMenuItem"

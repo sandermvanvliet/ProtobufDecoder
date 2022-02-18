@@ -11,6 +11,7 @@
   - Input with spaces: `0x01 0x02 0x03`
   - Any combination of the above
 - Added the <kbd>Ctrl</kbd> + <kbd>Enter</kbd> shortcut key combination to the "Load from hex stream" to close the dialog and load the input.
+- Added a new menu item to open a new ProtobufDecoder window. The shortcut key is <kbd>Ctrl</kbd> + <kbd>N</kbd>.
 
 ### Fixes
 

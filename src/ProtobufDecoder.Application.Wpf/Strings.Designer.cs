@@ -259,6 +259,15 @@ namespace ProtobufDecoder.Application.Wpf {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to _New window.
+        /// </summary>
+        public static string MenuFileNewWindow {
+            get {
+                return ResourceManager.GetString("MenuFileNewWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Open.
         /// </summary>
         public static string MenuFileOpen {

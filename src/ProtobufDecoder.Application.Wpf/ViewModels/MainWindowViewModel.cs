@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -81,6 +82,10 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 .OnSuccess(_ => Model.StatusBarInfo(Strings.FileLoadedSuccessfully))
                 .OnSuccessWithWarnings(_ => Model.StatusBarInfo(Strings.FileLoadedWithWarnings, _.Message))
                 .OnFailure(_ => Model.StatusBarError(Strings.FileFailedToLoad, _.Message));
+
+            NewWindowCommand = new RelayCommand(
+                _ => NewWindow(),
+                _ => true);
         }
 
         public ICommand LoadBytesFromClipboardCommand { get; set; }
@@ -92,6 +97,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
         public ICommand CopyTagValueCommand { get; set; }
         public ICommand DecodeTagCommand { get; set; }
         public ICommand DecodeAllTagsCommand { get; set; }
+        public ICommand NewWindowCommand { get; set; }
 
         public MainWindowModel Model { get; set; }
 
@@ -206,6 +212,27 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             {
                 return CommandResult.Failure(e.Message);
             }
+        }
+
+        private CommandResult NewWindow()
+        {
+            var assemblyLocation = GetType().Assembly.Location;
+
+            if (assemblyLocation.EndsWith(".dll"))
+            {
+                Process.Start(
+                    new ProcessStartInfo("dotnet", assemblyLocation)
+                    {
+                        CreateNoWindow = true,
+                        WindowStyle = ProcessWindowStyle.Hidden
+                    });
+            }
+            else
+            {
+                Process.Start(assemblyLocation);
+            }
+
+            return CommandResult.Success();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
