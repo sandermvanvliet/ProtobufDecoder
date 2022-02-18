@@ -220,17 +220,15 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
             if (assemblyLocation.EndsWith(".dll"))
             {
-                Process.Start(
-                    new ProcessStartInfo("dotnet", assemblyLocation)
+                assemblyLocation = Path.Combine(Path.GetDirectoryName(assemblyLocation), Path.GetFileNameWithoutExtension(assemblyLocation) + ".exe");
+            }
+
+            Process.Start(
+                    new ProcessStartInfo(assemblyLocation)
                     {
                         CreateNoWindow = true,
                         WindowStyle = ProcessWindowStyle.Hidden
                     });
-            }
-            else
-            {
-                Process.Start(assemblyLocation);
-            }
 
             return CommandResult.Success();
         }
