@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.6.0
+
+- The "Load from hex stream" dialog is now more accepting of input. You can now provide:
+  - `010203`
+  - `0x010203`
+  - `0x01 0x02 0x03`
+  - `\x01\x02\x03`
+  - Multiple lines. Both `\n` and `\r\n` are suported as well as the multi-line escape character `\` when splitting text over multiple lines
+  - Input with spaces: `0x01 0x02 0x03`
+  - Any combination of the above
+
+### Fixes
+
+- Icons are now properly set in the various dialog boxes.
+
 ## 0.5.0
 
 - Added an option to decode a hex-stream. You can now use the _Load from hex stream_ menu item (<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>H</kbd>) which opens a dialog box where you can enter a stream of hex encoded bytes to load. 
