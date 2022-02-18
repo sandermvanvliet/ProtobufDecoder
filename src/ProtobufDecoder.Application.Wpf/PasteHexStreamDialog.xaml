@@ -7,7 +7,8 @@
         mc:Ignorable="d"
         Icon="icon.png"
         Title="{x:Static local:Strings.LoadHexStringTitle}" Height="301" Width="658"
-        Loaded="PasteHexStreamDialog_OnLoaded">
+        Loaded="PasteHexStreamDialog_OnLoaded"
+        KeyUp="PasteHexStreamDialog_OnKeyUp">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="80" />

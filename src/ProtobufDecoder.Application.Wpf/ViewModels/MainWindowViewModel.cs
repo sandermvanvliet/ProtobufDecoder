@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -123,9 +122,11 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 Model.InputFilePath = dialog.FileName;
 
                 LoadFileCommand.Execute(null);
+
+                return CommandResult.Success();
             }
 
-            return CommandResult.Success();
+            return CommandResult.Aborted();
         }
 
         private CommandResult LoadBytesFromHexStream(Window owner)
@@ -143,7 +144,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 return Message.LoadAndDecodeFromHexStream(dialog.HexString);
             }
 
-            return CommandResult.Success();
+            return CommandResult.Aborted();
         }
 
         private CommandResult SaveGeneratedProtoFile()
