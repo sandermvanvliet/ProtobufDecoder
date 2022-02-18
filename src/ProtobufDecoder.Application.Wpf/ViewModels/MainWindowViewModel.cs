@@ -140,7 +140,8 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             var dialog = new PasteHexStreamDialog
             {
                 Owner = owner,
-                WindowStartupLocation = WindowStartupLocation.CenterOwner
+                WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                ShowInTaskbar = false
             };
 
             var result = dialog.ShowDialog();

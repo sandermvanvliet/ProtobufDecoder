@@ -19,6 +19,7 @@
 - Icons are now properly set in the various dialog boxes.
 - The <kbd>ESC</kbd> key now properly closes the "Load from hex stream" dialog.
 - When canceling opening a file or loading from hex stream the status bar no longer shows "File loaded successfully".
+- Dialogs now no longer appear in the task bar.
 
 ## 0.5.0
 

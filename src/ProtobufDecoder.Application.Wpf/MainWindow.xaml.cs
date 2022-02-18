@@ -41,7 +41,8 @@ namespace ProtobufDecoder.Application.Wpf
             var aboutWindow = new About
             {
                 Owner = this,
-                WindowStartupLocation = WindowStartupLocation.CenterOwner
+                WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                ShowInTaskbar = false
             };
 
             aboutWindow.ShowDialog();
