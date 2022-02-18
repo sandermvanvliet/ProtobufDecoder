@@ -51,7 +51,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 .OnFailure(_ => Model.StatusBarError(Strings.ProtoFileFailedToSave, _.Message));
 
             CopyTagValueCommand = new RelayCommand(
-                _ => ((_ as TreeView)?.SelectedItem as ProtobufTagViewModel)?.CopyTagValueToCsharpArray(),
+                _ => CopyTagValue((_ as TreeView)),
                 _ => (_ as TreeView)?.SelectedItem is ProtobufTagViewModel)
                 .OnSuccess(_ => Model.StatusBarInfo(Strings.TagCopiedToClipboard));
 
@@ -233,6 +233,30 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             }
 
             return CommandResult.Success();
+        }
+
+        private static CommandResult CopyTagValue(TreeView treeView)
+        {
+            if (treeView == null)
+            {
+                return CommandResult.Aborted();
+            }
+
+            if (treeView.Name == "TagValuesTreeView")
+            {
+                var tagViewModel = (treeView.SelectedItem as ProtobufTagViewModel);
+
+                return tagViewModel?.CopyMostLikelyValue();
+            }
+
+            if (treeView.Name == "TagsTreeView")
+            {
+                var tagViewModel = (treeView.SelectedItem as ProtobufTagViewModel);
+
+                return tagViewModel?.CopyTagValueToCsharpArray();
+            }
+
+            return CommandResult.Aborted();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

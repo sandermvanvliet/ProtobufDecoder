@@ -12,6 +12,7 @@
   - Any combination of the above
 - Added the <kbd>Ctrl</kbd> + <kbd>Enter</kbd> shortcut key combination to the "Load from hex stream" to close the dialog and load the input.
 - Added a new menu item to open a new ProtobufDecoder window. The shortcut key is <kbd>Ctrl</kbd> + <kbd>N</kbd>.
+- You can now hit <kbd>Ctrl</kbd> + <kbd>C</kbd> when you select an item in the tag values tree view which will copy the value of the tag to the clipboard instead of the C# byte array.
 
 ### Fixes
 

@@ -61,12 +61,6 @@
         <KeyBinding Command="{Binding Path=NewWindowCommand}" Key="N" Modifiers="Control" />
         <KeyBinding Command="{Binding Path=OpenFileCommand}" Key="O" Modifiers="Control" />
         <KeyBinding Command="{Binding Path=SaveGeneratedProtoCommand}" Key="S" Modifiers="Control" />
-        <KeyBinding Command="{Binding Path=CopyTagValueCommand}" Key="C" Modifiers="Control"
-                    CommandParameter="{Binding ElementName=TagsTreeView}" />
-        <KeyBinding Command="{Binding Path=DecodeTagCommand}" Key="D" Modifiers="Control"
-                    CommandParameter="{Binding ElementName=TagsTreeView}" />
-        <KeyBinding Command="{Binding Path=DecodeAllTagsCommand}" Key="A" Modifiers="Control"
-                    CommandParameter="{Binding ElementName=TagsTreeView}" />
         <KeyBinding Command="{Binding Path=LoadBytesFromClipboardCommand}" Key="O" Modifiers="Control+Shift "/>
         <KeyBinding Command="{Binding Path=LoadBytesFromHexStreamCommand}" 
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
@@ -144,6 +138,14 @@
                           ItemsSource="{Binding Message.Tags,Mode=OneWay}"
                           VerticalAlignment="Stretch"
                           Grid.Row="0">
+                    <TreeView.InputBindings>
+                        <KeyBinding Command="{Binding Path=CopyTagValueCommand}" Key="C" Modifiers="Control"
+                                    CommandParameter="{Binding ElementName=TagsTreeView}" />
+                        <KeyBinding Command="{Binding Path=DecodeTagCommand}" Key="D" Modifiers="Control"
+                                    CommandParameter="{Binding ElementName=TagsTreeView}" />
+                        <KeyBinding Command="{Binding Path=DecodeAllTagsCommand}" Key="A" Modifiers="Control"
+                                    CommandParameter="{Binding ElementName=TagsTreeView}" />
+                    </TreeView.InputBindings>
                     <TreeView.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="{x:Static s:Strings.ContextMenuDecodeTag}"
@@ -190,6 +192,10 @@
                           ItemsSource="{Binding Message.Tags,Mode=OneWay}"
                           VerticalAlignment="Stretch"
                           Grid.Row="2">
+                    <TreeView.InputBindings>
+                        <KeyBinding Command="{Binding Path=CopyTagValueCommand}" Key="C" Modifiers="Control"
+                                    CommandParameter="{Binding ElementName=TagValuesTreeView}" />
+                    </TreeView.InputBindings>
                     <TreeView.ItemContainerStyle>
                         <Style TargetType="{x:Type TreeViewItem}">
                             <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />

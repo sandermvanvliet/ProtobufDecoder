@@ -40,7 +40,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                     return true;
                 }
 
-                if (Tag is ProtobufTagRepeated repeated && 
+                if (Tag is ProtobufTagRepeated repeated &&
                     repeated.Items.Count > 0 &&
                     repeated.Items.Any(tag => tag.Value?.CanDecode ?? false))
                 {
@@ -165,7 +165,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 {
                     return repeated.Name;
                 }
-                
+
                 if (Tag is ProtobufTagSingle singleTag)
                 {
                     return singleTag.Value?.ToString() ?? string.Empty;
@@ -250,7 +250,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
         public CommandResult DecodeTag()
         {
             var parseResult = MessageParseResult.Failure("Can only decode a single tag");
-            
+
             // Order matters in this check because an embedded message derives from a single tag
             if (Tag is ProtobufTagEmbeddedMessage)
             {
@@ -371,6 +371,13 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             }
 
             return CommandResult.Failure("Not a tag");
+        }
+
+        public CommandResult CopyMostLikelyValue()
+        {
+            Clipboard.SetText(MostLikelyValue);
+
+            return CommandResult.Success();
         }
     }
 }
