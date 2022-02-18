@@ -127,6 +127,46 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
         {
             var bytes = new List<byte>();
 
+            // Remove hex prefix
+            if (hexString.Contains("0x", StringComparison.InvariantCultureIgnoreCase))
+            {
+                hexString = hexString.Replace("0x", "", StringComparison.InvariantCultureIgnoreCase);
+            }
+
+            // Remove spaces
+            if (hexString.Contains(" "))
+            {
+                hexString = hexString.Replace(" ", "");
+            }
+
+            // Remove newlines
+            if (hexString.Contains("\n"))
+            {
+                hexString = hexString.Replace("\n", "");
+            }
+            if (hexString.Contains("\r"))
+            {
+                hexString = hexString.Replace("\r", "");
+            }
+
+            // Remove quotes
+            if (hexString.Contains("\""))
+            {
+                hexString = hexString.Replace("\"", "");
+            }
+
+            // Remove printable escape codes
+            if (hexString.Contains("\\x"))
+            {
+                hexString = hexString.Replace("\\x", "");
+            }
+
+            // Remove linux multi-line escape (note that this needs to be after the printable escape code)
+            if (hexString.Contains("\\"))
+            {
+                hexString = hexString.Replace("\\", "");
+            }
+
             for (var i = 0; i < hexString.Length; i += 2)
             {
                 var substring = hexString.Substring(i, 2).ToUpper();

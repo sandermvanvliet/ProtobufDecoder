@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProtobufDecoder.Application.Wpf"
         mc:Ignorable="d"
-        Title="{x:Static local:Strings.LoadHexStringTitle}" Height="301" Width="658">
+        Icon="icon.png"
+        Title="{x:Static local:Strings.LoadHexStringTitle}" Height="301" Width="658"
+        Loaded="PasteHexStreamDialog_OnLoaded">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="80" />
@@ -21,7 +23,7 @@
         <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" FontSize="18" Margin="4,0,0,0" Text="{x:Static local:Strings.LoadHexStreamInstruction}"/>
 
         <Label Grid.Row="1" Grid.Column="0" Margin="0,4,0,0" HorizontalContentAlignment="Right" VerticalAlignment="Top" Content="Hex stream:"/>
-        <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Name="HexStreamTextBlock" Margin="4,4,8,4" TextWrapping="Wrap" />
+        <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Name="HexStreamTextBlock" Margin="4,4,8,4" TextWrapping="Wrap" AcceptsReturn="True" />
 
         <Button Name="LoadButton" Click="LoadButton_OnClick" Content="{x:Static local:Strings.LoadButton}"
                  Grid.Row="2" Grid.Column="2" Margin="8,4,8,8"/>

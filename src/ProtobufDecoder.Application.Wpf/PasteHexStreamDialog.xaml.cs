@@ -20,5 +20,10 @@ namespace ProtobufDecoder.Application.Wpf
         }
 
         public string HexString { get; set; }
+
+        private void PasteHexStreamDialog_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            HexStreamTextBlock.Focus();
+        }
     }
 }
