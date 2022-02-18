@@ -19,5 +19,10 @@
         {
             return new CommandResult { Result = Result.Failure, Message = message };
         }
+
+        public static CommandResult Aborted()
+        {
+            return new CommandResult { Result = Result.NotExecuted };
+        }
     }
 }

@@ -10,6 +10,7 @@ namespace ProtobufDecoder.Application.Wpf.Commands
         private Action<CommandResult> _onFailure;
         private Action<CommandResult> _onSuccess;
         private Action<CommandResult> _onSuccessWithWarnings;
+        private Action<CommandResult> _onNotExecuted;
 
         public RelayCommand(Func<object, CommandResult> execute, Func<object, bool> canExecute = null)
         {
@@ -46,6 +47,10 @@ namespace ProtobufDecoder.Application.Wpf.Commands
             {
                 _onFailure?.Invoke(result);
             }
+            else if (result.Result == Result.NotExecuted)
+            {
+                _onNotExecuted?.Invoke(result);
+            }
         }
 
         public RelayCommand OnSuccess(Action<CommandResult> action)
@@ -63,6 +68,12 @@ namespace ProtobufDecoder.Application.Wpf.Commands
         public RelayCommand OnFailure(Action<CommandResult> action)
         {
             _onFailure = action;
+            return this;
+        }
+
+        public RelayCommand OnNotExecuted(Action<CommandResult> action)
+        {
+            _onNotExecuted = action;
             return this;
         }
     }
