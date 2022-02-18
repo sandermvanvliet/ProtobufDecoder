@@ -10,10 +10,13 @@
   - Multiple lines. Both `\n` and `\r\n` are suported as well as the multi-line escape character `\` when splitting text over multiple lines
   - Input with spaces: `0x01 0x02 0x03`
   - Any combination of the above
+- Added the <kbd>Ctrl</kbd> + <kbd>Enter</kbd> shortcut key combination to the "Load from hex stream" to close the dialog and load the input.
 
 ### Fixes
 
 - Icons are now properly set in the various dialog boxes.
+- The <kbd>ESC</kbd> key now properly closes the "Load from hex stream" dialog.
+- When canceling opening a file or loading from hex stream the status bar no longer shows "File loaded successfully".
 
 ## 0.5.0
 
