@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProtobufDecoder.Application.Wpf"
         mc:Ignorable="d"
+        Icon="icon.png"
         Title="{x:Static local:Strings.AboutTitle}" Height="250" Width="550">
     <Grid Margin="0,0,0,0">
         <Grid.ColumnDefinitions>
