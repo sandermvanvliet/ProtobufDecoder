@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.7.0
+
+### Fixes
+
+- The installer can now upgrade an existing ProtobufDecoder installation. The "Another version of this application is already installed" error will no longer occur.
+
 ## 0.6.0
 
 - The "Load from hex stream" dialog is now more accepting of input. You can now provide:
