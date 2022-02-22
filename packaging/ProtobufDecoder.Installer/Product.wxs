@@ -18,7 +18,7 @@
   <Product Id="*" 
            Name="$(var.Name)" 
            Language="1033" 
-           Version="0.7.0.0" 
+           Version="$(var.Version)" 
            Manufacturer="$(var.Manufacturer)" 
            UpgradeCode="$(var.UpgradeCode)">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perUser" InstallPrivileges="limited" />
