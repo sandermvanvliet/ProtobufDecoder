@@ -2,6 +2,8 @@
 
 ## 0.7.0
 
+- Window start up location and size are now stored so that when you next launch ProtobufDecoder it will restore to the same size as before.
+
 ### Fixes
 
 - The installer can now upgrade an existing ProtobufDecoder installation. The "Another version of this application is already installed" error will no longer occur.

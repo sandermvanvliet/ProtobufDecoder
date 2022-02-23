@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using ProtobufDecoder.Application.Wpf.ViewModels;
 using ProtobufDecoder.Tags;
 using WpfHexaEditor.Core;
+using Point = System.Drawing.Point;
+using Size = System.Drawing.Size;
 
 namespace ProtobufDecoder.Application.Wpf
 {
@@ -156,6 +160,31 @@ namespace ProtobufDecoder.Application.Wpf
 
                 ViewModel.LoadFileCommand.Execute(null);
             }
+        }
+
+        private void MainWindow_OnClosing(object sender, CancelEventArgs e)
+        {
+            Properties.AppSettings.Default.MainWindowSize = new System.Drawing.Size((int)ActualWidth, (int)ActualHeight);
+            Properties.AppSettings.Default.MainWindowStartLocation = new System.Drawing.Point((int)Left, (int)Top);
+            Properties.AppSettings.Default.MainWindowState = (int)WindowState;
+            Properties.AppSettings.Default.Save();
+        }
+
+        private void MainWindow_OnInitialized(object sender, EventArgs e)
+        {
+            if (Properties.AppSettings.Default.MainWindowSize != Size.Empty)
+            {
+                Width = Properties.AppSettings.Default.MainWindowSize.Width;
+                Height = Properties.AppSettings.Default.MainWindowSize.Height;
+            }
+
+            if (Properties.AppSettings.Default.MainWindowStartLocation != Point.Empty)
+            {
+                Left = Properties.AppSettings.Default.MainWindowStartLocation.X;
+                Top = Properties.AppSettings.Default.MainWindowStartLocation.Y;
+            }
+
+            WindowState = (WindowState)Properties.AppSettings.Default.MainWindowState;
         }
     }
 }
