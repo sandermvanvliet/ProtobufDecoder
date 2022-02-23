@@ -127,11 +127,11 @@
                   Grid.Column="1"
                   Margin="4,0,0,0">
                 <Grid.RowDefinitions>
-                    <RowDefinition />
+                    <RowDefinition MinHeight="100" Height="*"/>
                     <RowDefinition Height="4" />
-                    <RowDefinition Height="300" />
+                    <RowDefinition Height="200" />
                     <RowDefinition Height="4" />
-                    <RowDefinition Height="300" />
+                    <RowDefinition Height="200" />
                 </Grid.RowDefinitions>
                 <TreeView x:Name="TagsTreeView"
                           SelectedItemChanged="TagsTreeView_OnSelectedItemChanged"
