@@ -223,7 +223,11 @@ namespace ProtobufDecoder.Application.Wpf {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter hex string formatted without 0x prefixes.
+        ///   Looks up a localized string similar to Supported formats: 
+        ///- 0x00 0x01
+        ///- 0x0001
+        ///- \x00\x01
+        ///Newlines, spaces and double quotes are automatically removed..
         /// </summary>
         public static string LoadHexStreamInstruction {
             get {

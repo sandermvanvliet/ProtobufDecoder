@@ -3,6 +3,7 @@
 ## 0.7.0
 
 - Window start up location and size are now stored so that when you next launch ProtobufDecoder it will restore to the same size as before.
+- The help text in the "Load hex stream" dialog now shows the supported formats.
 
 ### Fixes
 

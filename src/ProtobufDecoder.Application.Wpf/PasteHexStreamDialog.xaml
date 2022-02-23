@@ -9,22 +9,21 @@
         Title="{x:Static local:Strings.LoadHexStringTitle}" Height="301" Width="658"
         Loaded="PasteHexStreamDialog_OnLoaded"
         KeyUp="PasteHexStreamDialog_OnKeyUp">
-    <Grid>
+    <Grid Margin="4,0,0,0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="80" />
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="60"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="32" />
+            <RowDefinition Height="80" />
             <RowDefinition Height="*" />
             <RowDefinition Height="38" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" FontSize="18" Margin="4,0,0,0" Text="{x:Static local:Strings.LoadHexStreamInstruction}"/>
+        <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Margin="8,0,0,0" Text="{x:Static local:Strings.LoadHexStreamInstruction}"/>
 
-        <Label Grid.Row="1" Grid.Column="0" Margin="0,4,0,0" HorizontalContentAlignment="Right" VerticalAlignment="Top" Content="Hex stream:"/>
-        <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Name="HexStreamTextBlock" Margin="4,4,8,4" TextWrapping="Wrap" AcceptsReturn="True" />
+        <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Name="HexStreamTextBlock" Margin="4,4,8,4" TextWrapping="Wrap" AcceptsReturn="True" />
 
         <Button Name="LoadButton" Click="LoadButton_OnClick" Content="{x:Static local:Strings.LoadButton}"
                  Grid.Row="2" Grid.Column="2" Margin="8,4,8,8"/>

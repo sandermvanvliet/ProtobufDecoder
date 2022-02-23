@@ -229,7 +229,11 @@
     <value>Load hex stream</value>
   </data>
   <data name="LoadHexStreamInstruction" xml:space="preserve">
-    <value>Enter hex string formatted without 0x prefixes</value>
+    <value>Supported formats: 
+- 0x00 0x01
+- 0x0001
+- \x00\x01
+Newlines, spaces and double quotes are automatically removed.</value>
   </data>
   <data name="LoadButton" xml:space="preserve">
     <value>_Load</value>
