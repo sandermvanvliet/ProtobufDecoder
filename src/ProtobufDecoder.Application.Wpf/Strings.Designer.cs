@@ -19,7 +19,7 @@ namespace ProtobufDecoder.Application.Wpf {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Strings {
@@ -205,11 +205,48 @@ namespace ProtobufDecoder.Application.Wpf {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Input is either empty or contains only newlines, spaces etc.
+        /// </summary>
+        public static string InputIsEmpty {
+            get {
+                return ResourceManager.GetString("InputIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Input appears not to be valid base-64 : {0}.
+        /// </summary>
+        public static string InputIsNotBase64 {
+            get {
+                return ResourceManager.GetString("InputIsNotBase64", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Input file:.
         /// </summary>
         public static string InputSourcePath {
             get {
                 return ResourceManager.GetString("InputSourcePath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Base64 input with and without padding is supported.
+        ///Newlines, spaces and double quotes are automatically removed..
+        /// </summary>
+        public static string LoadBase64Instruction {
+            get {
+                return ResourceManager.GetString("LoadBase64Instruction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load Base64 string.
+        /// </summary>
+        public static string LoadBase64StringTitle {
+            get {
+                return ResourceManager.GetString("LoadBase64StringTitle", resourceCulture);
             }
         }
         
@@ -313,6 +350,15 @@ namespace ProtobufDecoder.Application.Wpf {
         public static string MenuHelpAbout {
             get {
                 return ResourceManager.GetString("MenuHelpAbout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load from Base64 string.
+        /// </summary>
+        public static string MenuLoadFromBase64String {
+            get {
+                return ResourceManager.GetString("MenuLoadFromBase64String", resourceCulture);
             }
         }
         

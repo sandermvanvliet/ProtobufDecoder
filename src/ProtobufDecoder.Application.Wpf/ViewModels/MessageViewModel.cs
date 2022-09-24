@@ -133,21 +133,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 hexString = hexString.Replace("0x", "", StringComparison.InvariantCultureIgnoreCase);
             }
 
-            // Remove spaces
-            if (hexString.Contains(" "))
-            {
-                hexString = hexString.Replace(" ", "");
-            }
-
-            // Remove newlines
-            if (hexString.Contains("\n"))
-            {
-                hexString = hexString.Replace("\n", "");
-            }
-            if (hexString.Contains("\r"))
-            {
-                hexString = hexString.Replace("\r", "");
-            }
+            hexString = SanitizeInputString(hexString);
 
             // Remove quotes
             if (hexString.Contains("\""))
@@ -167,6 +153,11 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 hexString = hexString.Replace("\\", "");
             }
 
+            if (string.IsNullOrWhiteSpace(hexString))
+            {
+                return CommandResult.Failure(Strings.InputIsEmpty);
+            }
+
             for (var i = 0; i < hexString.Length; i += 2)
             {
                 var substring = hexString.Substring(i, 2).ToUpper();
@@ -174,6 +165,52 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             }
 
             return Decode(bytes.ToArray());
+        }
+
+        private static string SanitizeInputString(string hexString)
+        {
+            // Remove spaces
+            if (hexString.Contains(" "))
+            {
+                hexString = hexString.Replace(" ", "");
+            }
+
+            // Remove newlines
+            if (hexString.Contains("\n"))
+            {
+                hexString = hexString.Replace("\n", "");
+            }
+
+            if (hexString.Contains("\r"))
+            {
+                hexString = hexString.Replace("\r", "");
+            }
+
+            return hexString;
+        }
+
+        public CommandResult LoadAndDecodeFromBase64String(string base64String)
+        {
+
+            byte[] bytes;
+
+            try
+            {
+                var input = SanitizeInputString(base64String);
+                
+                if (string.IsNullOrWhiteSpace(input))
+                {
+                    return CommandResult.Failure(Strings.InputIsEmpty);
+                }
+                
+                bytes = Convert.FromBase64String(input);
+            }
+            catch (Exception e)
+            {
+                return CommandResult.Failure(string.Format(Strings.InputIsNotBase64, e.Message));
+            }
+
+            return Decode(bytes);
         }
 
         public CommandResult LoadAndDecode(string inputFilePath)
@@ -258,7 +295,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             var decodableTags = message
                 .Tags
                 .OfType<ProtobufTagSingle>()
-                .Where(singleTag => singleTag.Value.CanDecode)
+                .Where(singleTag => singleTag.Value?.CanDecode ?? false)
                 .ToList();
 
             foreach (var singleTag in decodableTags)

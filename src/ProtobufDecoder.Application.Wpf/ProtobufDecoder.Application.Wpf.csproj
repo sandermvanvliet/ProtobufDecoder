@@ -10,7 +10,7 @@
     <Company>Codenizer BV</Company>
     <Product>ProtobufDecoder.Application.Wpf</Product>
     <Description>ProtobufDecoder helps with analyzing Google Protocol Buffers payloads where you don't have a corresponding .proto file. It reads a binary file and displays the discovered tags and provides functionality to further analyze the structure and generate a Protobuf specification file.</Description>
-    <Copyright>2021 Sander van Vliet</Copyright>
+    <Copyright>2022 Sander van Vliet</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/sandermvanvliet/ProtobufDecoder</PackageProjectUrl>
     <RepositoryUrl>https://github.com/sandermvanvliet/ProtobufDecoder.git</RepositoryUrl>
@@ -29,6 +29,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="PasteBase64Dialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="PasteHexStreamDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -82,6 +85,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="PasteBase64Dialog.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="PasteHexStreamDialog.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>

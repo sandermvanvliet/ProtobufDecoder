@@ -67,6 +67,9 @@
         <KeyBinding Command="{Binding Path=LoadBytesFromHexStreamCommand}" 
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
                     Key="H" Modifiers="Control+Shift "/>
+        <KeyBinding Command="{Binding Path=LoadBytesFromBase64StringCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
+                    Key="B" Modifiers="Control+Shift" />
     </Window.InputBindings>
     <DockPanel>
         <Menu DockPanel.Dock="Top" IsMainMenu="True" Margin="0,0,0,0" Height="20">
@@ -81,6 +84,10 @@
                 <MenuItem Header="{x:Static s:Strings.MenuLoadFromHexStream}" Name="LoadFromHexStreamMenuItem"
                           Command="{Binding Path=LoadBytesFromHexStreamCommand}" InputGestureText="Ctrl+Shift+H" 
                           CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"/>
+                <MenuItem Header="{x:Static s:Strings.MenuLoadFromBase64String}" Name="LoadFromBase64StringMenuItem"
+                          Command="{Binding Path=LoadBytesFromBase64StringCommand}" InputGestureText="Ctrl+Shift+B" 
+                          CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"/>
+                
                 <Separator />
                 <MenuItem Header="{x:Static s:Strings.MenuFileSaveGeneratedProto}" Name="SaveGeneratedProto"
                           Command="{Binding Path=SaveGeneratedProtoCommand}" InputGestureText="Ctrl+S" />

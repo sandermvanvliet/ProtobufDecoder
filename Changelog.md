@@ -5,6 +5,7 @@
 - Window start up location and size are now stored so that when you next launch ProtobufDecoder it will restore to the same size as before.
 - The help text in the "Load hex stream" dialog now shows the supported formats.
 - ProtobufDecoder now targets .Net 6.0
+- Add option to load a Protobuf message from a base64 encoded string
 
 ### Fixes
 

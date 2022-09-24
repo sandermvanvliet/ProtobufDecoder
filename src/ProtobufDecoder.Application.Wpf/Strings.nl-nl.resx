@@ -131,4 +131,20 @@
     <data name="MenuFileNewWindow" xml:space="preserve">
       <value>_Nieuw venster</value>
     </data>
+	  <data name="LoadBase64StringTitle" xml:space="preserve">
+		  <value>Laad Base64 string</value>
+	  </data>
+	  <data name="MenuLoadFromBase64String" xml:space="preserve">
+		  <value>Laad Base64 string</value>
+	  </data>
+	  <data name="InputIsNotBase64" xml:space="preserve">
+		  <value>Invoer lijkt geen geldige base-64 te zijn: {0}</value>
+	  </data>
+	  <data name="LoadBase64Instruction" xml:space="preserve">
+		  <value>Base64 invoer met en zonder padding wordt ondersteund.
+Regeleinden, spaties en aanhalingstekens worden automatisch verwijderd.</value>
+	  </data>
+	  <data name="InputIsEmpty" xml:space="preserve">
+		  <value>Invoer is blanco of bevat alleen regeleinden, spaties etc</value>
+	  </data>
   </root>

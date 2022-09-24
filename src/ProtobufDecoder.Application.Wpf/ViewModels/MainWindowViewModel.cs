@@ -83,6 +83,13 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 .OnSuccessWithWarnings(_ => Model.StatusBarInfo(Strings.FileLoadedWithWarnings, _.Message))
                 .OnFailure(_ => Model.StatusBarError(Strings.FileFailedToLoad, _.Message));
 
+            LoadBytesFromBase64StringCommand = new RelayCommand(
+                    _ => LoadBytesFromBase64String(_ as Window),
+                    _ => Message != null)
+                .OnSuccess(_ => Model.StatusBarInfo(Strings.FileLoadedSuccessfully))
+                .OnSuccessWithWarnings(_ => Model.StatusBarInfo(Strings.FileLoadedWithWarnings, _.Message))
+                .OnFailure(_ => Model.StatusBarError(Strings.FileFailedToLoad, _.Message));
+            
             NewWindowCommand = new RelayCommand(
                 _ => NewWindow(),
                 _ => true);
@@ -90,6 +97,7 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
         public ICommand LoadBytesFromClipboardCommand { get; set; }
         public ICommand LoadBytesFromHexStreamCommand { get; set; }
+        public ICommand LoadBytesFromBase64StringCommand { get; set; }
         public ICommand LoadFileCommand { get; }
         public ICommand OpenFileCommand { get; set; }
         public ICommand SaveGeneratedProtoCommand { get; }
@@ -149,6 +157,25 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             if (result.HasValue && result.Value && !string.IsNullOrEmpty(dialog.HexString))
             {
                 return Message.LoadAndDecodeFromHexStream(dialog.HexString);
+            }
+
+            return CommandResult.Aborted();
+        }
+
+        private CommandResult LoadBytesFromBase64String(Window owner)
+        {
+            var dialog = new PasteBase64Dialog
+            {
+                Owner = owner,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                ShowInTaskbar = false
+            };
+
+            var result = dialog.ShowDialog();
+
+            if (result.HasValue && result.Value && !string.IsNullOrEmpty(dialog.Base64String))
+            {
+                return Message.LoadAndDecodeFromBase64String(dialog.Base64String);
             }
 
             return CommandResult.Aborted();

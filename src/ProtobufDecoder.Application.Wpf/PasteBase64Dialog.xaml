@@ -1,0 +1,31 @@
+﻿<Window x:Class="ProtobufDecoder.Application.Wpf.PasteBase64Dialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProtobufDecoder.Application.Wpf"
+        mc:Ignorable="d"
+        Icon="icon.png"
+        Title="{x:Static local:Strings.LoadBase64StringTitle}" Height="301" Width="658"
+        Loaded="PasteBase64Dialog_OnLoaded"
+        KeyUp="PasteBase64Dialog_OnKeyUp">
+    <Grid Margin="4,0,0,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="80" />
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="60"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="38" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Margin="8,0,0,0" Text="{x:Static local:Strings.LoadBase64Instruction}"/>
+
+        <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Name="Base64TextBlock" Margin="4,4,8,4" TextWrapping="Wrap" AcceptsReturn="True" />
+
+        <Button Name="LoadButton" Click="LoadButton_OnClick" Content="{x:Static local:Strings.LoadButton}"
+                 Grid.Row="2" Grid.Column="2" Margin="8,4,8,8"/>
+    </Grid>
+</Window>
