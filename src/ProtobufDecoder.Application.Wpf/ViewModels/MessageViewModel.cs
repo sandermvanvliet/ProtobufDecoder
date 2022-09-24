@@ -220,6 +220,11 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             return Decode(bytes);
         }
 
+        public CommandResult LoadFromBytes(byte[] bytes)
+        {
+            return Decode(bytes);
+        }
+
         private CommandResult Decode(byte[] bytes)
         {
             // First clear the current message so that we don't show

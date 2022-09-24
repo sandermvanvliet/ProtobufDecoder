@@ -1,0 +1,26 @@
+﻿syntax="proto3";
+package ProtobufDecoder_Test_Unit;
+option csharp_namespace="ProtobufDecoder.Application.Wpf.Test.Unit";
+
+message Message1
+{
+    int32 intValue = 1;
+    bytes byteValue = 2;
+    string stringValue = 3;
+    Message2 objValue = 4;
+}
+
+message Message2
+{
+    int32 intValue = 1;
+    bytes byteValue = 2;
+    string stringValue = 3;
+    Message3 objValue = 4;
+}
+
+message Message3
+{
+    int32 intValue = 1;
+    bytes byteValue = 2;
+    string stringValue = 3;
+}

@@ -270,6 +270,10 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
             else if (Tag is ProtobufTagSingle singleTag)
             {
                 parseResult = DecodeSingleTagDecodeTag(singleTag);
+                if (!parseResult.Successful && Tag is ProtobufTagString)
+                {
+                    parseResult = MessageParseResult.Success(null);
+                }
             }
             else if (Tag is ProtobufTagRepeated)
             {

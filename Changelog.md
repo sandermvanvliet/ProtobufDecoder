@@ -6,6 +6,7 @@
 - The help text in the "Load hex stream" dialog now shows the supported formats.
 - ProtobufDecoder now targets .Net 6.0
 - Add option to load a Protobuf message from a base64 encoded string
+- Fine tune the hinting of a tag that has a possible string value. This improves the behaviour when decoding a nested message tag
 
 ### Fixes
 

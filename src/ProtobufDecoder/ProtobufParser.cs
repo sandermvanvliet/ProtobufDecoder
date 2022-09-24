@@ -196,7 +196,10 @@ namespace ProtobufDecoder
                             }
                         }
 
-                        return ProtobufTagString.From(singleTag);
+                        if (isProbableString)
+                        {
+                            return ProtobufTagString.From(singleTag);
+                        }
                     }
 
                     return t;
