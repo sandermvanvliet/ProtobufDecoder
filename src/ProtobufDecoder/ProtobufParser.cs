@@ -10,7 +10,7 @@ namespace ProtobufDecoder
 {
     public class ProtobufParser
     {
-        public static MessageParseResult Parse(ReadOnlySpan<byte> input)
+        public static MessageParseResult Parse(ReadOnlySpan<byte> input, int depth = 1)
         {
             if (input == null)
             {
@@ -173,6 +173,7 @@ namespace ProtobufDecoder
                 .ToList();
 
             // Change ProtobufTagSingle to ProtobufTagLengthDelimited for length-delimited tags
+            var counter = 1;
             groupedTags = groupedTags
                 .Select(t =>
                 {
@@ -194,6 +195,12 @@ namespace ProtobufDecoder
                             {
                                 return ProtobufTagPackedVarint.From(singleTag);
                             }
+                            
+                            var tags = Parse(singleTag.Value.RawValue, depth + 1).Message.Tags.ToArray();
+                            return new ProtobufTagEmbeddedMessage(singleTag, tags)
+                            {
+                                Name = $"EmbeddedMessage{depth}.{counter++}"
+                            };
                         }
 
                         if (isProbableString)
