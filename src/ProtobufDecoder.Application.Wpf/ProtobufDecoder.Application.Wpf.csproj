@@ -1,98 +1,101 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
-    <UseWPF>true</UseWPF>
-    <PackageId>ProtobufDecoder.Application.Wpf</PackageId>
-    <Version>0.7.0.0</Version>
-    <Authors>Sander van Vliet</Authors>
-    <Company>Codenizer BV</Company>
-    <Product>ProtobufDecoder.Application.Wpf</Product>
-    <Description>ProtobufDecoder helps with analyzing Google Protocol Buffers payloads where you don't have a corresponding .proto file. It reads a binary file and displays the discovered tags and provides functionality to further analyze the structure and generate a Protobuf specification file.</Description>
-    <Copyright>2022 Sander van Vliet</Copyright>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/sandermvanvliet/ProtobufDecoder</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/sandermvanvliet/ProtobufDecoder.git</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageTags>protobuf, protocol-buffers, grpc</PackageTags>
-    <PackageIcon>icon.png</PackageIcon>
-    <PackageIconUrl />
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<UseWPF>true</UseWPF>
+		<PackageId>ProtobufDecoder.Application.Wpf</PackageId>
+		<Version>0.7.0.0</Version>
+		<Authors>Sander van Vliet</Authors>
+		<Company>Codenizer BV</Company>
+		<Product>ProtobufDecoder.Application.Wpf</Product>
+		<Description>ProtobufDecoder helps with analyzing Google Protocol Buffers payloads where you don't have a corresponding .proto file. It reads a binary file and displays the discovered tags and provides functionality to further analyze the structure and generate a Protobuf specification file.</Description>
+		<Copyright>2022 Sander van Vliet</Copyright>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/sandermvanvliet/ProtobufDecoder</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/sandermvanvliet/ProtobufDecoder.git</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageTags>protobuf, protocol-buffers, grpc</PackageTags>
+		<PackageIcon>icon.png</PackageIcon>
+		<PackageIconUrl />
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="WPFHexaEditor" Version="2.1.7" GeneratePathProperty="True" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="WPFHexaEditor" Version="2.1.7" GeneratePathProperty="True" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ProtobufDecoder\ProtobufDecoder.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\ProtobufDecoder\ProtobufDecoder.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="PasteBase64Dialog.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="PasteHexStreamDialog.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Properties\AppSettings.Designer.cs">
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>AppSettings.settings</DependentUpon>
-    </Compile>
-    <Compile Update="Strings.Designer.cs">
-      <DependentUpon>Strings.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Update="PasteBase64Dialog.xaml.cs">
+			<SubType>Code</SubType>
+		</Compile>
+		<Compile Update="PasteHexStreamDialog.xaml.cs">
+			<SubType>Code</SubType>
+		</Compile>
+		<Compile Update="Properties\AppSettings.Designer.cs">
+			<DesignTimeSharedInput>True</DesignTimeSharedInput>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>AppSettings.settings</DependentUpon>
+		</Compile>
+		<Compile Update="Strings.Designer.cs">
+			<DependentUpon>Strings.resx</DependentUpon>
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+		</Compile>
+	</ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Update="Strings.nl-nl.resx">
-      <DependentUpon>Strings.resx</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Strings.resx">
-      <SubType>Designer</SubType>
-      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-  </ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Update="Strings.nl-nl.resx">
+			<DependentUpon>Strings.resx</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Strings.zh-Hans.resx">
+			<DependentUpon>Strings.resx</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Strings.resx">
+			<SubType>Designer</SubType>
+			<LastGenOutput>Strings.Designer.cs</LastGenOutput>
+			<Generator>PublicResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Include="icon.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <Resource Include="icon.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </Resource>
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="icon.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<Resource Include="icon.png">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</Resource>
+	</ItemGroup>
 
-  <ItemGroup>
-    <Content Update="$(PkgWPFHexaEditor)\contentFiles\any\net5.0-windows7.0\Resources\EBCDIC-NoSpecialChar.tbl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="$(PkgWPFHexaEditor)\contentFiles\any\net5.0-windows7.0\Resources\EBCDIC.tbl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
+	<ItemGroup>
+		<Content Update="$(PkgWPFHexaEditor)\contentFiles\any\net5.0-windows7.0\Resources\EBCDIC-NoSpecialChar.tbl">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Update="$(PkgWPFHexaEditor)\contentFiles\any\net5.0-windows7.0\Resources\EBCDIC.tbl">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Update="Properties\AppSettings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>AppSettings.Designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<None Update="Properties\AppSettings.settings">
+			<Generator>SettingsSingleFileGenerator</Generator>
+			<LastGenOutput>AppSettings.Designer.cs</LastGenOutput>
+		</None>
+	</ItemGroup>
 
-  <ItemGroup>
-    <Page Update="PasteBase64Dialog.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="PasteHexStreamDialog.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
+	<ItemGroup>
+		<Page Update="PasteBase64Dialog.xaml">
+			<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+			<SubType>Designer</SubType>
+		</Page>
+		<Page Update="PasteHexStreamDialog.xaml">
+			<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+			<SubType>Designer</SubType>
+		</Page>
+	</ItemGroup>
 
 </Project>
