@@ -1,0 +1,321 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AboutAcknowledgements" xml:space="preserve">
+    <value>致谢:</value>
+  </data>
+  <data name="AboutButtonClose" xml:space="preserve">
+    <value>关闭</value>
+    <comment>_Close</comment>
+  </data>
+  <data name="AboutLicense" xml:space="preserve">
+    <value>许可:</value>
+  </data>
+  <data name="AboutSources" xml:space="preserve">
+    <value>项目:</value>
+  </data>
+  <data name="AboutTitle" xml:space="preserve">
+    <value>关于 Protobuf Decoder</value>
+    <comment>About Protobuf Decoder</comment>
+  </data>
+  <data name="AboutVersion" xml:space="preserve">
+    <value>版本:</value>
+    <comment>Version:</comment>
+  </data>
+  <data name="CannotDecodeTag" xml:space="preserve">
+    <value>无法解码所选节点</value>
+    <comment>Cannot decode selected tag</comment>
+  </data>
+  <data name="ClipboardEmpty" xml:space="preserve">
+    <value>剪贴板不包含任何要加载的字节</value>
+    <comment>Clipboard did not contain any bytes to load</comment>
+  </data>
+  <data name="CommonTagProperties" xml:space="preserve">
+    <value>属性</value>
+    <comment>Common</comment>
+  </data>
+  <data name="ContextMenuCopyValue" xml:space="preserve">
+    <value>复制内容(C# bytes)</value>
+    <comment>Copy value as C# bytes</comment>
+  </data>
+  <data name="ContextMenuDecodeAllTags" xml:space="preserve">
+    <value>解码所有节点</value>
+    <comment>Decode all tags</comment>
+  </data>
+  <data name="ContextMenuDecodeTag" xml:space="preserve">
+    <value>解码节点</value>
+    <comment>_Decode tag</comment>
+  </data>
+  <data name="FailedToDecodeTag" xml:space="preserve">
+    <value>节点解码失败: {0}</value>
+    <comment>Decoding tag failed: {0}</comment>
+  </data>
+  <data name="FileFailedToLoad" xml:space="preserve">
+    <value>文件加载失败: {0}</value>
+    <comment>File failed to load: {0}</comment>
+  </data>
+  <data name="FileLengthPrefix" xml:space="preserve">
+    <value>已删除文件中包含的{0}字节前缀</value>
+    <comment>File has a {0}-byte length prefix which was stripped</comment>
+  </data>
+  <data name="FileLoadedSuccessfully" xml:space="preserve">
+    <value>文件加载成功</value>
+    <comment>File loaded successfully</comment>
+  </data>
+  <data name="FileLoadedWithWarnings" xml:space="preserve">
+    <value>文件加载成功: {0}</value>
+    <comment>File loaded successfully: {0}</comment>
+  </data>
+  <data name="InputCaption" xml:space="preserve">
+    <value>参数</value>
+    <comment>Parameters</comment>
+  </data>
+  <data name="InputFileDoesNotExist_Text" xml:space="preserve">
+    <value>请检查目标文件的路径</value>
+    <comment>Please check the path to the input file</comment>
+  </data>
+  <data name="InputIsEmpty" xml:space="preserve">
+    <value>输入为空或仅包含换行符/空格等</value>
+    <comment>Input is either empty or contains only newlines, spaces etc</comment>
+  </data>
+  <data name="InputIsNotBase64" xml:space="preserve">
+    <value>输入内容不符合Base64标准 : {0}</value>
+    <comment>Input appears not to be valid base-64 : {0}</comment>
+  </data>
+  <data name="InputSourcePath" xml:space="preserve">
+    <value>目标文件:</value>
+    <comment>Input file:</comment>
+  </data>
+  <data name="LoadBase64Instruction" xml:space="preserve">
+    <value>支持Padding/NoPadding的Base64格式
+换行符/空格/双引号将自动删除</value>
+    <comment>Base64 input with and without padding is supported.
+Newlines, spaces and double quotes are automatically removed.</comment>
+  </data>
+  <data name="LoadBase64StringTitle" xml:space="preserve">
+    <value>加载Base64文本</value>
+    <comment>Load Base64 string</comment>
+  </data>
+  <data name="LoadButton" xml:space="preserve">
+    <value>加载</value>
+    <comment>_Load</comment>
+  </data>
+  <data name="LoadHexStreamInstruction" xml:space="preserve">
+    <value>支持格式: 
+- 0x00 0x01
+- 0x0001
+- \x00\x01 
+- 00 01 
+换行符/空格/双引号将自动删除</value>
+    <comment>Supported formats: 
+- 0x00 0x01
+- 0x0001
+- \x00\x01
+- 00 01 
+Newlines, spaces and double quotes are automatically removed.</comment>
+  </data>
+  <data name="LoadHexStringTitle" xml:space="preserve">
+    <value>加载十六进制文本</value>
+    <comment>Load hex stream</comment>
+  </data>
+  <data name="MenuFile" xml:space="preserve">
+    <value>文件</value>
+    <comment>_File</comment>
+  </data>
+  <data name="MenuFileExit" xml:space="preserve">
+    <value>退出</value>
+    <comment>E_xit</comment>
+  </data>
+  <data name="MenuFileNewWindow" xml:space="preserve">
+    <value>新窗口</value>
+    <comment>_New window</comment>
+  </data>
+  <data name="MenuFileOpen" xml:space="preserve">
+    <value>打开</value>
+    <comment>_Open</comment>
+  </data>
+  <data name="MenuFileSaveGeneratedProto" xml:space="preserve">
+    <value>保存文件(proto)</value>
+    <comment>_Save proto file</comment>
+  </data>
+  <data name="MenuFileSaveGeneratedProtoAs" xml:space="preserve">
+    <value>文件另存为(proto)</value>
+    <comment>Save proto file _As...</comment>
+  </data>
+  <data name="MenuHelp" xml:space="preserve">
+    <value>帮助</value>
+    <comment>_Help</comment>
+  </data>
+  <data name="MenuHelpAbout" xml:space="preserve">
+    <value>关于</value>
+    <comment>_About</comment>
+  </data>
+  <data name="MenuLoadFromBase64String" xml:space="preserve">
+    <value>加载Base64文本</value>
+    <comment>Load from Base64 string</comment>
+  </data>
+  <data name="MenuLoadFromClipboard" xml:space="preserve">
+    <value>加载剪贴板内容</value>
+    <comment>Load from clipboard</comment>
+  </data>
+  <data name="MenuLoadFromHexStream" xml:space="preserve">
+    <value>加载十六进制文本</value>
+    <comment>Load from hex stream</comment>
+  </data>
+  <data name="ProtoFileFailedToSave" xml:space="preserve">
+    <value>保存文件失败: {0}</value>
+    <comment>Failed to save proto file: {0}</comment>
+  </data>
+  <data name="ProtoFileSavedAs" xml:space="preserve">
+    <value>文件另存为: {0}</value>
+    <comment>Proto file saved as: {0}</comment>
+  </data>
+  <data name="ProtoFileSavedSuccessfully" xml:space="preserve">
+    <value>文件已保存</value>
+    <comment>Proto file saved</comment>
+  </data>
+  <data name="ProtoFileType" xml:space="preserve">
+    <value>Protobuf files (.proto)|*.proto</value>
+    <comment>Protobuf files (.proto)|*.proto</comment>
+  </data>
+  <data name="StatusBarReadyText" xml:space="preserve">
+    <value>就绪</value>
+    <comment>Ready</comment>
+  </data>
+  <data name="TagCopiedToClipboard" xml:space="preserve">
+    <value>节点内容已复制</value>
+    <comment>Tag value copied to clipboard</comment>
+  </data>
+  <data name="TagDecodedSuccessfully" xml:space="preserve">
+    <value>节点解码成功</value>
+    <comment>Tag decoded successfully</comment>
+  </data>
+  <data name="TagPropertiesName" xml:space="preserve">
+    <value>名称</value>
+    <comment>Name</comment>
+  </data>
+  <data name="TagPropertiesValue" xml:space="preserve">
+    <value>内容</value>
+    <comment>Value</comment>
+  </data>
+  <data name="TagRepeated" xml:space="preserve">
+    <value>(repeated)</value>
+    <comment>(repeated)</comment>
+  </data>
+</root>

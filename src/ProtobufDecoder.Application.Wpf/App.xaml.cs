@@ -4,6 +4,7 @@ using System.Reflection;
 #endif
 using System.Linq;
 using System.Windows;
+
 using ProtobufDecoder.Application.Wpf.Models;
 using ProtobufDecoder.Application.Wpf.ViewModels;
 
@@ -31,6 +32,12 @@ namespace ProtobufDecoder.Application.Wpf
             
             SystemParameters.StaticPropertyChanged += (sender, e) => { setAlignmentValue(); };
 #endif
+
+            //Force program language (test specific)
+            //The program automatically judges according to the system language by default
+            //Strings.Culture = new System.Globalization.CultureInfo("zh-CN");
+            //Strings.Culture = new System.Globalization.CultureInfo("en-US");
+            //Strings.Culture = new System.Globalization.CultureInfo("nl-NL");
 
             var viewModel = new MainWindowViewModel
             {
