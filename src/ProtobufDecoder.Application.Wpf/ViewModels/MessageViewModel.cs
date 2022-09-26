@@ -120,6 +120,18 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
                 }
             }
 
+            if (Clipboard.GetText() is String content)
+            {
+                //Simply judge according to the common features of base64.
+                //There must be a bug, but it is enough to meet most use scenarios.
+                if (content.Contains("+") || content.Contains("/") || content.Contains("="))
+                {
+                    return LoadAndDecodeFromBase64String(content);
+                }
+
+                return LoadAndDecodeFromHexStream(content);
+            }
+
             return CommandResult.Failure(Strings.ClipboardEmpty);
         }
 
@@ -215,9 +227,30 @@ namespace ProtobufDecoder.Application.Wpf.ViewModels
 
         public CommandResult LoadAndDecode(string inputFilePath)
         {
-            var bytes = File.ReadAllBytes(inputFilePath);
+            var extension = Path.GetExtension(inputFilePath);
 
-            return Decode(bytes);
+            if (!extension.Contains(".txt"))
+            {
+                var bytes = File.ReadAllBytes(inputFilePath);
+
+                return Decode(bytes);
+            }
+
+            var content = File.ReadAllText(inputFilePath);
+
+            if (string.IsNullOrWhiteSpace(content))
+            {
+                return CommandResult.Failure(Strings.InputIsEmpty);
+            }
+
+            //Simply judge according to the common features of base64.
+            //There must be a bug, but it is enough to meet most use scenarios.
+            if (content.Contains("+") || content.Contains("/") || content.Contains("="))
+            {
+                return LoadAndDecodeFromBase64String(content);
+            }
+
+            return LoadAndDecodeFromHexStream(content);
         }
 
         public CommandResult LoadFromBytes(byte[] bytes)
