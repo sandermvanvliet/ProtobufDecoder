@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ProtobufDecoder.Application.Wpf"
         mc:Ignorable="d"
         Icon="icon.png"
-        Title="{x:Static local:Strings.AboutTitle}" Height="250" Width="550">
+        Title="{x:Static local:Strings.AboutTitle}" Height="250" Width="570">
     <Grid Margin="0,0,0,0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="86*" />
@@ -32,21 +32,21 @@
         </StackPanel>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" Grid.ColumnSpan="2" Grid.Column="0">
-            <Label Width="120" HorizontalContentAlignment="Right" VerticalAlignment="Center">Sources:</Label>
+            <Label Width="120" HorizontalContentAlignment="Right" VerticalAlignment="Center" Content="{x:Static local:Strings.AboutSources}" />
             <TextBlock VerticalAlignment="Center">
                 <Hyperlink NavigateUri="https://github.com/sandermvanvliet/ProtobufDecoder" Click="Hyperlink_OnClick">https://github.com/sandermvanvliet/ProtobufDecoder</Hyperlink>
             </TextBlock>
         </StackPanel>
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" Grid.ColumnSpan="2" Grid.Column="0">
-            <Label Width="120" HorizontalContentAlignment="Right" VerticalAlignment="Center">License:</Label>
+            <Label Width="120" HorizontalContentAlignment="Right" VerticalAlignment="Center" Content="{x:Static local:Strings.AboutLicense}" />
             <TextBlock VerticalAlignment="Center">
                 <Hyperlink NavigateUri="https://github.com/sandermvanvliet/ProtobufDecoder/blob/master/LICENSE" Click="Hyperlink_OnClick">MIT</Hyperlink>
             </TextBlock>
         </StackPanel>
 
         <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="2" Grid.Column="0">
-            <Label VerticalAlignment="Top" Width="120" HorizontalContentAlignment="Right" HorizontalAlignment="Left">Acknowledgements:</Label>
+            <Label VerticalAlignment="Top" Width="120" HorizontalContentAlignment="Right" HorizontalAlignment="Left" Content="{x:Static local:Strings.AboutAcknowledgements}" />
             <StackPanel Orientation="Vertical" VerticalAlignment="Top" Margin="0,4,0,0" Width="425">
                 <TextBlock TextWrapping="Wrap"><Hyperlink NavigateUri="https://github.com/topas/VarintBitConverter/" Click="Hyperlink_OnClick">topas/VarintBitConverter</Hyperlink> for Varint decoding from the Protobuf payloads</TextBlock>
                 <TextBlock><Hyperlink NavigateUri="https://github.com/abbaye/WPFHexEditorControl" Click="Hyperlink_OnClick">WPF:HexEditor</Hyperlink> to display the raw payload and tag highlighting</TextBlock>

@@ -245,16 +245,25 @@ Newlines, spaces and double quotes are automatically removed.</value>
     <value>Load Base64 string</value>
   </data>
   <data name="MenuLoadFromBase64String" xml:space="preserve">
-	  <value>Load from Base64 string</value>
+    <value>Load from Base64 string</value>
   </data>
   <data name="InputIsNotBase64" xml:space="preserve">
-	  <value>Input appears not to be valid base-64 : {0}</value>
+    <value>Input appears not to be valid base-64 : {0}</value>
   </data>
   <data name="LoadBase64Instruction" xml:space="preserve">
-	  <value>Base64 input with and without padding is supported.
+    <value>Base64 input with and without padding is supported.
 Newlines, spaces and double quotes are automatically removed.</value>
   </data>
   <data name="InputIsEmpty" xml:space="preserve">
-	  <value>Input is either empty or contains only newlines, spaces etc</value>
+    <value>Input is either empty or contains only newlines, spaces etc</value>
+  </data>
+  <data name="AboutAcknowledgements" xml:space="preserve">
+    <value>Acknowledgements:</value>
+  </data>
+  <data name="AboutLicense" xml:space="preserve">
+    <value>License:</value>
+  </data>
+  <data name="AboutSources" xml:space="preserve">
+    <value>Sources:</value>
   </data>
 </root>
