@@ -32,6 +32,12 @@ namespace ProtobufDecoder.Application.Wpf
             SystemParameters.StaticPropertyChanged += (sender, e) => { setAlignmentValue(); };
 #endif
 
+            //Force program language (test specific)
+            //The program automatically judges according to the system language by default
+            //Strings.Culture = new System.Globalization.CultureInfo("zh-CN");
+            //Strings.Culture = new System.Globalization.CultureInfo("en-US");
+            //Strings.Culture = new System.Globalization.CultureInfo("nl-NL");
+
             var viewModel = new MainWindowViewModel
             {
                 Model = new MainWindowModel()

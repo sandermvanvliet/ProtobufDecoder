@@ -51,6 +51,9 @@
     <EmbeddedResource Update="Strings.nl-nl.resx">
       <DependentUpon>Strings.resx</DependentUpon>
     </EmbeddedResource>
+	<EmbeddedResource Update="Strings.zh-Hans.resx">
+      <DependentUpon>Strings.resx</DependentUpon>
+	</EmbeddedResource>
     <EmbeddedResource Update="Strings.resx">
       <SubType>Designer</SubType>
       <LastGenOutput>Strings.Designer.cs</LastGenOutput>
