@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.1
+
+- Update Protobuf, FluentAssertions, xUnit and MS Test SDK packages
+
 ## 0.7.0
 
 - Window start up location and size are now stored so that when you next launch ProtobufDecoder it will restore to the same size as before.
