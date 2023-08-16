@@ -15,15 +15,11 @@ jobs:
       id: get_version
       run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\/releases\//}
       shell: bash
-    - uses: actions/checkout@v2
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 6.0.x
+    - uses: actions/checkout@v3
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore -c Release .\ProtobufDecoder.sln
+      run: dotnet build --no-restore -c Release ProtobufDecoder.sln
     - name: Test
       run: dotnet test --no-build --verbosity normal -c Release
     - name: Add msbuild to PATH
